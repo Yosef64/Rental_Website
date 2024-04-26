@@ -1,0 +1,92 @@
+
+.nav{
+  background-color: #e0e7ec;
+  .navcontainer{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    img{
+
+      width: 9vw;
+      height: 9vh;
+    }
+    .right{
+      flex: 0.6;
+      //background-color: black;
+      display: flex;
+      justify-content: space-between;
+      .link{
+        width: 32vw;
+        //background-color: white;
+        font-family:sans-serif ;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        a{
+
+          position: relative;
+          text-decoration: none;
+          color: #565656;
+          font-size: 14px;
+          font-family: "Cantarell", sans-serif;
+          font-weight: 550;
+          &::before{
+            content: "";
+            width: 0;
+            position: absolute;
+            height: 2px;
+            top: 100%;
+            left: 0;
+            background: black;
+            transition:.3s;
+
+          }
+          &:hover{
+            //width: 100%;
+            color: black;
+            &::before{
+              width: 100%;
+            }
+          }
+
+        }
+
+      }
+
+      .button{
+        font-family: "Cantarell", sans-serif;
+        //background-color: white;
+        display: flex;
+        justify-content: space-between;
+        width: 12vw;
+
+        button{
+          border: none;
+          padding: 5px 9px;
+          font-size: 11px;
+          font-weight: 600;
+          border-radius: 4px;
+          cursor: pointer;
+
+        }
+
+        .login{
+          font-family: inherit;
+          width: 4.5vw;
+          background-color: white;
+          color: #565656;
+
+        }
+        .sign{
+          font-family: inherit;
+          color: white;
+          width: 6vw;
+          background-color: #7bac78;
+        }
+      }
+
+    }
+
+  }
+}
