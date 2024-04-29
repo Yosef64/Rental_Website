@@ -1,0 +1,49 @@
+.cen2{
+
+  width: 100vw;
+  height: 200vh;
+  background-color:white;
+  .c2-container{
+    padding: 2px;
+    width: 75%;
+    height: 90%;
+    background-color: white;
+    border-radius: 10px;
+    margin: auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: column;
+    .title{
+      //background-color: red;
+      font-size: 30px;
+      font-family: "Poppins", sans-serif;
+      font-weight: 700;
+
+    }
+    .button{
+      height: 7vh;
+      width: 10vw;
+
+      background-color: #6b8f68;
+      font-family: "Montserrat", sans-serif;
+      font-optical-sizing: auto;
+      font-weight:600;
+      color: #f1eeee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
+      font-style: normal;
+      &:hover{
+        background-color: #7ea17c;
+      }
+    }
+    .price{
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: 600;
+      color: #6a9567;
+    }
+  }
+}
