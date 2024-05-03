@@ -6,18 +6,18 @@ const nextConfig = {
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')],
     },
-    babel: {
-        // Add your babel configuration here
-        plugins: [
-            [
-                '@babel/plugin-transform-react-jsx',
-                {
-                    runtime: 'automatic',
-                    throwIfNamespace: false, // This line allows JSX Namespace
-                },
-            ],
-        ],
-    },
+    // babel: {
+    //     // Add your babel configuration here
+    //     plugins: [
+    //         [
+    //             '@babel/plugin-transform-react-jsx',
+    //             {
+    //                 runtime: 'automatic',
+    //                 throwIfNamespace: false, // This line allows JSX Namespace
+    //             },
+    //         ],
+    //     ],
+    // },
 
 };
 

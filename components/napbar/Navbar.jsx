@@ -27,8 +27,8 @@ export default function Navbar(props) {
                             <Link href="">Contact Us</Link>
                         </div>
                         <Flex gap={15}>
-                            <Button  className="button"><Link href="/app/login">Login</Link></Button>
-                            <Button className="button" style={{backgroundColor:"#6a9567"}} type="primary">Sign Up</Button>
+                            <Button  className="button"><Link href="/login">Login</Link></Button>
+                            <Button className="button" style={{backgroundColor:"#6a9567"}} type="primary"><Link href="/login">Sign Up</Link></Button>
                         </Flex>
 
                     </div>

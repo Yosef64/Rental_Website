@@ -1,9 +1,10 @@
 import React from 'react';
-import Login from "@/components/login/login";
+import Profile from "@/components/profile/Profile";
+
 export default function Page(props) {
     return (
         <div>
-            <Login></Login>
+            <Profile/>
         </div>
     );
 }

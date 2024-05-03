@@ -1,6 +1,6 @@
 body{
     margin: 0;
-    background-color: #e0e7ec;
+    background-color: #e0e7ec !important;
     box-sizing: border-box;
     overflow-x: hidden;
 

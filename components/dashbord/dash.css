@@ -1,0 +1,41 @@
+.ant-btn .button {
+    background-color: black; /* Change the default color of the button */
+    color: #565656;
+}
+
+.ant-btn:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Increase shadow when hovered */
+}
+.search .ant-btn-primary {
+    background-color: #6a9567 ;
+    font-size: 15px;
+    font-weight: bold;
+}
+.head-link{
+    font-size: 17px;
+    color: #201b1b;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+}
+.content::-webkit-scrollbar{
+    -webkit-appearance: none;
+}
+.pagination{
+    /*background-color: red;*/
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    margin-top: 20px;
+}
+.ant-anchor-ink-ball {
+    background-color: #1890ff;
+    width: 6px;
+    height: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.ant-anchor-link{
+    margin-right: 10px;
+}
