@@ -115,3 +115,10 @@ display: flex;
     font-weight: 700;
     color: black;
 }
+.modal-one{
+    height: 100%;
+    width: 100%;
+}
+.modal-one::-webkit-scrollbar{
+    -webkit-appearance: none !important;
+}

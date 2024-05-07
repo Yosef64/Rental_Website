@@ -3,20 +3,36 @@ import Sider from "antd/es/layout/Sider";
 import {useState} from 'react'
 import {
     CaretDownOutlined,
-    CheckCircleOutlined, EnvironmentOutlined,
+    CheckCircleOutlined, CloudUploadOutlined, EnvironmentOutlined,
     ExclamationCircleOutlined, FundOutlined,
     HomeOutlined,
-    IdcardOutlined, LineChartOutlined,
+    IdcardOutlined, InboxOutlined, LineChartOutlined,
     MessageOutlined, PieChartOutlined, PlusOutlined,
     QuestionCircleOutlined, StarFilled, UserOutlined
 } from "@ant-design/icons";
 import {profileLinks} from "@/components/profile/profileLinks";
-import {Button, Card, Col, ConfigProvider, Divider, Drawer, Form, Input, Menu, Modal, Pagination, Row} from "antd";
+import {
+    Button,
+    Card,
+    Col,
+    ConfigProvider,
+    Divider,
+    Drawer,
+    Form, Image,
+    Input, InputNumber,
+    Menu,
+    message,
+    Modal,
+    Pagination,
+    Row
+} from "antd";
 import "./profile.css"
 import {listofhouse} from "@/components/center2/listofhouse";
 import {Content} from "antd/es/layout/layout";
 import Meta from "antd/es/card/Meta";
 import Search from "antd/es/input/Search";
+import Dragger from "antd/es/upload/Dragger";
+import TextArea from "antd/es/input/TextArea";
 const listOfSider = [
     {
         key:'0',
@@ -234,10 +250,45 @@ export function DashPost(){
     const lastIndex = current * numberPerPage;
     const firstIndex = lastIndex - numberPerPage;
     const data = listofhouse.slice(firstIndex,lastIndex);
+    const [open, setOpen] = useState(false);
+    const [infoPho, setInfo] = useState(false);
+    const [infoDisplay,setInfoDisplay] = useState({img:null,title:null,desc:"",price:""})
+
 
     function handlePage(page){
         setCurrent(page);
     }
+    function handleOpen(){
+        setOpen(!open);
+    }
+    function handleOk(){
+        setOpen(false);
+    }
+    const props = {
+        name: 'file',
+        multiple: true,
+        // action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+        onChange(info) {
+            const { status } = info.file;
+            if (status !== 'uploading') {
+                console.log(info.file, info.fileList);
+            }
+            if (status === 'done') {
+                message.success(`${info.file.name} file uploaded successfully.`);
+            } else if (status === 'error') {
+                message.error(`${info.file.name} file upload failed.`);
+            }
+        },
+        onDrop(e) {
+            console.log('Dropped files', e.dataTransfer.files);
+        },
+    };
+
+    function handleDisplay(item) {
+        setInfo(true);
+        setInfoDisplay({img:item.img,desc: item.desc,title: item.title,price: item.price})
+    }
+
     return (
         <div>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -255,7 +306,7 @@ export function DashPost(){
                         }
                     }}
                     >
-                        <Button className="dash-post-button1" type="primary" icon={<PlusOutlined style={{fontSize:"12px"}} />} > New Post</Button>
+                        <Button onClick={handleOpen} className="dash-post-button1" type="primary" icon={<PlusOutlined style={{fontSize:"12px"}} />} > New Post</Button>
                     </ConfigProvider>
 
                 </div>
@@ -285,6 +336,7 @@ export function DashPost(){
                                 data.map((item) => (
                                     <Col span={8} key={item.id}>
                                         <Card
+                                            onClick={()=>handleDisplay(item)}
                                             hoverable
                                             cover={<img style={{width:"100%",height:"100px",objectFit:"cover"}} src={item.img} alt="img" />}
                                         >
@@ -314,11 +366,45 @@ export function DashPost(){
                 }
 
             </ConfigProvider>
-            <Modal open={true}>foufu
-                <Form>
-                    <Input type="file"/>
-                    <Input />
-                </Form>
+            <Modal onOk={handleOk} onCancel={handleOpen} bodyStyle={{overflow:"scroll",maxHeight:"70vh"}}  title="Commit Post" mask={true} okText="Post"  open={open}>
+                <div className="modal-one">
+                    <Form layout="vertical" labelCol={{style:{fontWeight:"600",fontSize:"15px"}}}>
+                        <Form.Item label="Address : ">
+                            <Input size="large" />
+                        </Form.Item>
+                        <Form.Item label="Description :" >
+                            <TextArea row={4} />
+                        </Form.Item>
+
+                        <Form.Item label="Price :">
+                            <InputNumber />
+                        </Form.Item>
+                        <Form.Item label="Photo :">
+
+                            <Dragger style={{width:"70%"}} {...props} >
+
+                                <div style={{height:"20vh"}}>
+                                    <p className="ant-upload-icon">
+                                        <CloudUploadOutlined style={{color:"#4f9ca8",fontSize:"26px"}} />
+                                    </p>
+
+
+                                    <span className="ant-upload-text" style={{fontSize:"12px"}} >Click or drag the photo you want to post to this area</span>
+
+                                </div>
+
+                            </Dragger>
+
+                        </Form.Item>
+                    </Form>
+                </div>
+
+            </Modal>
+            <Modal width={1000} onCancel={()=>setInfo(false)} open={infoPho}>
+                <div style={{width:"100%"}}>
+                    <Image src={infoDisplay.img} alt="img" style={{width:"35vw",height:"50vh",objectFit:"cover"}}/>
+                    <span>{infoDisplay.desc}</span>
+                </div>
             </Modal>
         </div>
 
