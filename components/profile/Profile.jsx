@@ -1,35 +1,67 @@
-import React from 'react';
-import {Layout} from "antd";
+'use client'
+import React, {useState} from 'react';
+import {Button, ConfigProvider, Input, Layout} from "antd";
 import {Content, Header} from "antd/es/layout/layout";
+import {FiExternalLink} from "react-icons/fi";
+import {Icons} from "next/dist/lib/metadata/types/metadata-types";
 import Sider from "antd/es/layout/Sider";
+import {EditOutlined, ExportOutlined, SearchOutlined} from "@ant-design/icons";
+import "./profile.css";
+import {DashContents, DashPost, SiderOneComponent, SiderTwoComp} from "@/components/profile/procomp";
 
 export default function Profile(props) {
-    const headerStyle = {
-        backgroundColor:"green",
-
-    }
+    const listOfComps = [<DashContents key={null} />,<DashPost key={null}/>];
+    const [current, setCurrent] = useState(0)
     const siderStyle={
         width:"10vw",
-        backgroundColor: "black",
+        backgroundColor: "#dde6ed",
         borderRadius:"20px"
     }
     return (
 
-            <Layout style={{width:"100vw",padding:"2px",height:"100vh"}}>
-                <Sider style={siderStyle}>
+            <Layout style={{width:"100vw",padding:"13px",height:"100vh",backgroundColor:"#dde6ed !important"}}>
+                <SiderOneComponent current={current} setCurrent={setCurrent}/>
+                <Layout  style={{marginTop:"10px",backgroundColor:"white",overflow:"hidden",height:"97%",borderRadius:"10px"}}>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorPrimary:"#e0e7ec",
+                                colorText:"#656363",
+                                colorBgBase:"#e0e7ec",
+                                colorTextBase:"#434242",
 
-                </Sider>
-                <Layout style={{padding:"20px",width:"100%",height:"100%"}}>
-                    <Header>
 
-                    </Header>
-                    <Layout>
-                        <Content style={{width:"40vw",backgroundColor:"red"}}>
+                            }
+                        }}
+                    >
+                        <Header className="header">
+                            <div className="header-item1">
+                                <span>
+                                    Dashboard
+                                </span>
+                                <div style={{display: "flex", alignItems: 'center'}}>
 
+
+                                    <Input style={{marginRight: "20px", fontWeight: "bold",border:"none"}}
+                                           placeholder="search for anything" suffix={<SearchOutlined/>}/>
+                                    <Button style={{color: "#555454",border:"none"}} icon={<ExportOutlined style={{fontSize:"12px"}} />}/>
+
+
+                                </div>
+                            </div>
+                            <div className="header-item2">
+                                <span>
+                                    Profile
+                                </span>
+                                <Button style={{border:"none"}} icon={<EditOutlined style={{color: "#757373"}}/>}/>
+                            </div>
+                        </Header>
+                    </ConfigProvider>
+                    <Layout style={{padding: "10px", backgroundColor: "white"}}>
+                        <Content className="content-one" style={{overflow:"auto",overflowX:"hidden",padding:"10px"}}>
+                            {listOfComps[current]}
                         </Content>
-                        <Sider style={siderStyle}>
-
-                        </Sider>
+                        <SiderTwoComp />
                     </Layout>
 
                 </Layout>

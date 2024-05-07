@@ -136,6 +136,7 @@ export default function DashComp(props) {
             <Layout style={{backgroundColor:"#e0e7ec"}}>
                 <Header style={{backgroundColor:"#e0e7ec",position:"sticky",zIndex:"1",top:"65px",left:"150",margin:"auto",display:"flex",alignItems:"center",justifyContent:"space-evenly",width:"80%"}}>
                     <Dropdown
+                        trigger={["click"]}
                         overlay={
                             <Menu selectable defaultSelectedKeys={[1]}>
                                 {
@@ -153,6 +154,7 @@ export default function DashComp(props) {
 
                     </Dropdown>
                     <Dropdown
+                        trigger={["click"]}
                         overlay={
                             <Menu selectable defaultSelectedKeys={[1]}>
                                 {
@@ -170,6 +172,7 @@ export default function DashComp(props) {
 
                     </Dropdown>
                     <Dropdown
+                        trigger={["click"]}
                         overlay={
                             <Menu selectable defaultSelectedKeys={[1]}>
                                 {
@@ -187,6 +190,7 @@ export default function DashComp(props) {
 
                     </Dropdown>
                     <Dropdown
+                        trigger={["click"]}
                         overlay={
                             <Menu selectable defaultSelectedKeys={[1]}>
                                 {
