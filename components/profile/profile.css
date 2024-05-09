@@ -27,23 +27,7 @@
     font-size: 17px;
     color: #526d82;
 }
-.modal-two{
-    position:sticky;
-}
-.modal-card-container .ant-card{
-    color: #201b1b;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 20vw;
-}
-.modal-two-rating-item{
-    background-color: white;
-    padding: 20px;
-    border-radius: 20px;
-    width: 23vw;
-}
-.form{
-    display: flex;
-    justify-content: space-between;
-}
+
+/*.anticon .anticon-bars{*/
+/*    z-index: 1;*/
+/*}*/

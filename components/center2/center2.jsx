@@ -57,6 +57,7 @@ export default function Center2(props) {
                                     key={item.id}
                                     style={{
                                         width: 300,
+
                                     }}
                                     actions={[
                                         <IconFont style={{fontSize:"18px"}} key="" type="icon-facebook"/>,
@@ -86,7 +87,7 @@ export default function Center2(props) {
                                     <Meta
                                         avatar={<Avatar src={item.avatar}/>}
                                         title={item.title}
-                                        description={item.desc}
+                                        description={item.address}
 
                                     >
 

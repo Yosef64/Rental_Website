@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {Avatar, Card, Col, ConfigProvider, Form, Input, List, Row, Statistic} from "antd";
+import {Avatar, Button, Card, Col, ConfigProvider, Form, Input, List, Row, Statistic} from "antd";
 import emailjs from '@emailjs/browser';
 import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
@@ -46,13 +46,38 @@ export default function MessageComp(props) {
 export function Help(){
     const form = useRef();
     return (
-        <Form style={{backgroundColor:""}}>
-            <Form.Item label="Email">
-                <Input />
-            </Form.Item>
-            <Form.Item label="Message">
-                <TextArea />
-            </Form.Item>
-        </Form>
+        <div style={{display:'flex',alignItems:"center",flexDirection:"column",justifyContent:"space-evenly",height:"80vh",width:"60vw",margin:"auto"}}>
+            <div >
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, eligendi dignissimos mollitia dolorum aliquid possimus voluptatibus magnam ea minus, recusandae at totam, nulla ut odio. Repellat cumque architecto dolores ad!
+            </div>
+            <ConfigProvider
+            theme={{
+                components:{
+                    Form:{
+                        labelColor:"#3f505c",
+                        labelFontSize:"15px"
+                    }
+                },
+                token:{
+                    fontFamily:"'Poppins',sans-serif"
+                }
+            }}
+
+            >
+                <Form  layout="vertical" style={{backgroundColor:"#dde6ed",width:"30vw",padding:"10px",fontWeight:"600",borderRadius:"10px"}}>
+                    <Form.Item  label="Email">
+                        <Input size="large" />
+                    </Form.Item>
+                    <Form.Item label="Message">
+                        <TextArea />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button danger={true} type="primary" htmlType="submit" >Report</Button>
+                    </Form.Item>
+                </Form>
+            </ConfigProvider>
+
+        </div>
+
     )
 }
