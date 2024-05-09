@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.3.3",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "antd": "^5.16.4",
     "firebase": "^10.11.1",
     "next": "14.2.3",
+    "node-mailjet": "^6.0.5",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.0"

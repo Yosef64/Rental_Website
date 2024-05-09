@@ -31,7 +31,7 @@ export default function Signup(props) {
         // e.preventDefault();
         const values = form.getFieldsValue();
         const {email,password,name,confirmPass} = values;
-
+        console.log(values);
         if(password===confirmPass){
             createUserWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
@@ -103,11 +103,6 @@ export default function Signup(props) {
         <div className="for-cont">
             <Form form={form} onFinish={(e)=>onFinish(e)} className="f"
                   name="basic"
-
-                  // wrapperCol={{
-                  //     offset:2,
-                  //     span: 14,
-                  // }}
                   style={{
                       maxWidth: 600,
                       backgroundColor:"white",

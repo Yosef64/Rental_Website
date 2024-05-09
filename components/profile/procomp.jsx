@@ -1,6 +1,6 @@
 
 import Sider from "antd/es/layout/Sider";
-import {useState} from 'react'
+import {useRef, useState} from 'react'
 import {
     CaretDownOutlined,
     CheckCircleOutlined, CloudUploadOutlined, EnvironmentOutlined,
@@ -8,7 +8,7 @@ import {
     HomeOutlined,
     IdcardOutlined, InboxOutlined, LineChartOutlined,
     MessageOutlined, PieChartOutlined, PlusOutlined,
-    QuestionCircleOutlined, StarFilled, UserOutlined
+    QuestionCircleOutlined, StarFilled, StarOutlined, UserOutlined
 } from "@ant-design/icons";
 import {profileLinks} from "@/components/profile/profileLinks";
 import {
@@ -17,16 +17,16 @@ import {
     Col,
     ConfigProvider,
     Divider,
-    Drawer,
+    Drawer, Flex,
     Form, Image,
-    Input, InputNumber,
+    Input, InputNumber, List,
     Menu,
     message,
     Modal,
-    Pagination,
+    Pagination, Radio, Rate,
     Row
 } from "antd";
-import "./profile.css"
+import "./procomp.css"
 import {listofhouse} from "@/components/center2/listofhouse";
 import {Content} from "antd/es/layout/layout";
 import Meta from "antd/es/card/Meta";
@@ -52,20 +52,15 @@ const listOfSider = [
         title:"Messages",
         label:"Message"
     },
+
     {
         key:'3',
-        icon:<PieChartOutlined />,
-        title:"Stats",
-        label: "Stats"
-    },
-    {
-        key:'4',
         icon:<QuestionCircleOutlined />,
         title:"Report",
         label:"Report"
     },
     {
-        key:'5',
+        key:'4',
         icon:<ExclamationCircleOutlined />,
         title:"Help",
         label:"Help"
@@ -77,7 +72,8 @@ export function SiderOneComponent({current,setCurrent}) {
         setCurrent(parseInt(e.key));
     }
     return (
-        <Sider style={{overflow:"hidden",backgroundColor:"#dde6ed",marginRight:"14px"}}  className="sider-one"  width={150}>
+        <Sider collapsedWidth="0" breakpoint="lg" style={{overflow:"hidden",backgroundColor:"#dde6ed",marginRight:"14px"}}  className="sider-one"  width={150}>
+            
             <div className= "s-o-item">
                 <IdcardOutlined style={{fontSize:"22px"}}/>
                 <span style={{fontFamily:"'Poetsen One',sans-serif",letterSpacing:"",fontWeight:"600",fontSize:"18px",color:"#33384a"}}>JoRent</span>
@@ -229,7 +225,7 @@ export function DashContents(){
                                         hoverable
                                         cover={<img style={{width:"100%",height:"100px",objectFit:"cover"}} src={item.img} alt="img" />}
                                     >
-                                        <Meta style={{color:"#8b8d93"}} title={item.title} description={item.desc} />
+                                        <Meta style={{color:"#8b8d93"}} title={item.title} description={item.address} />
 
                                         <span>{item.price}</span>
                                     </Card>
@@ -251,9 +247,12 @@ export function DashPost(){
     const firstIndex = lastIndex - numberPerPage;
     const data = listofhouse.slice(firstIndex,lastIndex);
     const [open, setOpen] = useState(false);
-    const [infoPho, setInfo] = useState(false);
-    const [infoDisplay,setInfoDisplay] = useState({img:null,title:null,desc:"",price:""})
-
+    const [info, setInfo] = useState(false);
+    const [infoDisplay,setInfoDisplay] = useState({img:null,title:null,desc:"",price:"",address:""})
+    const desc = ['terrible','terrible', 'bad','bad', 'normal','normal', 'good','good', 'wonderful','wonderful']
+    const [value, setValue] = useState(null);
+    const [form] = Form.useForm();
+    const some = useRef();
 
     function handlePage(page){
         setCurrent(page);
@@ -283,10 +282,39 @@ export function DashPost(){
             console.log('Dropped files', e.dataTransfer.files);
         },
     };
+    function onFinish(){
+
+        const formValues = form.getFieldsValue();
+        const formData = new FormData();
+
+        for (const key in formValues) {
+            formData.append(key, formValues[key]);
+        }
+
+        const formQueryString = new URLSearchParams(formData).toString();
+
+        console.log('Form data as HTML form:', formQueryString);
+        console.log(some.current)
+    }
 
     function handleDisplay(item) {
+
         setInfo(true);
-        setInfoDisplay({img:item.img,desc: item.desc,title: item.title,price: item.price})
+        setInfoDisplay({img:item.img,desc: item.desc,title: item.title,price: item.price,address: item.address})
+    }
+
+    function handleInfo() {
+        if(value === null){
+            message.error("Please rate the house of cancel the Modal!")
+        }else {
+            setInfo(!info);
+            setValue(null);
+            message.success("You have successfully rated the house");
+        }
+    }
+    function handleInfoCancel(){
+        setInfo(false);
+        setValue(null);
     }
 
     return (
@@ -340,7 +368,7 @@ export function DashPost(){
                                             hoverable
                                             cover={<img style={{width:"100%",height:"100px",objectFit:"cover"}} src={item.img} alt="img" />}
                                         >
-                                            <Meta style={{color:"#8b8d93"}} title={item.title} description={item.desc} />
+                                            <Meta style={{color:"#8b8d93"}} title={item.title} description={item.address} />
 
                                             <span>{item.price}</span>
                                         </Card>
@@ -351,6 +379,7 @@ export function DashPost(){
                     <div  style={{display:'flex',justifyContent:'center',width:"100%",marginTop:"20px"}}>
                         <ConfigProvider
                             theme={{
+
                                 token: {
                                     colorBgContainer:"#6a9567",
                                     colorBorder:"#6a9567",
@@ -366,7 +395,7 @@ export function DashPost(){
                 }
 
             </ConfigProvider>
-            <Modal onOk={handleOk} onCancel={handleOpen} bodyStyle={{overflow:"scroll",maxHeight:"70vh"}}  title="Commit Post" mask={true} okText="Post"  open={open}>
+            <Modal style={{position:"sticky"}} onOk={handleOk} onCancel={handleOpen} bodyStyle={{overflow:"scroll",maxHeight:"70vh",scrollbarWidth:"none"}}  title="Commit Post" mask={true} okText="Post"  open={open}>
                 <div className="modal-one">
                     <Form layout="vertical" labelCol={{style:{fontWeight:"600",fontSize:"15px"}}}>
                         <Form.Item label="Address : ">
@@ -400,12 +429,116 @@ export function DashPost(){
                 </div>
 
             </Modal>
-            <Modal width={1000} onCancel={()=>setInfo(false)} open={infoPho}>
-                <div style={{width:"100%"}}>
-                    <Image src={infoDisplay.img} alt="img" style={{width:"35vw",height:"50vh",objectFit:"cover"}}/>
-                    <span>{infoDisplay.desc}</span>
+            <Modal okButtonProps={{style:{backgroundColor:"#6a9567",border:"none"}}} onCancel={handleInfoCancel} onOk={handleInfo} className="modal-two" bodyStyle={{maxHeight:"70vh",width:"75vw",overflowY:"auto",overflowX:"hidden",scrollbarWidth:"none",backgroundColor:"#dde6ed",padding:"10px",borderRadius:"10px"}}   title="Info" width={1000}  open={info}>
+                <div style={{width:"100%",display:"flex",justifyContent:"space-between"}}>
+                    <div>
+                        <Image src={infoDisplay.img} alt="img"
+                               style={{width: "50vw", height: "50vh", objectFit: "cover", borderRadius: "10px"}}/>
+
+                        <div className="modal-address"><EnvironmentOutlined/>{" " + infoDisplay.address}</div>
+
+
+                    </div>
+                    <div className="modal-card-container">
+                        <Card
+                            className="modal-card-one"
+                            align="center"
+                        >
+
+                            <div>Price : {"$" + infoDisplay.price}</div>
+                            <div className="modal-card-one-item">
+                                <img src="https://www.trulia.com/images/icons/txl3/BedIcon.svg" alt="img"/>
+                                2 Beds
+                            </div>
+                            <div className="modal-card-one-item">
+                                <img src="https://www.trulia.com/images/icons/txl3/BathIcon.svg" alt="img"/>
+                                1 Baths
+                            </div>
+                            <div className="modal-card-one-item">
+                                <img src="https://www.trulia.com/images/icons/txl3/SquareFeetIcon.svg" alt="img"/>
+                                1,339 sqft
+                            </div>
+
+                        </Card>
+
+                    </div>
+
                 </div>
+                <div className="form">
+                    <div>
+                        <div className="modal-desc-item">
+                            <div className="modal-descTitle">Description</div>
+                            <div className="modal-desc">{infoDisplay.desc}</div>
+                        </div>
+                        <div className="modal-two-rating">
+                            <div className="modal-two-rating-title">
+                                Rate
+                            </div>
+                            <Flex className="modal-two-rating-item" vertical gap="middle">
+                                <Rate onChange={setValue} tooltips={desc} count={10} value={value}/>
+                                {value ? <span>{desc[value - 1] + "!"}</span> : null}
+
+                            </Flex>
+                        </div>
+                    </div>
+
+                    <ConfigProvider
+                        theme={{
+                            components: {
+                                Form: {
+                                    labelColor: "#526d82",
+
+
+                                },
+                                Button: {
+                                    colorPrimary: "#568356",
+                                    colorPrimaryHover: "#5d755b"
+                                }
+                            },
+                            token: {
+                                fontFamily: "'Poppins',sans-serif"
+                            }
+                        }}
+                    >
+                        <Form ref={some} form={form} onFinish={onFinish} layout="vertical"
+                              style={{backgroundColor: "white", width: "25vw", padding: "15px", borderRadius: "10px"}}>
+                            <Form.Item name="phone" style={{fontWeight: "600"}} label="Phone" rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your name!',
+                                },
+                            ]}>
+                                <Input style={{height: "7vh"}} placeholder="Phone number"/>
+                            </Form.Item>
+                            <Form.Item name="email" style={{display:"none"}}>
+                                <Input value="yosefale#gmail.com" />
+                            </Form.Item>
+                            <Form.Item name="Email" style={{fontWeight: "600"}} label="Email">
+                                <Input style={{height: "7vh"}} type="email" value="Yoseph@gmail.com"/>
+
+                            </Form.Item>
+                            <Form.Item name="message" style={{fontWeight: "600"}} label="Message">
+                                <TextArea value="I am interested in your house. And i wanna rent it!" row={4}/>
+                            </Form.Item>
+                            <Form.Item wrapperCol={{offset: 8}}>
+                                <Button style={{
+                                    display:"flex",
+                                    alignItems:"center",
+                                    justifyContent:"center",
+                                    height: "7vh",
+                                    width: "10vw",
+                                    fontWeight: "600",
+                                    fontFamily: "'Poppins',sans-serif"
+                                } } htmlType="sumbit" type="primary">Request Info</Button>
+                            </Form.Item>
+                        </Form>
+                    </ConfigProvider>
+
+                </div>
+
             </Modal>
+
+
         </div>
 
     )

@@ -8,9 +8,10 @@ import Sider from "antd/es/layout/Sider";
 import {EditOutlined, ExportOutlined, SearchOutlined} from "@ant-design/icons";
 import "./profile.css";
 import {DashContents, DashPost, SiderOneComponent, SiderTwoComp} from "@/components/profile/procomp";
+import MessageComp, {Help, Stats} from "@/components/profile/procomp2";
 
 export default function Profile(props) {
-    const listOfComps = [<DashContents key={null} />,<DashPost key={null}/>];
+    const listOfComps = [<DashContents key={null} />,<DashPost key={null}/>,<MessageComp key={null} />,<Help key={null} />];
     const [current, setCurrent] = useState(0)
     const siderStyle={
         width:"10vw",
