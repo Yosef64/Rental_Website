@@ -6,19 +6,13 @@ import "./logform.scss"
 import Link from 'next/link'
 import {  getAuth, signInWithPopup,GoogleAuthProvider,signInWithEmailAndPassword } from "firebase/auth";
 import {Button, Checkbox, Form, Input} from "antd";
+import { getSession, login } from '@/lib';
+import { redirect } from 'next/navigation';
 
 
 
 export default function Login(props) {
-    const firebaseConfig = {
-        apiKey: "AIzaSyAwY7pA9t6Opu-hGqtOb4R6ctuSlhm0Jvg",
-        authDomain: "login-1-62a50.firebaseapp.com",
-        projectId: "login-1-62a50",
-        storageBucket: "login-1-62a50.appspot.com",
-        messagingSenderId: "602897117051",
-        appId: "1:602897117051:web:f5b340082d81e1f5b6d7de",
-        measurementId: "G-GXMWHCEBJL"
-    };
+    
     const ref = useRef("intial");
     const [name, setName] = useState(ref.current);
     const [error, setError] = useState("");
@@ -40,21 +34,22 @@ export default function Login(props) {
             });
     }
 
-    const app = initializeApp(firebaseConfig);
     const auth = getAuth();
     auth.languageCode= 'en';
     const analytics = getAnalytics();
     const provider = new GoogleAuthProvider();
     const handleSign = () => {
         signInWithPopup(auth, provider)
-            .then((result) => {
+            .then( async (result)  => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential = GoogleAuthProvider.credentialFromResult(result);
-
+                
                 const user = result.user;
-                ref.current = user.displayName;
-                console.log(ref.current);
-                 setName(user.displayName);
+                
+                const [name,email,imgUrl]=[ user.displayName,user.email,user.photoURL];
+                await login(name,email,imgUrl);
+                redirect('/dashboard')
+                
             }).catch((error) => {
 
             const errorCode = error.code;

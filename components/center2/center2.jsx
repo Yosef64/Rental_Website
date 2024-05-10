@@ -47,11 +47,25 @@ export default function Center2(props) {
                 <div className="title">
                     List of Recent Homes
                 </div>
-                <Row style={{paddingLeft:"10px"}} gutter={[16, 32]}
+                <Row  justify="center" style={{paddingLeft:"10px",}} gutter={[24, 32]}
                 >
                     {
                         list.map((item) => (
-                            <Col key={item.id} span={8}>
+                            <Col key={item.id}  xs={{
+                                flex: '100%',
+                              }}
+                              sm={{
+                                flex: '50%',
+                              }}
+                              md={{
+                                flex: '40%',
+                              }}
+                              lg={{
+                                flex: '20%',
+                              }}
+                              xl={{
+                                flex: '10%',
+                              }}>
                                 <Card
                                     hoverable
                                     key={item.id}

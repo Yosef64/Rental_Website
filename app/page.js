@@ -5,8 +5,9 @@ import Center2 from "@/components/center2/center2";
 import Explore from "@/components/explore/explore";
 import Footer from "@/components/footer/Footer"
 export default function Page(props) {
+    
     return (
-        <div>
+        <div className='app'>
             <Navbar></Navbar>
             <Center1></Center1>
             <Explore></Explore>

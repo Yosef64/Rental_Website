@@ -3,11 +3,10 @@ import React,{useState} from 'react';
 // import Image from "next/image";
 import "./navbar.scss";
 import Link from "next/link";
-import {Button, Flex} from "antd";
+import {Avatar, Button, Flex} from "antd";
 
 export default function Navbar(props) {
-    const [isLogin, setIsLogin] = useState(false);
-
+    const [isLogin, setIsLogin] = useState(false)
     return (
         <div className="nav">
             <div className="navcontainer">
@@ -15,7 +14,7 @@ export default function Navbar(props) {
 
                 {isLogin ? (
                     <div className="right">
-
+                        <Avatar src={imgSrc}/>
                     </div>
                     ):
                     (

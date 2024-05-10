@@ -1,8 +1,14 @@
 .cen2{
 
   width: 100vw;
-  height: 200vh;
+  
+ 
   background-color:white;
+  display: flex;
+  align-items: end;
+  min-height: 180vh;
+  max-height: 700vh;
+  // padding-bottom: 30px;
   .c2-container{
     padding: 2px;
     width: 75%;
@@ -11,9 +17,10 @@
     border-radius: 10px;
     margin: auto;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     flex-direction: column;
+    gap: 50px;
     .title{
       //background-color: red;
       font-size: 30px;

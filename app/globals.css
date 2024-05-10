@@ -5,3 +5,7 @@ body{
     overflow-x: hidden;
 
 }
+.app{
+    display: flex;
+    flex-direction: column;
+}
