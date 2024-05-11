@@ -3,9 +3,11 @@
 
 
   .navcontainer{
+    padding: 0 3%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+  
     img{
 
       width: 9vw;
@@ -15,7 +17,7 @@
       flex: 0.6;
       //background-color: black;
       display: flex;
-      justify-content: space-between;
+      justify-content: right;
       .link{
         width: 32vw;
         font-family:sans-serif ;

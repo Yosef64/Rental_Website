@@ -1,62 +1,25 @@
-'use client'
-import React, {useRef, useState} from 'react';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+"use client"
+
+
 import "./logform.scss"
 import Link from 'next/link'
-import {  getAuth, signInWithPopup,GoogleAuthProvider,signInWithEmailAndPassword } from "firebase/auth";
 import {Button, Checkbox, Form, Input} from "antd";
-import { getSession, login } from '@/lib';
-import { redirect } from 'next/navigation';
+
+import { handleSign,handleSession } from "./logGoogle";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 
 
-export default function Login(props) {
-    
-    const ref = useRef("intial");
-    const [name, setName] = useState(ref.current);
-    const [error, setError] = useState("");
-    const [form] = Form.useForm();
-
-    function onFinish(){
-        const values = form.getFieldsValue();
-        const {email,password} = values;
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                setError(errorMessage);
-            });
-    }
-
-    const auth = getAuth();
-    auth.languageCode= 'en';
-    const analytics = getAnalytics();
-    const provider = new GoogleAuthProvider();
-    const handleSign = () => {
-        signInWithPopup(auth, provider)
-            .then( async (result)  => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                
-                const user = result.user;
-                
-                const [name,email,imgUrl]=[ user.displayName,user.email,user.photoURL];
-                await login(name,email,imgUrl);
-                redirect('/dashboard')
-                
-            }).catch((error) => {
-
-            const errorCode = error.code;
-            const errorMessage = error.message;
-        });
-    }
-
+export  default function Login(props) {
+    const router = useRouter();
+    handleSession().then((result)=>{
+        if(result==true){
+            console.log(result);
+            router.push('/dashboard')
+        }
+    })
     const inputStyle = {
         height:"8vh"
     }
@@ -72,7 +35,7 @@ export default function Login(props) {
     }
     return (
         <div className="form-container">
-            <Form form={form} onFinish={onFinish} className="for"
+            <Form className="for"
                 name="basic"
 
                 wrapperCol={{
@@ -93,7 +56,7 @@ export default function Login(props) {
 
                 autoComplete="off"
             >
-
+                
                 <Form.Item
                     className="form-item"
                     label="Username"
@@ -121,8 +84,8 @@ export default function Login(props) {
                         offset:2,
                         style:{fontFamily:'"Poppins",sans-serif',fontWeight:600}
                     }}
-                    help={error}
-                    validateStatus={error ? "error":""}
+                    // help={error}
+                    // validateStatus={error ? "error":""}
                     rules={[
                         {
                             required: true,

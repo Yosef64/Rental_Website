@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Content} from "antd/es/layout/layout";
 import {listofhouse} from "@/components/center2/listofhouse";
 import {
@@ -20,10 +20,11 @@ import {
 import {EnvironmentOutlined, HeartFilled, HeartOutlined, InstagramOutlined, TikTokOutlined} from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
 import TextArea from "antd/es/input/TextArea";
+import { dashFetch } from './dashFetch';
 
 
 export default function Contents(props) {
-    const [list, setList] = useState(listofhouse);
+    const [list, setList] = useState([]);
     const [current, setCurrent] = useState(1);
     const compPerPage = 6;
     const lastIndex = current * compPerPage;
@@ -34,6 +35,15 @@ export default function Contents(props) {
     const desc = ['terrible','terrible', 'bad','bad', 'normal','normal', 'good','good', 'wonderful','wonderful']
     const [value, setValue] = useState(null);
     const [form] = Form.useForm();
+
+    useEffect(()=>{
+        async function setListofHouses(){
+            const {posts} = await dashFetch();
+            
+            setList(posts);
+        }
+        setListofHouses();
+    },[])
 
     function handlePage(page){
         setCurrent(page);
@@ -56,8 +66,8 @@ export default function Contents(props) {
     function handleDisplay(item) {
 
         setInfo(true);
-        console.log(item);
-        setInfoDisplay({img:item.img,desc: item.desc,title: item.title,price: item.price,address: item.address})
+        // console.log(item);
+        setInfoDisplay({img:item.postImgUrl,desc: item.description,title: item.title,price: item.price,address: item.address})
     }
     function handleInfo() {
         if(value === null){
@@ -80,9 +90,10 @@ export default function Contents(props) {
                     records.map((item) => (
                         <Col key={item.id} span={8}>
                             <Card
+
                                 onClick={()=>handleDisplay(item)}
                                 hoverable
-                                key={item.id}
+                                key={item.userImgUrl}
 
                                 cover={
                                     <div>
@@ -97,14 +108,14 @@ export default function Contents(props) {
                                         }
 
                                         <img style={{width: "100%", height: "150px", objectFit: "cover"}}
-                                             src={item.img} alt="something"/>
+                                             src={item.postImgUrl} alt="something"/>
                                     </div>
 
                                 }
 
                             >
                                 <Meta
-                                    avatar={<Avatar src={item.avatar}/>}
+                                    avatar={<Avatar src={item.userImgUrl}/>}
                                     title={item.title}
                                     description={<label><EnvironmentOutlined/> {item.address}</label>}
 

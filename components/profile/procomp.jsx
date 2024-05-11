@@ -1,6 +1,6 @@
-
+"use client"
 import Sider from "antd/es/layout/Sider";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   CaretDownOutlined,
   CheckCircleOutlined,
@@ -52,6 +52,9 @@ import TextArea from "antd/es/input/TextArea";
 import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/fireconfig/fireBaseConfig";
+import { handleGetSession } from "../login/logGoogle";
+import handlePosts from "./postMethod";
+import { useRouter } from "next/navigation";
 const listOfSider = [
   {
     key: "0",
@@ -362,8 +365,22 @@ export function DashPost() {
   const firstIndex = lastIndex - numberPerPage;
   const data = listofhouse.slice(firstIndex, lastIndex);
   const [open, setOpen] = useState(false);
-  const [photo, setPhoto] = useState(null);
-
+  const [postInfo, setPostInfo] = useState({description:"",title:"",imgUrl:"",capacityPerson:0,rooms:0,area:0});
+  const [userInfo, setUserInfo] = useState({})
+  const formRef = useRef();
+  const route = useRouter();
+  console.log(userInfo);
+  useEffect(()=>{
+    async function getUserInfo(){
+        const {user} = await handleGetSession();
+        // console.log(user);
+        setUserInfo(user);
+    }
+    getUserInfo();
+  },[])
+  function handleDisplay(){
+    setOpen(true);
+  }
   function handlePage(page) {
     setCurrent(page);
   }
@@ -372,13 +389,42 @@ export function DashPost() {
     setOpen(!open);
   }
   function handleOk() {
-    if(photo!=null){
+    const values = formRef.current.getFieldsValue();
+    console.log(values)
+    const {photo,description,address,rooms,bath,price,area} = values;
+    const {imgUrl,name} = userInfo;
+    if(photo.file!=null){
         const imgs = ref(storage,`photos/${v4()}`)
-
-        uploadBytes(imgs,photo.originFileObj).then(data=>{
-            console.log(data,"imgs")
+        message.loading("Posting....",0);
+        uploadBytes(imgs,photo.file.originFileObj).then(data=>{
+            console.log(data,"imgs");
             getDownloadURL(data.ref).then(val=>{
-                console.log(val)
+              console.log(val);
+              const data = {
+                title:name,
+                userImgUrl:imgUrl,
+                postImgUrl:val,
+                rooms:rooms,
+                address:address,
+                description:description,
+                bath:bath,
+                price:price,
+                area:area
+              }
+                async function postValues(){
+
+                  const res = await handlePosts(data);
+                  message.destroy();
+                  if(res){
+                    
+                    message.success("You successfully Post the data!");
+                    setOpen(!open);
+                  }
+                  else{
+                    message.error("something is wrong. Please fill the form correctly")
+                  }
+                }
+                postValues();
             })
         })
     }
@@ -390,10 +436,10 @@ export function DashPost() {
     onChange(info) {
       const { status } = info.file;
       if (status !== "uploading") {
-        
+        message.loading("The photo is Uploading....")
       }
       if (status === "done") {
-        setPhoto(info.file);
+        
         message.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === "error") {
         message.error(`${info.file.name} file upload failed.`);
@@ -548,20 +594,32 @@ export function DashPost() {
       >
         <div className="modal-one">
           <Form
+          ref={formRef}
             layout="vertical"
             labelCol={{ style: { fontWeight: "600", fontSize: "15px" } }}
           >
-            <Form.Item label="Address : ">
+            <Form.Item name="address" label="Address : ">
               <Input size="large" />
             </Form.Item>
-            <Form.Item label="Description :">
+            <Form.Item name="description" label="Description :">
               <TextArea row={4} />
             </Form.Item>
-
-            <Form.Item label="Price :">
-              <InputNumber />
-            </Form.Item>
-            <Form.Item label="Photo :">
+            <Flex justify="space-around">
+              <Form.Item name="price" label="Price ">
+                <InputNumber min={0} defaultValue={0}/>
+              </Form.Item>
+              <Form.Item name="rooms" label="Rooms ">
+                <InputNumber min={0} defaultValue={0} />
+              </Form.Item>
+              <Form.Item name="area" label="Area ">
+                <InputNumber />
+              </Form.Item>
+              <Form.Item name="bath" label="Bath ">
+                <InputNumber min={0} defaultValue={0} />
+              </Form.Item>
+            </Flex>
+            
+            <Form.Item name="photo" label="Photo :">
               <Dragger style={{ width: "70%" }} {...props}>
                 <div style={{ height: "20vh" }}>
                   <p className="ant-upload-icon">

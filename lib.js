@@ -1,3 +1,4 @@
+"use server"
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
@@ -27,7 +28,8 @@ export async function decrypt(session) {
 
 
 
-export async function login(name,email,imgUrl) {
+export async function login(data) {
+  const {email,name,imgUrl} = data;
   const user = { email: email, name: name,imgUrl:imgUrl };
   const expires = new Date(Date.now() +  7 * 24 * 60 * 60 * 1000);
   const session = await encrypt({ user, expires });

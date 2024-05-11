@@ -1,20 +1,35 @@
-'use client'
-import React,{useState} from 'react';
-// import Image from "next/image";
+"use client"
+import React,{useState,useEffect} from 'react'
 import "./navbar.scss";
 import Link from "next/link";
 import {Avatar, Button, Flex} from "antd";
+import { getSession } from '@/lib';
+import { Session } from '@auth0/nextjs-auth0';
+import { handleSession, handleGetSession } from '../login/logGoogle';
 
-export default function Navbar(props) {
-    const [isLogin, setIsLogin] = useState(false)
+export default async function Navbar(props) {
+    const [imgUrl, setImgUrl] = useState(null)
+    useEffect(() => {
+        async function fetchImgUrl() {
+            try {
+                const { imgUrl } = await handleGetSession();
+                setImgUrl(imgUrl);
+            } catch (error) {
+                console.error('Error fetching image URL:', error);
+                // Handle error, e.g., set error state
+            }
+        }
+
+        fetchImgUrl();
+    }, []);
     return (
         <div className="nav">
             <div className="navcontainer">
                 <img src="/logo.svg" alt="something is wrong"/>
 
-                {isLogin ? (
+                { imgUrl ? (
                     <div className="right">
-                        <Avatar src={imgSrc}/>
+                        <img style={{width:"40px",height:"40px",borderRadius:"50%",objectFit:"cover"}} src={imgUrl} alt="img" />
                     </div>
                     ):
                     (
