@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 export  default function Login(props) {
     const router = useRouter();
     handleSession().then((result)=>{
-        if(result==true){
+        if(result===true){
             console.log(result);
             router.push('/dashboard')
         }

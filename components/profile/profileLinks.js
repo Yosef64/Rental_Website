@@ -1,5 +1,7 @@
 import {FacebookFilled, InstagramOutlined, LinkedinFilled, LinkedinOutlined, XOutlined} from "@ant-design/icons";
 import Link from "next/link";
+import {handleGetSession} from "@/components/login/logGoogle";
+import {message} from "antd";
 
 export const profileLinks = [
     {
@@ -47,3 +49,31 @@ export const profileLinks = [
         ]
     },
 ]
+export async function fetchFavourite(){
+    try {
+        const {user} = await handleGetSession();
+        const {email} = user;
+        console.log("dbId", email)
+        const res = await fetch(`http://localhost:3000/api/users/${email}`);
+        const {Find} = await res.json();
+        console.log("Find", Find);
+        const {favourites} = Find;
+
+
+        const list = [];
+        await Promise.all(favourites.map(async (item) => {
+            console.log("Fav", item)
+            const postRes = await fetch(`http://localhost:3000/api/posts/${item}`);
+            const {post} = await postRes.json();
+            //
+            if (post.length !== 0) {
+                console.log("userPost", post);
+                list.push(post)
+            }
+        }));
+        console.log("list", list);
+        return {list};
+    }catch (error){
+        message.error("Unable to get list of Favourites");
+    }
+}

@@ -1,33 +1,50 @@
 import { getSession, login } from '@/lib';
 import { redirect } from 'next/navigation';
-import { addDoc, collection } from 'firebase/firestore';
+import {addDoc, collection, doc, updateDoc,setDoc} from 'firebase/firestore';
 import { db } from '@/fireconfig/fireBaseConfig';
 import {  getAuth, signInWithPopup,GoogleAuthProvider,signInWithEmailAndPassword } from "firebase/auth";
 import { auth,provider } from '@/fireconfig/fireBaseConfig';
+import {dashPut} from "@/components/dashbord/dashFetch";
+import {message} from "antd";
 
 export async function handleSign(){
 
-    signInWithPopup(auth, provider)
-    .then( async (result)  => {
-        
-        const credential = GoogleAuthProvider.credentialFromResult(result);
-        
-        const user = result.user;
-        const [name,email,imgUrl] = [user.displayName,user.email,user.photoURL]
-        const ref = await addDoc(collection(db,"users"),{
-            name:name,
-            email:email,
-            imgUrl:imgUrl
-        })
+        signInWithPopup(auth, provider)
+            .then(async (result) => {
 
-        await login({name,email,imgUrl});
-       redirect('/dashboard');
-        
-    }).catch((error) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                message.loading("redirecting",0)
+                const user = result.user;
+                const [name, email, imgUrl] = [user.displayName, user.email, user.photoURL]
 
-    const errorCode = error.code;
-    const errorMessage = error.message;
-});
+                const search = await fetch("http://localhost:3000/api/users");
+
+                const {users} = await search.json();
+                console.log(users);
+                const newList = users.filter((item)=>item.email === email);
+                console.log(newList)
+                if(newList.length === 0){
+                    console.log("im at if clouse!");
+                    const ref = await setDoc(doc(db, "users",email), {
+                        name: name,
+                        email: email,
+                        imgUrl: imgUrl,
+                        favourites:[]
+                    })
+                    console.log("true")
+                    await login({name, email, imgUrl});
+                }
+                message.destroy();
+                redirect('/dashboard');
+
+            }).catch((error) => {
+
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // message.error(errorMessage);
+            console.log(errorMessage);
+            message.destroy();
+        });
 
 }
 export async function handleSession(){
@@ -45,7 +62,7 @@ export async function handleGetSession(){
     const sessionString = JSON.stringify(session,null,2);
     const sessionObject = JSON.parse(sessionString,null,2);
     const {user} = sessionObject;
-   
+    // console.log("from handleSession",user);
     return {user};
     
 }

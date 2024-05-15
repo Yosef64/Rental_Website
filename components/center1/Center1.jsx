@@ -72,11 +72,11 @@ export default function Center1(props) {
               <Button  className="button">{location} {<DownOutlined/>}</Button>
             </Dropdown>
             <Tooltip title="search">
-              <Button style={buttonStyle2} className="button" type="primary" shape="square" icon={<SearchOutlined />} />
+              <Button style={buttonStyle2} className="button search" type="primary" shape="square" icon={<SearchOutlined />} />
             </Tooltip>
           </Flex>
         </div>
-        <div className="c1-right">
+        <div className="c1-right" >
           <img src="/try-hd.png" alt="something is wrong!" />
         </div>
       </div>

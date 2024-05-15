@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {Content} from "antd/es/layout/layout";
-import {listofhouse} from "@/components/center2/listofhouse";
 import {
     Avatar,
     Button,
@@ -15,15 +13,16 @@ import {
     Modal,
     Pagination,
     Rate,
-    Row
+    Row,
+    Spin
 } from "antd";
-import {EnvironmentOutlined, HeartFilled, HeartOutlined, InstagramOutlined, TikTokOutlined} from "@ant-design/icons";
+import {EnvironmentOutlined, HeartFilled, HeartOutlined} from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
 import TextArea from "antd/es/input/TextArea";
-import { dashFetch } from './dashFetch';
+import {dashFetch, dashGet, dashPut} from './dashFetch';
 
 
-export default function Contents(props) {
+export default function Contents() {
     const [list, setList] = useState([]);
     const [current, setCurrent] = useState(1);
     const compPerPage = 6;
@@ -31,20 +30,39 @@ export default function Contents(props) {
     const firstIndex = lastIndex - compPerPage;
     const records = list.slice(firstIndex,lastIndex);
     const [info, setInfo] = useState(false);
-    const [infoDisplay,setInfoDisplay] = useState({img:null,title:null,desc:"",price:"",address:""})
+    const [infoDisplay,setInfoDisplay] = useState({})
     const desc = ['terrible','terrible', 'bad','bad', 'normal','normal', 'good','good', 'wonderful','wonderful']
     const [value, setValue] = useState(null);
     const [form] = Form.useForm();
-
+    const [loading, setLoading] = useState(true);
+    const [listFavorite, setListFavorite] = useState([]);
+    console.log(listFavorite);
     useEffect(()=>{
         async function setListofHouses(){
-            const {posts} = await dashFetch();
-            
-            setList(posts);
+           try {
+               const {posts} = await dashFetch();
+               setList(posts);
+               setLoading(false);
+           } catch (error){
+                message.error("Unable to get Total Posts!");
+            }
+
+        }
+        async function setFavourite(){
+            try {
+                const {Find} = await dashGet();
+                console.log("Find",Find);
+                const {favourites} = Find;
+                setListFavorite(favourites);
+            }catch (error){
+                message.error("unable to fetch favourites from database!")
+            }
+
         }
         setListofHouses();
+        setFavourite();
     },[])
-
+    // console.log(list);
     function handlePage(page){
         setCurrent(page);
     }
@@ -54,20 +72,25 @@ export default function Contents(props) {
         right:0,
         padding:"20px"
     };
-    function handleIcon(id) {
-        const updatedList = list.map((user)=>{
-            if(user.id===id){
-                return {...user,favourite:!user.favourite}
-            }
-            return user;
-        })
-        setList(updatedList);
+
+    async function handleIcon(id) {
+        let updatedListFavourite;
+        if (listFavorite.includes(id)){
+
+            const updatedListFavourite = listFavorite.filter(ele=> ele !== id);
+            setListFavorite(updatedListFavourite);
+        }else {
+            updatedListFavourite = [id,...listFavorite]
+            setListFavorite(updatedListFavourite);
+        }
+
+        await dashPut(updatedListFavourite);
     }
     function handleDisplay(item) {
 
         setInfo(true);
-        // console.log(item);
-        setInfoDisplay({img:item.postImgUrl,desc: item.description,title: item.title,price: item.price,address: item.address})
+        const info = {img:item.postImgUrl,desc: item.description,title: item.title,price: item.price,address: item.address,bath:item.bath,rooms:item.rooms,area:item.area}
+        setInfoDisplay(info);
     }
     function handleInfo() {
         if(value === null){
@@ -84,51 +107,70 @@ export default function Contents(props) {
     }
 
     return (
-        <>
-            <Row gutter={[60,24]} >
-                {
-                    records.map((item) => (
-                        <Col key={item.id} span={8}>
-                            <Card
+        <Spin spinning={loading} size='large'>
+            <Flex justify="center"  className="c2-container">
+                <Row gutter={[48,24]} >
+                    {
+                        records.map((item) => (
+                                <Col key={item.id} xs={{
+                                    flex: '100%',
+                                }}
+                                     sm={{
+                                         flex: '50%',
+                                     }}
+                                     md={{
+                                         flex: '40%',
+                                     }}
+                                     lg={{
+                                         flex: '20%',
+                                     }}
+                                     xl={{
+                                         flex: '10%',
+                                     }}>
+                                    <Card
 
-                                onClick={()=>handleDisplay(item)}
-                                hoverable
-                                key={item.userImgUrl}
 
-                                cover={
-                                    <div>
-                                        {
-                                            item.favourite ?(
-                                                    <HeartFilled onClick={()=>handleIcon(item.id)} style={{...iconStyle,color:"red"}} />
-                                                ) :
-                                                (
-                                                    <HeartOutlined onClick={()=>handleIcon(item.id)}  style={{...iconStyle,color:"white"}}/>
-                                                )
+                                        hoverable
+                                        key={item.userImgUrl}
+                                        style={{width:270}}
+                                        cover={
+                                            <div>
+                                                {
+                                                    listFavorite.includes(item.id) ?(
+                                                            <HeartFilled key={item.id} onClick={()=>handleIcon(item.id)} style={{...iconStyle,color:"red"}} />
+                                                        ) :
+                                                        (
+                                                            <HeartOutlined key={item.id} onClick={()=>handleIcon(item.id)}  style={{...iconStyle,color:"white"}}/>
+                                                        )
+
+                                                }
+
+                                                <img style={{width: "100%", height: "150px", objectFit: "cover"}}
+                                                     src={item.postImgUrl} alt="something"/>
+                                            </div>
 
                                         }
 
-                                        <img style={{width: "100%", height: "150px", objectFit: "cover"}}
-                                             src={item.postImgUrl} alt="something"/>
-                                    </div>
+                                    >
+                                        <Meta
+                                            onClick={()=>handleDisplay(item)}
+                                            avatar={<Avatar src={item.userImgUrl}/>}
+                                            title={item.title}
+                                            description={<label style={{height:"1vh"}}><EnvironmentOutlined /> {item.address}</label>}
 
-                                }
 
-                            >
-                                <Meta
-                                    avatar={<Avatar src={item.userImgUrl}/>}
-                                    title={item.title}
-                                    description={<label><EnvironmentOutlined/> {item.address}</label>}
+                                        >
 
-                                >
-
-                                </Meta>
-                                <span className="price">${item.price}</span>
-                            </Card>
-                        </Col>
+                                        </Meta>
+                                        <span className="price">${item.price}</span>
+                                    </Card>
+                                </Col>
+                            )
                         )
-                    )
-                }
-            </Row>
+                    }
+                </Row>
+            </Flex>
+
             <div className="pagination">
                 <ConfigProvider
                     theme={
@@ -163,15 +205,15 @@ export default function Contents(props) {
                             <div>Price : {"$" + infoDisplay.price}</div>
                             <div className="modal-card-one-item">
                                 <img src="https://www.trulia.com/images/icons/txl3/BedIcon.svg" alt="img"/>
-                                2 Beds
+                                {infoDisplay.rooms + " "} Beds
                             </div>
                             <div className="modal-card-one-item">
                                 <img src="https://www.trulia.com/images/icons/txl3/BathIcon.svg" alt="img"/>
-                                1 Baths
+                                {infoDisplay.bath + " "} Baths
                             </div>
                             <div className="modal-card-one-item">
                                 <img src="https://www.trulia.com/images/icons/txl3/SquareFeetIcon.svg" alt="img"/>
-                                1,339 sqft
+                                {infoDisplay.area + " "} sqft
                             </div>
 
                         </Card>
@@ -180,7 +222,7 @@ export default function Contents(props) {
 
                 </div>
                 <div className="form">
-                    <div>
+                    <div className="modal-form-item">
                         <div className="modal-desc-item">
                             <div className="modal-descTitle">Description</div>
                             <div className="modal-desc">{infoDisplay.desc}</div>
@@ -253,7 +295,7 @@ export default function Contents(props) {
 
             </Modal>
 
-        </>
+        </Spin>
 
     );
 }

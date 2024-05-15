@@ -2,18 +2,19 @@
 import React, { useEffect, useState } from "react";
 
 import {
-  Anchor,
-  Avatar,
-  Button,
-  ConfigProvider,
-  Divider,
-  Dropdown,
-  Flex,
-  Image,
-  Input,
-  Layout,
-  Menu,
-  Tooltip,
+    Anchor,
+    Avatar, Badge,
+    Button,
+    ConfigProvider,
+    Divider, Drawer,
+    Dropdown,
+    Flex,
+    Image,
+    Input,
+    Layout,
+    Menu,
+    Spin,
+    Tooltip,
 } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import "./dash.css";
@@ -29,22 +30,22 @@ import {
   siderList,
 } from "@/components/dashbord/dashcon";
 import {
-  BellOutlined,
-  ControlOutlined,
-  DeleteOutlined,
-  DollarOutlined,
-  DownOutlined,
-  EnvironmentOutlined,
-  TeamOutlined,
-  UserOutlined,
+    BellOutlined,
+    ControlOutlined,
+    DeleteOutlined,
+    DollarOutlined,
+    DownOutlined,
+    EnvironmentOutlined, LogoutOutlined, MenuFoldOutlined, MenuOutlined,
+    TeamOutlined,
+    UserOutlined,
 } from "@ant-design/icons";
 import Sider from "antd/es/layout/Sider";
 import Contents from "@/components/dashbord/content";
 // import { getSession } from "@/lib";
 import { handleGetSession } from "../login/logGoogle";
 import { dashFetch } from "./dashFetch";
-
-export default function DashComp({ user }) {
+import 'antd/dist/reset.css'
+export default function DashComp({ }) {
   const [location, setLocation] = useState("Location");
   const [price, setPrice] = useState("100-1000");
   const [house, setHouseType] = useState("Normal villa");
@@ -52,6 +53,7 @@ export default function DashComp({ user }) {
   const [active, setActive] = useState(1);
   const [imgUrl, setImgUrl] = useState("");
   const [post, setPost] = useState([]);
+    const [isOpen, setIsOpen] = useState(false)
   const siderStyle = {
     margin: "auto",
     marginBottom: "10px",
@@ -63,6 +65,20 @@ export default function DashComp({ user }) {
     justifyContent: "center",
     alignItems: "center",
   };
+    const headerMenu = [
+        {
+            key:"categories",
+            label:"Categories"
+        },
+        {
+            key:"Rent",
+            label:"Rent"
+        },
+        {
+            key:"Buy",
+            label:"Buy"
+        },
+    ]
   useEffect(() => {
     async function setImageUrl(){
         const {user} = await handleGetSession();
@@ -87,81 +103,42 @@ export default function DashComp({ user }) {
   };
 
   return (
-    <div style={{ backgroundColor: "red" }}>
+    <div style={{ backgroundColor: "red" ,height:"10vh"}}>
       <Layout
         style={{
           position: "sticky",
           top: "0",
           zIndex: "1",
           backgroundColor: "#e0e7ec",
+            width:"100%",
+            overflow:"hidden",
+            height:"100%"
         }}
       >
         <Header
           className="dash-head"
-          style={{
-            display: "flex",
-            backgroundColor: "#e0e7ec",
-            justifyContent: "space-between",
-            boxSizing: "border-box",
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
-          }}
         >
-          <Flex
-            className="head-child"
-            align="center"
-            justify="space-evenly"
-            style={{ width: "45vw" }}
-          >
-            <Image alt="img" width={110} src="/logo.svg" />
-            <ConfigProvider
-              theme={{
-                components: {
-                  Anchor: {
-                    linkPaddingInlineStart: 50,
-                  },
-                },
-                token: {
-                  fontFamily: '"Poppins",sans-serif',
-                  fontSize: "17px",
-                  fontWeightStrong: 7,
-                  colorPrimary: "black",
-                  colorText: "#7a7979",
-                  lineType: "dashed",
-                  lineHeight: 2,
-                  lineWidth: 1,
-                },
-              }}
+            <Flex
+                className="head-child1"
+                align="center"
+                justify="space-evenly"
+                style={{width: "45vw"}}
             >
-              <Anchor
-                direction="horizontal"
-                style={{ fontWeight: "600" }}
-                items={[
-                  {
-                    key: "Categories",
-                    title: "Categories",
-                    href: "#",
-                  },
-                  {
-                    key: "Rent",
-                    title: "Rent",
-                    href: "##",
-                  },
-                  {
-                    key: "Buy",
-                    title: "Buy",
-                    href: "###",
-                  },
-                ]}
-              />
-            </ConfigProvider>
-          </Flex>
-          <Flex
-            className="head-child"
-            align="center"
-            justify="space-evenly"
-            style={{ width: "40vw", height: "100%" }}
+                <img className="dash-logo" alt="img" style={{width:"80px",height:"60px"}} src="/logo.svg"/>
+                <div className="dash-icon">
+                    <MenuOutlined onClick={() => setIsOpen(!isOpen)} style={{fontSize: "25px"}}/>
+                </div>
+               <div className="dash-links" >
+                   <a href="/">Categories</a>
+                   <a href="/">Rent</a>
+                   <a href="/">Buy</a>
+               </div>
+            </Flex>
+            <Flex
+                className="head-child2"
+                align="center"
+                justify="space-evenly"
+                style={{width: "40vw", height: "100%" }}
           >
             <ConfigProvider
               theme={{
@@ -172,24 +149,28 @@ export default function DashComp({ user }) {
             >
               <Search
                 rootClassName="search"
-                style={{ width: "20vw" }}
+                style={{ width: "20vw"}}
                 enterButton
               />
             </ConfigProvider>
 
             <Tooltip title="Notification">
-              <Button
-                style={{ border: "none", backgroundColor: "#e0e7ec" }}
-                type="default"
-                shape="circle"
-                icon={<BellOutlined style={{ fontSize: "19px" }} />}
-              />
+                <Badge size="small" count={1}>
+                    <BellOutlined style={{fontSize:"20px"}} />
+                </Badge>
+                {/*<Button*/}
+                {/*    style={{ border: "none", backgroundColor: "#e0e7ec" }}*/}
+                {/*    type="default"*/}
+                {/*    shape="circle"*/}
+                {/*    icon={}*/}
+                {/*/>*/}
             </Tooltip>
             <Tooltip title="profile">
               <Button
                 type="default"
                 size="large"
                 shape="circle"
+
                 icon={
                   <Avatar src={<img src={imgUrl} alt="img" />} size="large" />
                 }
@@ -198,157 +179,195 @@ export default function DashComp({ user }) {
           </Flex>
         </Header>
       </Layout>
-      <Layout style={{ backgroundColor: "#e0e7ec" }}>
-        <Header
-          style={{
-            backgroundColor: "#e0e7ec",
-            position: "sticky",
-            zIndex: "1",
-            top: "65px",
-            left: "150",
-            margin: "auto",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-            width: "80%",
+      <Layout style={{ backgroundColor: "#e0e7ec",width:"100%", }}>
+          <Menu mode="horizontal" className="dash-header2"
+                style={{border:"none",textDecoration:"none"}}
+                items = {[{
+                    key:"first",
+                    label:<Dropdown
+                        trigger={["click"]}
+                        overlay={
+                            <Menu selectable defaultSelectedKeys={[1]}>
+                                {locationList.map((item) => (
+                                    <Menu.Item
+                                        key={item.id}
+                                        onClick={() => setLocation(item.name)}
+                                    >
+                                        <label>{item.name}</label>
+                                    </Menu.Item>
+                                ))}
+                            </Menu>
+                        }
+                        placement="bottomLeft"
+                    >
+                        <Button type="default">
+                            <EnvironmentOutlined/> {location} <DownOutlined/>
+                        </Button>
+                    </Dropdown>},
+                    {key:"second",
+                        label:(
+                            <Dropdown
+                                trigger={["click"]}
+                                overlay={
+                                    <Menu selectable defaultSelectedKeys={[1]}>
+                                        {priceList.map((item) => (
+                                            <Menu.Item key={item.id} onClick={() => setPrice(item.price)}>
+                                                {item.lable}
+                                            </Menu.Item>
+                                        ))}
+                                    </Menu>
+                                }
+                                placement="bottomLeft"
+                            >
+                                <Button type="default">
+                                    <DollarOutlined/> {price} <DownOutlined/>
+                                </Button>
+                            </Dropdown>)},
+                    {key:"third",
+                        label:
+                            (<Dropdown
+                                trigger={["click"]}
+                                overlay={
+                                    <Menu selectable defaultSelectedKeys={[1]}>
+                                        {capacity.map((item) => (
+                                            <Menu.Item key={item.id} onClick={() => setCap(item.able)}>
+                                                {item.lable}
+                                            </Menu.Item>
+                                        ))}
+                                    </Menu>
+                                }
+                                placement="bottomLeft"
+                            >
+                                <Button type="default">
+                                    <TeamOutlined/> {cap} <DownOutlined/>
+                                </Button>
+                            </Dropdown>)
+                    },
+                    {
+                        key:"fourth",
+                        label:(<Dropdown
+                            trigger={["click"]}
+                            overlay={
+                                <Menu selectable defaultSelectedKeys={[1]}>
+                                    {houseType.map((item) => (
+                                        <Menu.Item
+                                            key={item.id}
+                                            onClick={() => setHouseType(item.type)}
+                                        >
+                                            {item.lable}
+                                        </Menu.Item>
+                                    ))}
+                                </Menu>
+                            }
+                            placement="bottomLeft"
+                        >
+                            <Button type="default">
+                                <ControlOutlined/> {house} <DownOutlined/>
+                            </Button>
+                        </Dropdown>)
+                    }]} />
+
+          <ConfigProvider
+          theme={{
+              token:{
+
+              },
+              components:{
+                  Layout:{
+                      colorBgLayout:"#dde6ed"
+                  }
+              }
           }}
-        >
-          <Dropdown
-            trigger={["click"]}
-            overlay={
-              <Menu selectable defaultSelectedKeys={[1]}>
-                {locationList.map((item) => (
-                  <Menu.Item
-                    key={item.id}
-                    onClick={() => setLocation(item.name)}
+          >
+              <Layout className="lay-nested1" >
+                  <Sider
+                      // breakpoint="lg"
+                      collapsedWidth="0px"
+                      className="dash-sider1"
+                      width={60}
+                    style={{backgroundColor:"white",bottom:"100px"}}
                   >
-                    <label>{item.name}</label>
-                  </Menu.Item>
-                ))}
-              </Menu>
-            }
-            placement="bottomLeft"
-          >
-            <Button type="default">
-              <EnvironmentOutlined /> {location} <DownOutlined />
-            </Button>
-          </Dropdown>
-          <Dropdown
-            trigger={["click"]}
-            overlay={
-              <Menu selectable defaultSelectedKeys={[1]}>
-                {priceList.map((item) => (
-                  <Menu.Item key={item.id} onClick={() => setPrice(item.price)}>
-                    {item.lable}
-                  </Menu.Item>
-                ))}
-              </Menu>
-            }
-            placement="bottomLeft"
-          >
-            <Button type="default">
-              <DollarOutlined /> {price} <DownOutlined />
-            </Button>
-          </Dropdown>
-          <Dropdown
-            trigger={["click"]}
-            overlay={
-              <Menu selectable defaultSelectedKeys={[1]}>
-                {capacity.map((item) => (
-                  <Menu.Item key={item.id} onClick={() => setCap(item.able)}>
-                    {item.lable}
-                  </Menu.Item>
-                ))}
-              </Menu>
-            }
-            placement="bottomLeft"
-          >
-            <Button type="default">
-              <TeamOutlined /> {cap} <DownOutlined />
-            </Button>
-          </Dropdown>
-          <Dropdown
-            trigger={["click"]}
-            overlay={
-              <Menu selectable defaultSelectedKeys={[1]}>
-                {houseType.map((item) => (
-                  <Menu.Item
-                    key={item.id}
-                    onClick={() => setHouseType(item.type)}
+                          <Menu mode="horizonatal">
+                              {siderList.map((item) => (
+                                  <Menu.Item
+                                      onClick={() => setActive(item.key)}
+                                      key={item.key}
+                                      style={item.key === active ? activeStyle : siderStyle}
+                                  >
+                                      {item.icon}
+                                  </Menu.Item>
+                              ))}
+                          </Menu>
+
+                      <Divider orientation="left" plain />
+
+                          <Menu mode="vertical">
+                              <Menu.Item style={siderStyle}>
+                                  <LogoutOutlined style={{color:"red",fontSize:"18px"}}/>
+                              </Menu.Item>
+                              <Menu.Item style={siderStyle}>
+                                  <UserOutlined style={{ fontSize: "18px" }} />
+                              </Menu.Item>
+                              {/*<Menu.Item>*/}
+                              {/*    <UserOutlined/>*/}
+                              {/*</Menu.Item>*/}
+                          </Menu>
+
+                  </Sider>
+                  <ConfigProvider
+                      // theme={{
+                      //     token:{
+                      //         colorBgContainer:"#dde6ed"
+                      //     }
+                      // }}
                   >
-                    {item.lable}
-                  </Menu.Item>
-                ))}
-              </Menu>
-            }
-            placement="bottomLeft"
-          >
-            <Button type="default">
-              <ControlOutlined /> {house} <DownOutlined />
-            </Button>
-          </Dropdown>
-        </Header>
-        <Layout >
-          <Sider
-            width={60}
-            style={{
-              borderRadius: "20px",
-              backgroundColor: "white",
-              paddingTop: "20px",
-              top: "150px",
-              left: "60px",
-              bottom: "60px",
-              position: "fixed",
-            }}
-          >
-            <div>
-              <Menu>
+                      <Content
+                          className="content"
+                          style={{
+                              overflowX: "hidden",
+                              width: "100vw",
+                              height: "72vh",
+                              margin: "20px 5% 0px 10%",
+                              overflowY: "auto",
+                              backgroundColor:"red"
+                          }}
+                      >
+                          <Contents/>
+                      </Content>
+                  </ConfigProvider>
+
+                  {/* </Spin> */}
+              </Layout>
+          </ConfigProvider>
+
+
+      </Layout>
+        <Drawer closable={false} placement="left" onClose={()=>setIsOpen(false)} width={100} open={isOpen}>
+            <Menu mode="horizonatal">
                 {siderList.map((item) => (
-                  <Menu.Item
-                    onClick={() => setActive(item.key)}
-                    key={item.key}
-                    style={item.key === active ? activeStyle : siderStyle}
-                  >
-                    {item.icon}
-                  </Menu.Item>
+                    <Menu.Item
+                        onClick={() => setActive(item.key)}
+                        key={item.key}
+                        style={item.key === active ? activeStyle : siderStyle}
+                    >
+                        {item.icon}
+                    </Menu.Item>
                 ))}
-              </Menu>
-            </div>
+            </Menu>
             <Divider orientation="left" plain />
-            <div
-              style={{
-                display: "flex",
-                alignItems: "end",
-                justifyContent: "space-around",
-              }}
-            >
-              <Menu>
+
+            <Menu mode="vertical">
                 <Menu.Item style={siderStyle}>
-                  <DeleteOutlined style={{ color: "red", fontSize: "18px" }} />
+                    <DeleteOutlined style={{ color: "red", fontSize: "18px" }} />
                 </Menu.Item>
                 <Menu.Item style={siderStyle}>
-                  <UserOutlined style={{ fontSize: "18px" }} />
+                    <UserOutlined style={{ fontSize: "18px" }} />
                 </Menu.Item>
                 {/*<Menu.Item>*/}
                 {/*    <UserOutlined/>*/}
                 {/*</Menu.Item>*/}
-              </Menu>
-            </div>
-          </Sider>
-          <Content
-            className="content"
-            style={{
-              overflowX: "hidden",
-              width: "50vw",
-              height: "72vh",
-              margin: "20px 90px 0px 200px",
-              overflowY: "auto",
-            }}
-          >
-            <Contents />
-          </Content>
-        </Layout>
-      </Layout>
+            </Menu>
+        </Drawer>
     </div>
   );
 }

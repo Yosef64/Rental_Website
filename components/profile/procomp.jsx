@@ -8,7 +8,7 @@ import {
   EnvironmentOutlined,
   ExclamationCircleOutlined,
   FundOutlined,
-  HomeOutlined,
+  
   IdcardOutlined,
   InboxOutlined,
   LineChartOutlined,
@@ -20,7 +20,7 @@ import {
   StarOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { profileLinks } from "@/components/profile/profileLinks";
+import {fetchFavourite, profileLinks} from "@/components/profile/profileLinks";
 import {
   Button,
   Card,
@@ -40,7 +40,7 @@ import {
   Pagination,
   Radio,
   Rate,
-  Row,
+  Row, Spin,
 } from "antd";
 import "./procomp.css";
 import { listofhouse } from "@/components/center2/listofhouse";
@@ -53,104 +53,122 @@ import { v4 } from "uuid";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/fireconfig/fireBaseConfig";
 import { handleGetSession } from "../login/logGoogle";
-import handlePosts from "./postMethod";
+import handlePosts, {handleGetUserPosts} from "./postMethod";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 const listOfSider = [
   {
-    key: "0",
+    key: "profile",
     icon: <UserOutlined />,
     title: "Profile",
-    label: "Profile",
+    label: <Link href="/dashboard/profile">Profile</Link>
   },
   {
-    key: "1",
+    key: "post",
     icon: <CheckCircleOutlined />,
     title: "Posts",
-    label: "Posts",
+    label: <Link href="/dashboard/profile/post">Posts</Link>,
   },
   {
-    key: "2",
+    key: "message",
     icon: <MessageOutlined />,
     title: "Messages",
-    label: "Message",
+    label: <Link href="/dashboard/profile/message">Messages</Link>,
   },
 
   {
-    key: "3",
+    key: "report",
     icon: <QuestionCircleOutlined />,
     title: "Report",
-    label: "Report",
+    label: <Link href="/dashboard/profile/report">Report</Link>,
   },
   {
-    key: "4",
+    key: "help",
     icon: <ExclamationCircleOutlined />,
     title: "Help",
-    label: "Help",
+    label: <Link href="/dashboard/profile/help">Help</Link>,
   },
 ];
 
-export function SiderOneComponent({ current, setCurrent }) {
-  function handleClick(e) {
-    setCurrent(parseInt(e.key));
-  }
+export function SiderOneComponent({ current }) {
+  // function handleClick(e) {
+  //   setCurrent(parseInt(e.key));
+  // }
   return (
-    <Sider
-      onBreakpoint={(broken) => {
-        console.log(broken);
-      }}
-      onCollapse={(collapsed, type) => {
-        console.log(collapsed, type);
-      }}
-      collapsedWidth="0"
-      breakpoint="lg"
-      style={{ backgroundColor: "#dde6ed", marginRight: "14px" }}
-      width={150}
-    >
-      <div className="s-o-item">
-        <div className="demo-logo-vertical" />
-        <IdcardOutlined style={{ fontSize: "22px" }} />
-        <span
-          style={{
-            fontFamily: "'Poetsen One',sans-serif",
-            letterSpacing: "",
-            fontWeight: "600",
-            fontSize: "18px",
-            color: "#33384a",
-          }}
+
+        <Sider
+            onBreakpoint={(broken) => {
+              console.log(broken);
+            }}
+            onCollapse={(collapsed, type) => {
+              console.log(collapsed, type);
+            }}
+            collapsedWidth="0"
+            breakpoint="lg"
+            style={{ backgroundColor: "#dde6ed", marginRight: "14px" }}
+            width={150}
         >
+          <div className="s-o-item">
+            <div className="demo-logo-vertical" />
+            <IdcardOutlined style={{ fontSize: "22px" }} />
+            <span
+                style={{
+                  fontFamily: "'Poetsen One',sans-serif",
+                  letterSpacing: "",
+                  fontWeight: "600",
+                  fontSize: "18px",
+                  color: "#33384a",
+                }}
+            >
           JoRent
         </span>
-      </div>
-      <ConfigProvider
-        theme={{
-          components: {
-            Menu: {
-              itemSelectedBg: "#2b3042",
-              iconSize: 14,
-              itemMarginBlock: 7,
-              itemSelectedColor: "white",
-            },
-          },
-          token: {
-            colorBgContainer: "#dde6ed",
-            fontFamily: "'Montserrat',sans-serif",
-            colorText: "#2a2f3a",
-          },
-        }}
-      >
-        <Menu
-          onClick={handleClick}
-          defaultSelectedKeys={["0"]}
-          style={{ fontWeight: "700", fontSize: "12px" }}
-          items={listOfSider}
-        />
-      </ConfigProvider>
-    </Sider>
+          </div>
+          <ConfigProvider
+              theme={{
+                components: {
+                  Menu: {
+                    itemSelectedBg: "#2b3042",
+                    iconSize: 14,
+                    itemMarginBlock: 7,
+                    itemSelectedColor: "white",
+                  },
+                },
+                token: {
+                  colorBgContainer: "#dde6ed",
+                  fontFamily: "'Montserrat',sans-serif",
+                  colorText: "#2a2f3a",
+                },
+              }}
+          >
+            <Menu
+
+                selectedKeys={[current]}
+                // defaultSelectedKeys={["0"]}
+                style={{ fontWeight: "700", fontSize: "12px" }}
+                items={listOfSider}
+            />
+          </ConfigProvider>
+        </Sider>
   );
 }
 export function SiderTwoComp() {
   const [selected, setSelected] = useState("");
   const [hover, setHover] = useState();
+  const [userInfo, setUserInfo] = useState({});
+  // console.log("formProfile" , userInfo);
+  useEffect(()=>{
+    async function getUserInfo(){
+      try {
+        const {user} = await handleGetSession();
+        // console.log("inside hook",user);
+        setUserInfo(user);
+      }catch (error){
+        throw Error(`Unable to get the session and ${error}`)
+      }
+
+    }
+    getUserInfo();
+  },[])
   function handleHover(key) {
     setHover(key);
   }
@@ -167,13 +185,13 @@ export function SiderTwoComp() {
       onCollapse={(collapsed, type) => {
         console.log(collapsed, type);
       }}
-      style={{ backgroundColor: "#dde6ed", borderRadius: "10px" }}
+      style={{ backgroundColor: "#dde6ed", borderRadius: "10px" ,overflow:"hidden"}}
     >
       <div className="s-t-item" style={{}}>
         <div className="demo-logo-vertical" />
-        <img alt="img" src="/house/house3.jpg" />
+        <img alt="img" src={userInfo.imgUrl} />
         <div className="s-t-item-one">
-          <div className="s-t-item-name">John</div>
+          <div className="s-t-item-name">{userInfo.name}</div>
           <span className="s-t-item-location">
             <EnvironmentOutlined /> Ethiopia
           </span>
@@ -234,8 +252,29 @@ const info = [
   },
 ];
 export function DashContents() {
+  const [favourite, setFavourite] = useState([]);
+  const [loading, setLoading] = useState(true);
+  console.log("Favourites",favourite);
+
+  useEffect(()=>{
+    async function getFavourites(){
+      try{
+        const {list} = await fetchFavourite();
+        console.log(list)
+        return list;
+      }catch (error){
+        message.error("something is wrong");
+      }
+    }
+    getFavourites().then(result=>{
+      if (result!==undefined) setFavourite(result);
+      setLoading(false);
+    });
+  },[])
+
+
   return (
-    <>
+    <Spin spinning={loading}>
       <Row
         style={{ width: "100%" }}
         gutter={16}
@@ -326,7 +365,7 @@ export function DashContents() {
           }}
         >
           <Row gutter={[64, 24]}>
-            {listofhouse.map((item) => (
+            {favourite.map((item) => (
               <Col span={8} key={item.id}>
                 <Card
                   hoverable
@@ -337,7 +376,7 @@ export function DashContents() {
                         height: "100px",
                         objectFit: "cover",
                       }}
-                      src={item.img}
+                      src={item.postImgUrl}
                       alt="img"
                     />
                   }
@@ -355,7 +394,7 @@ export function DashContents() {
           </Row>
         </ConfigProvider>
       </div>
-    </>
+    </Spin>
   );
 }
 export function DashPost() {
@@ -363,20 +402,30 @@ export function DashPost() {
   const numberPerPage = 6;
   const lastIndex = current * numberPerPage;
   const firstIndex = lastIndex - numberPerPage;
-  const data = listofhouse.slice(firstIndex, lastIndex);
+  const [userPosts, setUserPosts] = useState([])
+  const data = userPosts.slice(firstIndex, lastIndex);
   const [open, setOpen] = useState(false);
-  const [postInfo, setPostInfo] = useState({description:"",title:"",imgUrl:"",capacityPerson:0,rooms:0,area:0});
-  const [userInfo, setUserInfo] = useState({})
   const formRef = useRef();
-  const route = useRouter();
-  console.log(userInfo);
+  const [userInfo, setUserInfo] = useState({})
+  const [loading, setLoading] = useState(true)
   useEffect(()=>{
-    async function getUserInfo(){
+    //
+    async function getUserPosts(){
+
+      try {
         const {user} = await handleGetSession();
-        // console.log(user);
+        const {email} = user;
+
+        const {userPost} = await handleGetUserPosts(email);
+        setUserPosts(userPost);
+        setLoading(false);
         setUserInfo(user);
+      }catch (error){
+        message.error("UnAble to get a users Post!");
+      }
+
     }
-    getUserInfo();
+    getUserPosts();
   },[])
   function handleDisplay(){
     setOpen(true);
@@ -390,9 +439,9 @@ export function DashPost() {
   }
   function handleOk() {
     const values = formRef.current.getFieldsValue();
-    console.log(values)
+    // console.log(values)
     const {photo,description,address,rooms,bath,price,area} = values;
-    const {imgUrl,name} = userInfo;
+    const {imgUrl,name,email} = userInfo;
     if(photo.file!=null){
         const imgs = ref(storage,`photos/${v4()}`)
         message.loading("Posting....",0);
@@ -409,7 +458,8 @@ export function DashPost() {
                 description:description,
                 bath:bath,
                 price:price,
-                area:area
+                area:area,
+                email:email
               }
                 async function postValues(){
 
@@ -435,9 +485,6 @@ export function DashPost() {
     // action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
     onChange(info) {
       const { status } = info.file;
-      if (status !== "uploading") {
-        message.loading("The photo is Uploading....")
-      }
       if (status === "done") {
         
         message.success(`${info.file.name} file uploaded successfully.`);
@@ -445,9 +492,7 @@ export function DashPost() {
         message.error(`${info.file.name} file upload failed.`);
       }
     },
-    // onDrop(e) {
-    //   console.log("Dropped files", e.dataTransfer.files);
-    // },
+
   };
   
 
@@ -492,92 +537,95 @@ export function DashPost() {
         </div>
       </div>
       <Divider />
-      <ConfigProvider
-        theme={{
-          components: {
-            Card: {
-              colorPrimary: "white",
-            },
-          },
-        }}
-      >
-        {!data.length ? (
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
+      <Spin spinning={loading} size="large">
+        <ConfigProvider
+            theme={{
+              components: {
+                Card: {
+                  colorPrimary: "white",
+                },
+              },
             }}
-          >
-            <img
-              style={{ width: "100%", height: "35vh" }}
-              src="/empty.svg"
-              alt="something"
-            />
-            <span>No Posts!</span>
-          </div>
-        ) : (
-          <>
-            <Row gutter={[64, 24]}>
-              {data.map((item) => (
-                <Col span={8} key={item.id}>
-                  <Card
-                    onClick={() => handleDisplay(item)}
-                    hoverable
-                    cover={
-                      <img
-                        style={{
-                          width: "100%",
-                          height: "100px",
-                          objectFit: "cover",
-                        }}
-                        src={item.img}
-                        alt="img"
-                      />
-                    }
-                  >
-                    <Meta
-                      style={{ color: "#8b8d93" }}
-                      title={item.title}
-                      description={item.address}
-                    />
-
-                    <span>{item.price}</span>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-                marginTop: "20px",
-              }}
-            >
-              <ConfigProvider
-                theme={{
-                  token: {
-                    colorBgContainer: "#6a9567",
-                    colorBorder: "#6a9567",
-                    colorPrimary: "white",
-                  },
-                }}
+        >
+          {!data.length ? (
+              <div
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
               >
-                <Pagination
-                  onChange={handlePage}
-                  pageSize={numberPerPage}
-                  responsive={true}
-                  total={listofhouse.length}
+                <img
+                    style={{ width: "100%", height: "35vh" }}
+                    src="/empty.svg"
+                    alt="something"
                 />
-              </ConfigProvider>
-            </div>
-          </>
-        )}
-      </ConfigProvider>
+                <span>No Posts!</span>
+              </div>
+          ) : (
+              <>
+                <Row gutter={[64, 24]}>
+                  {data.map((item) => (
+                      <Col span={8} key={item.id}>
+                        <Card
+                            onClick={() => handleDisplay(item)}
+                            hoverable
+                            cover={
+                              <img
+                                  style={{
+                                    width: "100%",
+                                    height: "100px",
+                                    objectFit: "cover",
+                                  }}
+                                  src={item.postImgUrl}
+                                  alt="img"
+                              />
+                            }
+                        >
+                          <Meta
+                              style={{ color: "#8b8d93" }}
+                              title={item.title}
+                              description={item.address}
+                          />
+
+                          <span>{item.price}</span>
+                        </Card>
+                      </Col>
+                  ))}
+                </Row>
+                <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      width: "100%",
+                      marginTop: "20px",
+                    }}
+                >
+                  <ConfigProvider
+                      theme={{
+                        token: {
+                          colorBgContainer: "#6a9567",
+                          colorBorder: "#6a9567",
+                          colorPrimary: "white",
+                        },
+                      }}
+                  >
+                    <Pagination
+                        onChange={handlePage}
+                        pageSize={numberPerPage}
+                        responsive={true}
+                        total={listofhouse.length}
+                    />
+                  </ConfigProvider>
+                </div>
+              </>
+          )}
+        </ConfigProvider>
+      </Spin>
+
       <Modal
         style={{ position: "sticky" }}
         onOk={handleOk}

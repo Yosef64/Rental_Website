@@ -10,11 +10,12 @@ export default async function handlePosts(data){
         body:JSON.stringify(data)
     })
 
-    if(res.ok){
-        // message.success("You successfully post your Data!")
-        return true;
-    }
-    else{
-        return false;
-    }
+    return res.ok;
+}
+export async function handleGetUserPosts(userEmail){
+    console.log(userEmail);
+    const res = await fetch(`http://localhost:3000/api/postEmail/${userEmail}`);
+    const {userPost} = await res.json();
+    // console.log(userPosts);
+    return {userPost};
 }

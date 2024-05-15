@@ -36,7 +36,7 @@ export default function Footer(props) {
                     <p>Get Involved finding a best house</p>
                     <Button style={styleButton} type="primary">Find <ArrowRightOutlined style={{fontSize:"12px"}} /></Button>
                 </div>
-                <Flex style={{width:"10%"}} align="start" justify="space-around">
+                <Flex style={{width:"50%"}} align="start" justify="space-around">
                     {
                         fotlists.map((fotlist) => (
                             <Flex vertical className="fot-child" key={fotlist.id}>

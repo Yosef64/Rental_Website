@@ -22,6 +22,11 @@
       justify-content: center;
 
       align-items: center;
+      @media (max-width: 650px) {
+        flex: 1;
+        align-items: center;
+
+      }
       .f-pg{
         font-weight: bold;
 
@@ -39,6 +44,15 @@
         font-weight: 500;
         color: #595757;
 
+          &.search{
+
+            @media (max-width: 650px) {
+              width: 10vw;
+            }
+          }
+
+
+
     }
   }
 
@@ -50,7 +64,9 @@
       padding-top: 60px;
       position: relative;
 
-      //background-color: red;
+      @media (max-width: 650px) {
+        display: none;
+      }
       img{
         right: 0;
 

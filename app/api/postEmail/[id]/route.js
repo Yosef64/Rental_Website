@@ -8,12 +8,14 @@ export async function GET(req,{params}){
     try {
         const {id} = params;
 
-        const q = query(collection(db, "posts"), where("id", "==", id));
+        const q = query(collection(db, "posts"), where("email", "==", id));
 
         const querySnapshot = await getDocs(q);
-
-        const post = querySnapshot.docs[0].data();
-        return NextResponse.json({post});
+        const userPost = [];
+        querySnapshot.forEach((doc)=>{
+            userPost.push(doc.data());
+        })
+        return NextResponse.json({userPost});
     }catch (error){
         return NextResponse.json({error})
     }
