@@ -117,18 +117,22 @@ export const houseType = [
 export const siderList = [
     {
         key:1,
-        icon:<HomeOutlined style={{fontSize:"17px"}}/>
+        icon:<HomeOutlined style={{fontSize:"17px"}}/>,
+        title:"Home"
     },
     {
         key:2,
-        icon:<MailOutlined style={{fontSize:"17px"}}/>
+        icon:<MailOutlined style={{fontSize:"17px"}}/>,
+        title:"Message"
     },
     {
         key:3,
-        icon:<CalendarOutlined style={{fontSize:"17px"}}/>
+        icon:<CalendarOutlined style={{fontSize:"17px"}}/>,
+        title: "calendar"
     },
     {
         key: 4,
-        icon: <FontAwesomeIcon style={{fontSize:"17px"}} icon={faBookmark}/>
+        icon: <FontAwesomeIcon style={{fontSize:"17px"}} icon={faBookmark}/>,
+        title:"Favourites"
     }
 ]

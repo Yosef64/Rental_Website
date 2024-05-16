@@ -28,14 +28,17 @@ const item = [
 export default function Navbar(props) {
     const [imgUrl, setImgUrl] = useState("")
     const [isOpen, setIsOpen] = useState(false);
+    const [name, setName] = useState("");
     useEffect(() => {
         async function fetchImgUrl() {
             try {
                 const { user } = await handleGetSession();
 
-                const {imgUrl} = user;
+                const {imgUrl,name} = user;
+
                 // console.log(imgUrl)
                 setImgUrl(imgUrl);
+                setName(name);
             } catch (error) {
                 console.error('Error fetching image URL:', error);
                 // Handle error, e.g., set error state
@@ -48,62 +51,52 @@ export default function Navbar(props) {
         <div className="nav">
 
             <div className="navcontainer">
-                <img src="/logo.svg" alt="something is wrong"/>
+                <img src="/logo.svg" alt="something is wrong" style={{width:"100px",height:"70px"}}/>
+                <div className="right">
+
+                        <Menu defaultSelectedKeys={["home"]} mode="horizontal" className="link"
+                              items={item}
+                        />
+                </div>
 
                 {imgUrl ? (
-                        <div className="right">
-                            <Image style={{width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover"}}
-                                   src={imgUrl} alt="img"/>
-                        </div>
+                    <Image className="res-right" style={{width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover"}}
+                                  src={imgUrl} alt="img"/>
                     ) :
                     (
-                        <div className="right">
-                            <ConfigProvider
-                                theme={{
-                                    components: {
-                                        Menu: {
-                                            colorFillContentHover: "green",
-                                            colorBgSpotlight: "green",
-                                            colorBorder: "none"
-                                        }
-                                    }
-                                }}
-                            >
-                                <Menu mode="horizontal" className="link"
-                                      items={item}
-                                />
-                            </ConfigProvider>
-
-                            <Flex gap={15}>
-                                <Button className="button"><Link href="/login">Login</Link></Button>
-                                <Button className="button" style={{backgroundColor: "#6a9567"}} type="primary"><Link
-                                    href="/login">Sign Up</Link></Button>
-                            </Flex>
-
-                        </div>
+                        <Flex className="res-right" gap={15}>
+                            <Button className="button"><Link href="/login">Login</Link></Button>
+                            <Button className="button" style={{backgroundColor: "#6a9567"}} type="primary"><Link
+                                href="/login">Sign Up</Link></Button>
+                        </Flex>
                     )}
+
                 <div className="res-menu">
-                    <MenuOutlined  onClick={() => setIsOpen(true)}/>
+                    <MenuOutlined style={{fontSize:"20px"}} onClick={() => setIsOpen(true)}/>
                 </div>
             </div>
-            <ConfigProvider
-            theme={{
-                components:{
-                    Drawer:{
-                        motionEaseOut:"1s all",
-                        size:5,
-                        lineWidth:0,
-                        boxShadow:"none"
-                    }
-                }
-            }}
+                <Drawer  width={200} style={{padding:"0 !important"}} closable={false}   visible={true} placement="right"  onClose={()=>setIsOpen(false)} open={isOpen}>
 
-            >
-                <Drawer width={200} height={100} colapsable={false}   visible={true} placement="right"  onClose={()=>setIsOpen(false)} open={isOpen}>
+                    <Menu style={{width:"20vw",border:"none"}} >
+                        <Menu.Item style={{padding:"0",height:"10vh",overflow:"hidden"}}>
+                            {imgUrl ?(
+                                <Flex style={{height:"100%"}} align="center" justify="space-evenly">
+                                    <Image className="res-right" style={{width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover"}}
+                                           src={imgUrl} alt="img"/>
+                                    <span style={{fontFamily:"'Cantarell', sans-serif",fontWeight:"600"}}>{name}</span>
+                                </Flex>
+                                ):(
+                                             <Flex direction="vertical">
+                                                 <Button className="button"><Link href="/login">Login</Link></Button>
+                                                 <Button className="button" style={{backgroundColor: "#6a9567"}} type="primary"><Link
+                                                     href="/login">Sign Up</Link></Button>
+                                             </Flex>
+                            )}
+                        </Menu.Item>
+                    </Menu>
+                    <Menu style={{border:"none"}} items={item} />
 
-                    <Menu items={item} />
                 </Drawer>
-            </ConfigProvider>
 
         </div>
     );

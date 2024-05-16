@@ -61,3 +61,6 @@ export async function updateSession(request) {
 
   
 }
+export async function deleteSession(){
+  cookies().delete("session");
+}

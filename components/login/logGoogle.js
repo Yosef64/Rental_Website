@@ -20,29 +20,25 @@ export async function handleSign(){
                 const search = await fetch("http://localhost:3000/api/users");
 
                 const {users} = await search.json();
-                console.log(users);
+
                 const newList = users.filter((item)=>item.email === email);
-                console.log(newList)
                 if(newList.length === 0){
-                    console.log("im at if clouse!");
                     const ref = await setDoc(doc(db, "users",email), {
                         name: name,
                         email: email,
                         imgUrl: imgUrl,
                         favourites:[]
                     })
-                    console.log("true")
-                    await login({name, email, imgUrl});
                 }
+                await login({name, email, imgUrl});
                 message.destroy();
-                redirect('/dashboard');
+                window.location.href = '/dashboard';
 
             }).catch((error) => {
 
             const errorCode = error.code;
             const errorMessage = error.message;
             // message.error(errorMessage);
-            console.log(errorMessage);
             message.destroy();
         });
 
@@ -51,7 +47,6 @@ export async function handleSession(){
     const session = await getSession();
     if(session){
         if(new Date(session.expires) > new Date(Date.now()) ){
-            console.log(JSON.stringify(session,null,2));
             return true;
         }
     }
@@ -62,7 +57,8 @@ export async function handleGetSession(){
     const sessionString = JSON.stringify(session,null,2);
     const sessionObject = JSON.parse(sessionString,null,2);
     const {user} = sessionObject;
-    // console.log("from handleSession",user);
+
+
     return {user};
     
 }

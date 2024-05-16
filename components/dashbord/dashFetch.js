@@ -1,10 +1,12 @@
 import React from 'react'
 import {handleGetSession} from "@/components/login/logGoogle";
+import {deleteSession} from "@/lib";
+import {redirect} from "next/navigation";
 
 export async function dashFetch() {
  const res = await fetch("http://localhost:3000/api/posts");
 const {posts} = await res.json()
- // console.log("from dashfetch",posts);
+ console.log("from dashfetch",posts);
  return {posts};
 }
 export async function dashPut(data){
@@ -33,7 +35,10 @@ export async function dashGet(){
  const res = await fetch(`http://localhost:3000/api/users/${email}`);
 
  const {Find} = await res.json();
-
  return {Find};
+}
+export async function logOut(){
+ await deleteSession();
+ window.location.href = '/';
 }
 

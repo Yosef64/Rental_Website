@@ -1,8 +1,8 @@
 "use client"
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import "./c2.scss"
 import {listofhouse} from "@/components/center2/listofhouse";
-import {Avatar, Button, Card, Col, Flex, Row} from "antd";
+import {Avatar, Button, Card, Col, ConfigProvider, Flex, Pagination, Row, Spin} from "antd";
 import Meta from "antd/es/card/Meta";
 import {
     ArrowRightOutlined, EditOutlined,
@@ -15,10 +15,17 @@ import {
 } from "@ant-design/icons";
 
 import {white} from "next/dist/lib/picocolors";
+import {dashFetch} from "@/components/dashbord/dashFetch";
 
 export default function Center2(props) {
     const [click, setClick] = useState(false);
-    const [list, setList] = useState(listofhouse)
+    const [list, setList] = useState([])
+    const [loading, setLoading] = useState(true);
+    const [current, setCurrent] = useState(1);
+    const compPerPage = 6;
+    const lastIndex = current * compPerPage;
+    const firstIndex = lastIndex - compPerPage;
+    const records = list.slice(firstIndex,lastIndex);
 
     const IconFont = createFromIconfontCN({
         scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
@@ -40,6 +47,18 @@ export default function Center2(props) {
         right:0,
         padding:"20px"
     };
+    useEffect(() => {
+        async function getRecent(){
+            const {posts} = await dashFetch();
+
+            setList(posts);
+            setLoading(false);
+        }
+        getRecent();
+    }, []);
+    function handlePage(page){
+        setCurrent(page);
+    }
 
     return (
         <div className="cen2">
@@ -47,75 +66,107 @@ export default function Center2(props) {
                 <div className="title">
                     List of Recent Homes
                 </div>
-                <Row  justify="center" style={{paddingLeft:"10px",}} gutter={[24, 32]}
-                >
-                    {
-                        list.map((item) => (
-                            <Col key={item.id}  xs={{
-                                flex: '100%',
-                              }}
-                              sm={{
-                                flex: '50%',
-                              }}
-                              md={{
-                                flex: '40%',
-                              }}
-                              lg={{
-                                flex: '20%',
-                              }}
-                              xl={{
-                                flex: '10%',
-                              }}>
-                                <Card
-                                    hoverable
-                                    key={item.id}
-                                    style={{
-                                        width: 300,
-
+                <Spin spinning={loading}>
+                    <Row  justify="center" style={{paddingLeft:"10px",}} gutter={[24, 32]}
+                    >
+                        {
+                            list.map((item) => (
+                                    <Col key={item.id}  xs={{
+                                        flex: '100%',
                                     }}
-                                    actions={[
-                                        <IconFont style={{fontSize:"18px"}} key="" type="icon-facebook"/>,
-                                        <IconFont style={{fontSize:"18px"}} key="" type="icon-twitter" />,
-                                        <TikTokOutlined style={{fontSize:"18px"}} key="tiktok"/>,
-                                        <InstagramOutlined style={{fontSize:"18px"}} key="instagram" />
-                                    ]}
-                                    cover={
-                                        <div>
-                                            {
-                                                item.favourite ?(
-                                                        <HeartFilled onClick={()=>handleIcon(item.id)} style={{...iconStyle,color:"red"}} />
-                                                    ) :
-                                                    (
-                                                    <HeartOutlined onClick={()=>handleIcon(item.id)}  style={{...iconStyle,color:"white"}}/>
-                                                )
+                                         sm={{
+                                             flex: '50%',
+                                         }}
+                                         md={{
+                                             flex: '40%',
+                                         }}
+                                         lg={{
+                                             flex: '20%',
+                                         }}
+                                         xl={{
+                                             flex: '10%',
+                                         }}>
+                                        <Card
+                                            hoverable
+                                            key={item.id}
+                                            style={{
+                                                width: 300,
+
+                                            }}
+                                            actions={[
+                                                <span key={item.id}>
+                                                    <img style={{width:"15px",height:"15px"}} key={item.id}
+                                                         src="https://www.trulia.com/images/icons/txl3/BedIcon.svg"
+                                                         alt="img"/>
+                                                    {item.rooms}
+                                                </span>
+
+                                                ,
+                                                <span key={item.id}>
+                                                    <img style={{width:"15px",height:"15px"}} key={item.id}
+                                                         src="https://www.trulia.com/images/icons/txl3/BedIcon.svg"
+                                                         alt="img"/>
+                                                    {item.bath}
+                                                </span>,
+                                                <span key={item.id}>
+                                                    <img style={{width:"15px",height:"15px"}} key={item.id}
+                                                         src="https://www.trulia.com/images/icons/txl3/BedIcon.svg"
+                                                         alt="img"/>
+                                                    {item.area}
+                                                </span>,
+
+                                            ]}
+                                            cover={
+                                                <div>
+                                                    {
+                                                        item.favourite ? (
+                                                                <HeartFilled onClick={() => handleIcon(item.id)}
+                                                                             style={{...iconStyle, color: "red"}}/>
+                                                            ) :
+                                                            (
+                                                                <HeartOutlined onClick={()=>handleIcon(item.id)}  style={{...iconStyle,color:"white"}}/>
+                                                            )
+
+                                                    }
+
+                                                    <img style={{width: "300px", height: "200px", objectFit: "cover"}}
+                                                         src={item.postImgUrl} alt="something"/>
+                                                </div>
 
                                             }
 
-                                            <img style={{width: "300px", height: "200px", objectFit: "cover"}}
-                                                 src={item.img} alt="something"/>
-                                        </div>
+                                        >
+                                            <Meta
+                                                avatar={<Avatar src={item.userImgUrl}/>}
+                                                title={item.title}
+                                                description={item.address}
 
-                                    }
+                                            >
 
-                                >
-                                    <Meta
-                                        avatar={<Avatar src={item.avatar}/>}
-                                        title={item.title}
-                                        description={item.address}
+                                            </Meta>
+                                            <span className="price">${item.price}</span>
+                                        </Card>
+                                    </Col>
+                                )
+                            )
+                        }
 
-                                    >
-
-                                    </Meta>
-                                    <span className="price">${item.price}</span>
-                                </Card>
-                            </Col>
-                        )
-                        )
+                    </Row>
+                </Spin>
+                <ConfigProvider
+                    theme={
+                        {
+                            token: {
+                                colorBgContainer: '#6a9567',
+                                colorPrimary:"#fff"
+                            }
+                        }
                     }
-
-                </Row>
-                <Button className="button" type="primary"> Next <ArrowRightOutlined style={{fontSize:"16px"}}/> </Button>
+                >
+                    <Pagination pageSize={6} current={current} onChange={handlePage} total={list.length}/>
+                </ConfigProvider>
             </Flex>
+
         </div>
     );
 }

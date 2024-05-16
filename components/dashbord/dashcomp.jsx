@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import {useRouter} from "next/navigation";
 
 import {
     Anchor,
@@ -12,7 +13,7 @@ import {
     Image,
     Input,
     Layout,
-    Menu,
+    Menu, Popconfirm,
     Spin,
     Tooltip,
 } from "antd";
@@ -43,7 +44,7 @@ import Sider from "antd/es/layout/Sider";
 import Contents from "@/components/dashbord/content";
 // import { getSession } from "@/lib";
 import { handleGetSession } from "../login/logGoogle";
-import { dashFetch } from "./dashFetch";
+import {dashFetch, logOut} from "./dashFetch";
 import 'antd/dist/reset.css'
 export default function DashComp({ }) {
   const [location, setLocation] = useState("Location");
@@ -54,6 +55,7 @@ export default function DashComp({ }) {
   const [imgUrl, setImgUrl] = useState("");
   const [post, setPost] = useState([]);
     const [isOpen, setIsOpen] = useState(false)
+    const router = useRouter();
   const siderStyle = {
     margin: "auto",
     marginBottom: "10px",
@@ -79,6 +81,9 @@ export default function DashComp({ }) {
             label:"Buy"
         },
     ]
+    function handleRoute(){
+        router.push("/dashboard/profile")
+    }
   useEffect(() => {
     async function setImageUrl(){
         const {user} = await handleGetSession();
@@ -181,7 +186,7 @@ export default function DashComp({ }) {
       </Layout>
       <Layout style={{ backgroundColor: "#e0e7ec",width:"100%", }}>
           <Menu mode="horizontal" className="dash-header2"
-                style={{border:"none",textDecoration:"none"}}
+                style={{border:"none",textDecoration:"none",marginTop:"10px"}}
                 items = {[{
                     key:"first",
                     label:<Dropdown
@@ -285,7 +290,7 @@ export default function DashComp({ }) {
                       collapsedWidth="0px"
                       className="dash-sider1"
                       width={60}
-                    style={{backgroundColor:"white",bottom:"100px"}}
+                    style={{backgroundColor:"white",height:"60vh",marginTop:"50px",overflow:'hidden'}}
                   >
                           <Menu mode="horizonatal">
                               {siderList.map((item) => (
@@ -303,11 +308,22 @@ export default function DashComp({ }) {
 
                           <Menu mode="vertical">
                               <Menu.Item style={siderStyle}>
-                                  <LogoutOutlined style={{color:"red",fontSize:"18px"}}/>
+                                  <Popconfirm
+                                      placement="left"
+                                      title="Are sure you want to logout?"
+                                      okText="Yes"
+                                      cancelText="No"
+                                      onConfirm={logOut}
+                                  >
+                                      <Button style={{border:"none"}} shape="circle"><LogoutOutlined style={{ fontSize: "18px",color:"red" }} /></Button>
+                                  </Popconfirm>
                               </Menu.Item>
-                              <Menu.Item style={siderStyle}>
-                                  <UserOutlined style={{ fontSize: "18px" }} />
-                              </Menu.Item>
+
+                                  <Menu.Item onClick={handleRoute} style={siderStyle}>
+                                      <UserOutlined style={{ fontSize: "18px" }} />
+                                  </Menu.Item>
+
+
                               {/*<Menu.Item>*/}
                               {/*    <UserOutlined/>*/}
                               {/*</Menu.Item>*/}
@@ -327,9 +343,8 @@ export default function DashComp({ }) {
                               overflowX: "hidden",
                               width: "100vw",
                               height: "72vh",
-                              margin: "20px 5% 0px 10%",
-                              overflowY: "auto",
-                              backgroundColor:"red"
+                              margin: "3% 5% 0px 10%",
+                              overflowY: "auto"
                           }}
                       >
                           <Contents/>
@@ -342,8 +357,14 @@ export default function DashComp({ }) {
 
 
       </Layout>
-        <Drawer closable={false} placement="left" onClose={()=>setIsOpen(false)} width={100} open={isOpen}>
-            <Menu mode="horizonatal">
+        <Drawer closable={false} placement="left" onClose={()=>setIsOpen(false)} width={150} open={isOpen}>
+            <Menu style={{marginBottom: "50px"}} >
+                <Menu.Item style={{display:"flex",justifyContent: "center",alignItems: "center",width:"13vw",height:"10vh"}}>
+                    <img  alt="img" style={{width: "80px", height: "60px"}} src="/logo.svg"/>
+                </Menu.Item>
+            </Menu>
+            <Menu mode="vertical">
+
                 {siderList.map((item) => (
                     <Menu.Item
                         onClick={() => setActive(item.key)}
@@ -355,18 +376,21 @@ export default function DashComp({ }) {
                 ))}
             </Menu>
             <Divider orientation="left" plain />
-
             <Menu mode="vertical">
                 <Menu.Item style={siderStyle}>
-                    <DeleteOutlined style={{ color: "red", fontSize: "18px" }} />
+                    <LogoutOutlined style={{ color: "red", fontSize: "18px" }} />
                 </Menu.Item>
-                <Menu.Item style={siderStyle}>
+                <Menu.Item style={siderStyle} onClick={handleRoute}>
                     <UserOutlined style={{ fontSize: "18px" }} />
                 </Menu.Item>
+            </Menu>
+
+
+
                 {/*<Menu.Item>*/}
                 {/*    <UserOutlined/>*/}
                 {/*</Menu.Item>*/}
-            </Menu>
+
         </Drawer>
     </div>
   );

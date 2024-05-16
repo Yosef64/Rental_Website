@@ -10,7 +10,7 @@ export default function Center1(props) {
   const [location, setLocation] = useState("Neighborhood");
   const buttonStyle2 =
   {
-    width:"4vw",
+    width:"50px",
     borderBottomRightRadius:"5px",
     borderTopRightRadius:"5px",
     backgroundColor:"#6a9567",
@@ -41,7 +41,7 @@ export default function Center1(props) {
             With Us
           </div>
 
-          <Flex style={boxStyle} align="center">
+          <Flex className="flex-drop" style={boxStyle} align="center">
             <Dropdown
                 overlay={
                   <Menu selectable defaultSelectedKeys={['1']}>

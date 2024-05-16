@@ -19,7 +19,7 @@
       }
     }
     .right{
-      flex: 0.8;
+
       //background-color: black;
       display: flex;
       justify-content: space-between;
@@ -27,6 +27,7 @@
       @media (max-width: 850px) {
         display: none;
       }
+
       .link{
         width: 40vw;
         font-family:sans-serif ;
@@ -41,10 +42,16 @@
           font-size: 14px;
           font-family: "Cantarell", sans-serif;
           font-weight: 550;
-          
+
 
         }
 
+      }
+
+    }
+    .res-right{
+      @media (max-width: 850px) {
+        display: none;
       }
       .button{
         width: 7vw;

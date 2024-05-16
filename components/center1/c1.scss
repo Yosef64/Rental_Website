@@ -25,6 +25,7 @@
       @media (max-width: 650px) {
         flex: 1;
         align-items: center;
+        justify-content: center;
 
       }
       .f-pg{
@@ -43,13 +44,9 @@
         font-size: 12.5px;
         font-weight: 500;
         color: #595757;
-
-          &.search{
-
-            @media (max-width: 650px) {
-              width: 10vw;
-            }
-          }
+        @media (max-width: 650px) {
+          //width: 10vw;
+        }
 
 
 
