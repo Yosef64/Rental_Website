@@ -1,7 +1,7 @@
-"use client"
+'use client'
 import React, {useEffect, useState} from 'react';
-import {DashContents, DashPost} from "@/components/profile/procomp";
-import MessageComp, {Help} from "@/components/profile/procomp2";
+import { DashPost} from "@/components/profile/procomp";
+import MessageComp, {Report} from "@/components/profile/procomp2";
 import Profile from "@/components/profile/Profile";
 import {handleGetSession} from "@/components/login/logGoogle";
 
@@ -12,7 +12,7 @@ export default function Page({params}) {
 
         post:<DashPost />,
         message:<MessageComp  />,
-        help:<Help key={null} />
+        report:<Report key={null} />
     };
     const currentChild = listOfComps[id];
     return (

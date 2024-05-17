@@ -1,4 +1,5 @@
 .form-container{
+  background-color: black;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -6,7 +7,9 @@
   width: 100vw;
   height: 100vh;
   .for{
-
+    //background-color: #8a8181;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px #2a292e;
     .form-item{
       font-family: "Poppins",sans-serif;
 
@@ -19,7 +22,7 @@
 
       input{
         height: 6vh;
-      }
     }
   }
+}
 }

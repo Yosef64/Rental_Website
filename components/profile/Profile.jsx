@@ -29,7 +29,7 @@ export default function Profile({current,children}) {
                     }
                 }}
                 >
-                <Layout style={{width:"100%",padding:"13px",height:"100%"}}>
+                <Layout style={{width:"100%",padding:"13px",height:"100vh"}}>
                     <SiderOneComponent current={current} />
                     <Layout  style={{marginTop:"10px",width:"100%",backgroundColor:"white",overflow:"hidden",height:"97%",borderRadius:"10px"}}>
                         <ConfigProvider

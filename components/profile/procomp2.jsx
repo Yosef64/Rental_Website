@@ -43,7 +43,7 @@ export default function MessageComp(props) {
         </List>
     );
 }
-export function Help(){
+export function Report(){
     const form = useRef();
     return (
         <div style={{display:'flex',alignItems:"center",flexDirection:"column",justifyContent:"space-evenly",height:"80vh",width:"60vw",margin:"auto"}}>

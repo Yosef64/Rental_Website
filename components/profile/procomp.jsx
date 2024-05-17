@@ -569,7 +569,23 @@ export function DashPost() {
               <>
                 <Row gutter={[64, 24]}>
                   {data.map((item) => (
-                      <Col span={8} key={item.id}>
+                      <Col span={8} key={item.id}
+                           xs={{
+                             flex: '100%',
+                           }}
+                           sm={{
+                             flex: '50%',
+                           }}
+                           md={{
+                             flex: '40%',
+                           }}
+                           lg={{
+                             flex: '20%',
+                           }}
+                           xl={{
+                             flex: '10%',
+                           }}
+                      >
                         <Card
                             onClick={() => handleDisplay(item)}
                             hoverable

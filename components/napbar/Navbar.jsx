@@ -86,10 +86,8 @@ export default function Navbar(props) {
                                     <span style={{fontFamily:"'Cantarell', sans-serif",fontWeight:"600"}}>{name}</span>
                                 </Flex>
                                 ):(
-                                             <Flex direction="vertical">
+                                             <Flex direction="vertical" align="center" justify="center" style={{height:"100%"}}>
                                                  <Button className="button"><Link href="/login">Login</Link></Button>
-                                                 <Button className="button" style={{backgroundColor: "#6a9567"}} type="primary"><Link
-                                                     href="/login">Sign Up</Link></Button>
                                              </Flex>
                             )}
                         </Menu.Item>

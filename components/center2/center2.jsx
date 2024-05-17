@@ -94,25 +94,25 @@ export default function Center2(props) {
 
                                             }}
                                             actions={[
-                                                <span key={item.id}>
-                                                    <img style={{width:"15px",height:"15px"}} key={item.id}
+                                                <span  className="span-cen2"key={item.id}>
+                                                    <img style={{width:"20px",height:"20px"}} key={item.id}
                                                          src="https://www.trulia.com/images/icons/txl3/BedIcon.svg"
                                                          alt="img"/>
-                                                    {item.rooms}
+                                                    {item.rooms} Bd
                                                 </span>
 
                                                 ,
-                                                <span key={item.id}>
-                                                    <img style={{width:"15px",height:"15px"}} key={item.id}
-                                                         src="https://www.trulia.com/images/icons/txl3/BedIcon.svg"
+                                                <span className="span-cen2" key={item.id}>
+                                                    <img style={{width:"20px",height:"20px"}} key={item.id}
+                                                         src="https://www.trulia.com/images/icons/txl3/BathIcon.svg"
                                                          alt="img"/>
-                                                    {item.bath}
+                                                    {item.bath} Bh
                                                 </span>,
-                                                <span key={item.id}>
-                                                    <img style={{width:"15px",height:"15px"}} key={item.id}
-                                                         src="https://www.trulia.com/images/icons/txl3/BedIcon.svg"
+                                                <span className="span-cen2" key={item.id}>
+                                                    <img style={{width:"20px",height:"20px"}} key={item.id}
+                                                         src="https://www.trulia.com/images/icons/txl3/SquareFeetIcon.svg"
                                                          alt="img"/>
-                                                    {item.area}
+                                                    {item.area} sq
                                                 </span>,
 
                                             ]}

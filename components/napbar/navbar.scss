@@ -20,10 +20,11 @@
     }
     .right{
 
-      //background-color: black;
+      width: 25vw;
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       @media (max-width: 850px) {
         display: none;
       }
