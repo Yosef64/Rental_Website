@@ -44,6 +44,9 @@
         @media (max-width: 500px){
           grid-auto-columns: 30%;
         }
+        @media (max-width: 360px) {
+          grid-auto-columns: 40%;
+        }
         &::-webkit-scrollbar{
           -webkit-appearance: none;
         }

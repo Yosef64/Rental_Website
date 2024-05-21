@@ -82,7 +82,7 @@ export default function DashComp({ }) {
         },
     ]
     function handleRoute(){
-        router.push("/dashboard/profile")
+        window.location.href = '/dashboard/profile';
     }
   useEffect(() => {
     async function setImageUrl(){
@@ -290,12 +290,22 @@ export default function DashComp({ }) {
                       collapsedWidth="0px"
                       className="dash-sider1"
                       width={60}
-                    style={{backgroundColor:"white",height:"60vh",marginTop:"50px",overflow:'hidden'}}
+                    style={{backgroundColor:"white",}}
                   >
                           <Menu mode="horizonatal">
                               {siderList.map((item) => (
                                   <Menu.Item
-                                      onClick={() => setActive(item.key)}
+                                      onClick={() => {
+                                          setActive(item.key);
+                                          switch (item.key){
+                                              case 4:
+                                                  window.location.href = "/dashboard/profile";
+                                                  break;
+                                              case 2:
+                                                  window.location.href = "/dashboard/profile/message"
+                                              }
+
+                                      }}
                                       key={item.key}
                                       style={item.key === active ? activeStyle : siderStyle}
                                   >

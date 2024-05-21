@@ -109,11 +109,14 @@
     border: none !important;
 }
 .dash-sider1{
-    border-radius: 20px;
+    border-radius: 25px;
     background-color: white;
     padding-top: 20px;
     top: 10px;
-    margin-left: 4%;
+    margin-left: 5%;
+    height:63vh;
+    margin-top:40px;
+    overflow:hidden;
 
     position:fixed;
 }
@@ -149,9 +152,7 @@
 }
 .dash-links a:hover::before{
     width: 100%;
-
 }
-
 @media (max-width: 870px) {
     /*.dash-header2{*/
     /*    display: none;*/
@@ -163,8 +164,6 @@
     .dash-logo{
         display: none !important;
     }
-
-
 }
 @media (min-width: 870px) {
     .dash-icon{
@@ -180,9 +179,6 @@
         justify-content: end;
         gap: 40px;
     }
-    
-
-    
 }
 @media (max-width: 750px) {
     .dash-links{

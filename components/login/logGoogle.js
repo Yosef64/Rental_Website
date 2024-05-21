@@ -27,7 +27,8 @@ export async function handleSign(){
                         name: name,
                         email: email,
                         imgUrl: imgUrl,
-                        favourites:[]
+                        favourites:[],
+                        messages:[]
                     })
                 }
                 await login({name, email, imgUrl});

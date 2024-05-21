@@ -258,6 +258,7 @@ export default function Contents() {
                         }}
                     >
                         <Form layout="vertical"
+                              onFinish={onFinish}
                               style={{backgroundColor: "white", width: "25vw", padding: "15px", borderRadius: "10px"}}>
                             <Form.Item name="phone" style={{fontWeight: "600"}} label="Phone" rules={[
                                 {

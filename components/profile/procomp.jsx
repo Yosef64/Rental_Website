@@ -85,8 +85,8 @@ const listOfSider = [
   {
     key: "help",
     icon: <ExclamationCircleOutlined />,
-    title: "Help",
-    label: <Link href="/dashboard/profile/help">Help</Link>,
+    title: "Dashboard",
+    label: <Link href="/dashboard">Help</Link>,
   },
 ];
 
@@ -574,20 +574,21 @@ export function DashPost() {
                              flex: '100%',
                            }}
                            sm={{
-                             flex: '50%',
+                             flex: '80%',
                            }}
                            md={{
-                             flex: '40%',
+                             flex: '60%',
                            }}
                            lg={{
-                             flex: '20%',
+                             flex: '40%',
                            }}
                            xl={{
-                             flex: '10%',
+                             flex: '30%',
                            }}
                       >
                         <Card
                             onClick={() => handleDisplay(item)}
+                            style={{width:"200px"}}
                             hoverable
                             cover={
                               <img
