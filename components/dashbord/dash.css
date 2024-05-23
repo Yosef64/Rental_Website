@@ -77,7 +77,10 @@
 
 .modal-card-one{
     font-family:verdana,sans-serif;
-    width: 30vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20vw;
     font-size:15px;
     color:#526d82;
     font-weight:500

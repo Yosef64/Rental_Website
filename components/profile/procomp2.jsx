@@ -1,57 +1,81 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Avatar, Button, Card, Col, ConfigProvider, Form, Input, List, Row, Statistic} from "antd";
-import emailjs from '@emailjs/browser';
-import {ArrowDownOutlined, ArrowUpOutlined} from "@ant-design/icons";
+
 import TextArea from "antd/es/input/TextArea";
+import {dashGet} from "@/components/dashbord/dashFetch";
 
 
 export default function MessageComp(props) {
-    const form = useRef();
-    const [info, setInfo] = useState({user_name:"",user_email:"",message:""})
-    const data = [
-        {
-            title: 'Ant Design Title 1',
-        },
-        {
-            title: 'Ant Design Title 2',
-        },
-        {
-            title: 'Ant Design Title 3',
-        },
-        {
-            title: 'Ant Design Title 4',
-        },
-    ];
+    const [messages, setMessages] = useState([]);
 
+    useEffect(() => {
+        async function getMessage() {
 
+            const {Find} = await dashGet();
+            const {messages} = Find;
+            setMessages(messages);
 
-    return (
-        <List dataSource={data} layout="horizontal"
+        }
 
-        renderItem={(item,index)=>(
-            <List.Item>
-                <List.Item.Meta
-                    avatar={<Avatar src={`https://api.dicebear.com/7.x/miniavs/svg?seed=${index}`} />}
-                    title={<a href="https://ant.design">{item.title}</a>}
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                />
+        getMessage();
+    }, [])
 
-            </List.Item>
-        )}
+    return messages.length ?
+
+        (<List dataSource={messages} layout="horizontal"
+
+               renderItem={(item, index) => (
+                   <List.Item>
+                       <List.Item.Meta
+                           avatar={<Avatar src={item.imgUrl}/>}
+                           title={<a href="https://ant.design">{item.name}</a>}
+                           description={item.message}
+                       />
+
+                   </List.Item>
+               )}
         >
 
-        </List>
-    );
+        </List>)
+        : <div
+            style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            <img
+                style={{width: "100%", height: "35vh"}}
+                src="/empty.svg"
+                alt="something"
+            />
+            <span>No Message!</span>
+        </div>
 }
-export function Report(){
+
+
+export function Report() {
     const form = useRef();
     return (
-        <div style={{display:'flex',alignItems:"center",flexDirection:"column",justifyContent:"space-evenly",height:"80vh",width:"60vw",margin:"auto"}}>
-            <div >
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, eligendi dignissimos mollitia dolorum aliquid possimus voluptatibus magnam ea minus, recusandae at totam, nulla ut odio. Repellat cumque architecto dolores ad!
+        <div style={{
+            display: 'flex',
+            alignItems: "center",
+            flexDirection: "column",
+            justifyContent: "space-evenly",
+            height: "80vh",
+            width: "60vw",
+            margin: "auto"
+        }}>
+            <div>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis, eligendi dignissimos mollitia dolorum
+                aliquid possimus voluptatibus magnam ea minus, recusandae at totam, nulla ut odio. Repellat cumque
+                architecto dolores ad!
             </div>
             <ConfigProvider
-            theme={{
+                theme={{
                 components:{
                     Form:{
                         labelColor:"#3f505c",

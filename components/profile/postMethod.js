@@ -13,7 +13,7 @@ export default async function handlePosts(data){
     return res.ok;
 }
 export async function handleGetUserPosts(userEmail){
-    console.log(userEmail);
+    // console.log(userEmail);
     const res = await fetch(`http://localhost:3000/api/postEmail/${userEmail}`);
     const {userPost} = await res.json();
     // console.log(userPosts);

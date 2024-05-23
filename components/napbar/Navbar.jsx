@@ -18,7 +18,7 @@ const item = [
     },
     {
         key:"discover",
-        label:<Link href="/">Discover</Link>
+        label:<Link href="/dashboard">Dashboard</Link>
     },
     {
         key:"contact us",

@@ -4,7 +4,7 @@ import {NextResponse} from "next/server";
 
 export async function GET(req,{params}){
     const {id} = params;
-    // console.log(id);
+    console.log(id);
     try {
         const getQuery = query(collection(db,"users"),where("email","==",id));
         const getRef = await getDocs(getQuery);
@@ -21,8 +21,7 @@ export async function PUT(req,{params}){
     const {id} = params;
     const {data} = await req.json();
     const ref = doc(db,"users",id);
-    await updateDoc(ref,{
-        favourites:data,
-    })
+    await updateDoc(ref,data)
+    console.log("success");
     return NextResponse.json({message:"success!"})
 }

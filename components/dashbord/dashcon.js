@@ -136,6 +136,3 @@ export const siderList = [
         title:"Favourites"
     }
 ]
-export async function onFinish(){
-    
-}

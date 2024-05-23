@@ -44,7 +44,7 @@ import Sider from "antd/es/layout/Sider";
 import Contents from "@/components/dashbord/content";
 // import { getSession } from "@/lib";
 import { handleGetSession } from "../login/logGoogle";
-import {dashFetch, logOut} from "./dashFetch";
+import {dashFetch, dashGet, dashPut, logOut} from "./dashFetch";
 import 'antd/dist/reset.css'
 export default function DashComp({ }) {
   const [location, setLocation] = useState("Location");
@@ -52,11 +52,12 @@ export default function DashComp({ }) {
   const [house, setHouseType] = useState("Normal villa");
   const [cap, setCap] = useState("1-person");
   const [active, setActive] = useState(1);
-  const [imgUrl, setImgUrl] = useState("");
+  const [user, setUser] = useState({});
   const [post, setPost] = useState([]);
     const [isOpen, setIsOpen] = useState(false)
     const router = useRouter();
-  const siderStyle = {
+    const [count, setCount] = useState(0);
+    const siderStyle = {
     margin: "auto",
     marginBottom: "10px",
     overflow: "hidden",
@@ -67,28 +68,18 @@ export default function DashComp({ }) {
     justifyContent: "center",
     alignItems: "center",
   };
-    const headerMenu = [
-        {
-            key:"categories",
-            label:"Categories"
-        },
-        {
-            key:"Rent",
-            label:"Rent"
-        },
-        {
-            key:"Buy",
-            label:"Buy"
-        },
-    ]
+
     function handleRoute(){
         window.location.href = '/dashboard/profile';
     }
   useEffect(() => {
     async function setImageUrl(){
         const {user} = await handleGetSession();
-        const {imgUrl} = user;
-        setImgUrl(imgUrl);
+        // const {imgUrl} = user;
+        const {Find} = await dashGet();
+        const {notifications} = Find;
+        setCount(notifications);
+        setUser(user);
     }
     
     async function setPostList(){
@@ -107,7 +98,17 @@ export default function DashComp({ }) {
     fontWeight: "bold",
   };
 
-  return (
+  function handleNotify() {
+        async function changeNot(){
+            const data = {notifications: 0}
+            const res = await dashPut(data);
+        }
+        changeNot().then(result=>{
+            setCount(0);
+        })
+    }
+
+    return (
     <div style={{ backgroundColor: "red" ,height:"10vh"}}>
       <Layout
         style={{
@@ -160,8 +161,8 @@ export default function DashComp({ }) {
             </ConfigProvider>
 
             <Tooltip title="Notification">
-                <Badge size="small" count={1}>
-                    <BellOutlined style={{fontSize:"20px"}} />
+                <Badge  style={{cursor:"pointer"}} size="small" count={count}>
+                    <BellOutlined onClick={handleNotify} style={{fontSize:"20px"}} />
                 </Badge>
                 {/*<Button*/}
                 {/*    style={{ border: "none", backgroundColor: "#e0e7ec" }}*/}
@@ -177,7 +178,7 @@ export default function DashComp({ }) {
                 shape="circle"
 
                 icon={
-                  <Avatar src={<img src={imgUrl} alt="img" />} size="large" />
+                  <Avatar src={<img src={user.imgUrl} alt="img" />} size="large" />
                 }
               />
             </Tooltip>
@@ -357,7 +358,7 @@ export default function DashComp({ }) {
                               overflowY: "auto"
                           }}
                       >
-                          <Contents/>
+                          <Contents userInfo={user}/>
                       </Content>
                   </ConfigProvider>
 

@@ -1,6 +1,6 @@
 "use client"
 import Sider from "antd/es/layout/Sider";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   CaretDownOutlined,
   CheckCircleOutlined,
@@ -8,19 +8,19 @@ import {
   EnvironmentOutlined,
   ExclamationCircleOutlined,
   FundOutlined,
-  
+
   IdcardOutlined,
   InboxOutlined,
-  LineChartOutlined,
+  LineChartOutlined, MehOutlined,
   MessageOutlined,
   PieChartOutlined,
   PlusOutlined,
-  QuestionCircleOutlined,
+  QuestionCircleOutlined, SmileOutlined,
   StarFilled,
   StarOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import {fetchFavourite, profileLinks} from "@/components/profile/profileLinks";
+import {deletePost, fetchFavourite, profileLinks} from "@/components/profile/profileLinks";
 import {
   Button,
   Card,
@@ -36,13 +36,14 @@ import {
   List,
   Menu,
   message,
-  Modal,
-  Pagination,
+  Modal, notification,
+  Pagination, Popconfirm,
   Radio,
   Rate,
   Row, Spin,
 } from "antd";
 import "./procomp.css";
+import "../dashbord/dash.css";
 import { listofhouse } from "@/components/center2/listofhouse";
 import { Content } from "antd/es/layout/layout";
 import Meta from "antd/es/card/Meta";
@@ -254,16 +255,32 @@ const info = [
 export function DashContents() {
   const [favourite, setFavourite] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log("Favourites",favourite);
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement,desc,isWarning) => {
+    api.info({
+      message: <p style={{color:isWarning ?"red":"green",fontWeight:"600",fontFamily:"'Poppins',sans-serif"}}>{isWarning ? "Warning!":"Success!"}</p>,
+      description:
+          <p style={{fontFamily:"'Poppins',sans-serif"}}>{desc}</p>,
+      placement,
+      icon: (
+          isWarning ?
+              <SmileOutlined
+                  style={{
+                    color: 'red',
+                  }}
+              />:<MehOutlined style={{color:"green"}}/>
+      ),
+    });
+  };
 
   useEffect(()=>{
     async function getFavourites(){
       try{
         const {list} = await fetchFavourite();
-        console.log(list)
+
         return list;
       }catch (error){
-        message.error("something is wrong");
+        openNotification("topRight","Unable to connect to internet. Please check your internet connection!")
       }
     }
     getFavourites().then(result=>{
@@ -407,8 +424,28 @@ export function DashPost() {
   const [open, setOpen] = useState(false);
   const formRef = useRef();
   const [userInfo, setUserInfo] = useState({})
-  const [loading, setLoading] = useState(true)
-  useEffect(()=>{
+  const [loading, setLoading] = useState(true);
+  const [display, setDisplay] = useState(false);
+  const [infoDisplay, setInfoDisplay] = useState({});
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement,desc,isWarning) => {
+    api.info({
+      message: <p style={{color:isWarning ?"red":"green",fontWeight:"600",fontFamily:"'Poppins',sans-serif"}}>{isWarning ? "Warning!":"Success!"}</p>,
+      description:
+          <p style={{fontFamily:"'Poppins',sans-serif"}}>{desc}</p>,
+      placement,
+      icon: (
+          isWarning ?
+              <SmileOutlined
+                  style={{
+                    color: 'red',
+                  }}
+              />:<MehOutlined style={{color:"green"}}/>
+      ),
+    });
+  };
+    useEffect(()=>{
     //
     async function getUserPosts(){
 
@@ -427,8 +464,14 @@ export function DashPost() {
     }
     getUserPosts();
   },[])
-  function handleDisplay(){
-    setOpen(true);
+  function handleDisplay(item){
+    setDisplay(true);
+    const info = {img:item.postImgUrl,desc: item.description,title: item.title,price: item.price,address: item.address,bath:item.bath,rooms:item.rooms,area:item.area,email:item.email,id:item.id}
+
+    setInfoDisplay(info);
+  }
+  function handleInfoCancel(){
+        setDisplay(false);
   }
   function handlePage(page) {
     setCurrent(page);
@@ -446,9 +489,9 @@ export function DashPost() {
         const imgs = ref(storage,`photos/${v4()}`)
         message.loading("Posting....",0);
         uploadBytes(imgs,photo.file.originFileObj).then(data=>{
-            console.log(data,"imgs");
+            // console.log(data,"imgs");
             getDownloadURL(data.ref).then(val=>{
-              console.log(val);
+              // console.log(val);
               const data = {
                 title:name,
                 userImgUrl:imgUrl,
@@ -494,10 +537,25 @@ export function DashPost() {
     },
 
   };
-  
 
-  return (
+
+    function handleInfo() {
+      setConfirmLoading(true)
+      async function deleteCur(){
+        const res = await deletePost(infoDisplay.id)
+        if (!res){
+          console.log("Something went wrong!")
+        }
+      }
+      deleteCur().then(result=>{
+        setDisplay(false);
+        setConfirmLoading(false);
+        openNotification("topRight","Successfully deleted your Post!",false);
+      })
+    }
+    return (
     <div>
+      {contextHolder}
       <div
         style={{
           display: "flex",
@@ -705,6 +763,76 @@ export function DashPost() {
           </Form>
         </div>
       </Modal>
+        <Modal okText="Delete" visible={true} style={{backgroundColor:"black"}}
+               okButtonProps={{style:{backgroundColor:"white",border:"1px red solid",color:"red"}}} onCancel={handleInfoCancel}  className="modal-two" bodyStyle={{maxHeight:"70vh",width:"100%",overflowY:"auto",overflowX:"hidden",scrollbarWidth:"none",backgroundColor:"#dde6ed",padding:"10px",borderRadius:"10px"}}
+               title="Info" width={1000}  open={display}
+               footer={(_, { OkBtn, CancelBtn }) => (
+                      <>
+
+                        <CancelBtn />
+                        <Popconfirm
+                            title="Delete the post"
+                            description="Are you sure to delete this post?"
+                            onConfirm={handleInfo}
+                            okButtonProps={{
+                              loading:confirmLoading
+                            }}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                          <Button>Delete</Button>
+                        </Popconfirm>
+
+                      </>
+                  )}
+        >
+            <div style={{width:"100%",display:"flex",justifyContent:"space-between"}}>
+                <div>
+                    <Image src={infoDisplay.img} alt="img"
+                           style={{width: "50vw", height: "50vh", objectFit: "cover", borderRadius: "10px"}}/>
+
+                    <div className="modal-address"><EnvironmentOutlined/>{" " + infoDisplay.address}</div>
+
+
+                </div>
+                <div className="modal-card-container">
+                    <Card
+                        className="modal-card-one"
+                        align="center"
+                    >
+
+                        <div>Price : {"$" + infoDisplay.price}</div>
+                        <div className="modal-card-one-item">
+                            <img src="https://www.trulia.com/images/icons/txl3/BedIcon.svg" alt="img"/>
+                            {infoDisplay.rooms + " "} Beds
+                        </div>
+                        <div className="modal-card-one-item">
+                            <img src="https://www.trulia.com/images/icons/txl3/BathIcon.svg" alt="img"/>
+                            {infoDisplay.bath + " "} Baths
+                        </div>
+                        <div className="modal-card-one-item">
+                            <img src="https://www.trulia.com/images/icons/txl3/SquareFeetIcon.svg" alt="img"/>
+                            {infoDisplay.area + " "} sqft
+                        </div>
+
+                    </Card>
+
+                </div>
+
+            </div>
+            <div className="form">
+                <div className="modal-form-item">
+                    <div className="modal-desc-item">
+                        <div className="modal-descTitle">Description</div>
+                        <div className="modal-desc">{infoDisplay.desc}</div>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </Modal>
     </div>
   );
 }
