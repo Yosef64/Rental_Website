@@ -24,7 +24,7 @@ export const locationList = [
     {
         id:3,
         name:"Bishoftu",
-        lable:(<lable>Bishoftu</lable>)
+
     },
     {
         id:4,

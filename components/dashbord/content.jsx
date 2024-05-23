@@ -23,13 +23,13 @@ import {dashFetch, dashGet, dashPut,onFinish} from './dashFetch';
 import {handleGetSession} from "@/components/login/logGoogle";
 
 
-export default function Contents({userInfo}) {
-    const [list, setList] = useState([]);
+export default function Contents({userInfo,posts}) {
+
     const [current, setCurrent] = useState(1);
     const compPerPage = 6;
     const lastIndex = current * compPerPage;
     const firstIndex = lastIndex - compPerPage;
-    const records = list.slice(firstIndex,lastIndex);
+    const records = posts.slice(firstIndex,lastIndex);
     const [info, setInfo] = useState(false);
     const [infoDisplay,setInfoDisplay] = useState({})
     const desc = ['terrible','terrible', 'bad','bad', 'normal','normal', 'good','good', 'wonderful','wonderful']
@@ -38,7 +38,7 @@ export default function Contents({userInfo}) {
     const [loading, setLoading] = useState(true);
     const [listFavorite, setListFavorite] = useState([]);
     const formRef = useRef();
-
+    // const [search, setSearch] = useState({address:"addis ababa",bed:[2,3],price:[100,1000]});
     const [api, contextHolder] = notification.useNotification();
     const openNotification = (placement,desc,isWarning) => {
         api.info({
@@ -58,16 +58,16 @@ export default function Contents({userInfo}) {
     };
     console.log(listFavorite);
     useEffect(()=>{
-        async function setListofHouses(){
-           try {
-               const {posts} = await dashFetch();
-               setList(posts);
-               setLoading(false);
-           } catch (error){
-                message.error("Unable to get Total Posts!");
-            }
-
-        }
+        // async function setListofHouses(){
+        //    try {
+        //        const {posts} = await dashFetch();
+        //        setList(posts);
+        //        setLoading(false);
+        //    } catch (error){
+        //         message.error("Unable to get Total Posts!");
+        //     }
+        //
+        // }
         async function setFavourite(){
             try {
                 const {Find} = await dashGet();
@@ -79,7 +79,7 @@ export default function Contents({userInfo}) {
             }
 
         }
-        setListofHouses();
+        // setListofHouses();
         setFavourite();
     },[])
     // console.log(list);
@@ -153,7 +153,7 @@ export default function Contents({userInfo}) {
     }
 
     return (
-        <Spin spinning={loading} size='large' >
+        <>
             {contextHolder}
             <Flex justify="center"  className="c2-container">
                 <Row gutter={[48,24]} >
@@ -228,7 +228,7 @@ export default function Contents({userInfo}) {
                         }
                     }
                 >
-                    <Pagination pageSize={6} current={current} onChange={handlePage} total={list.length}/>
+                    <Pagination pageSize={6} current={current} onChange={handlePage} total={posts.length}/>
                 </ConfigProvider>
 
             </div>
@@ -340,7 +340,7 @@ export default function Contents({userInfo}) {
                     </div>
 
                 </Modal>
-        </Spin>
+        </>
 
     );
 }

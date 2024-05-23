@@ -47,15 +47,18 @@ import { handleGetSession } from "../login/logGoogle";
 import {dashFetch, dashGet, dashPut, logOut} from "./dashFetch";
 import 'antd/dist/reset.css'
 export default function DashComp({ }) {
-  const [location, setLocation] = useState("Location");
-  const [price, setPrice] = useState("100-1000");
-  const [house, setHouseType] = useState("Normal villa");
-  const [cap, setCap] = useState("1-person");
-  const [active, setActive] = useState(1);
+  // const [location, setLocation] = useState("Addis Ababa");
+  // const [price, setPrice] = useState("100-1000");
+  // const [house, setHouseType] = useState("Normal villa");
+  // const [cap, setCap] = useState("1-person");
+    const [current, setCurrent] = useState({location:"Addis Ababa",price:"100-1000",house:"Normal villa",cap:"1-person"});
+    const [search, setSearch] = useState({location:"Addis Ababa",price:[100,1000],cap:[1,1]});
+    const [active, setActive] = useState(1);
   const [user, setUser] = useState({});
   const [post, setPost] = useState([]);
-    const [isOpen, setIsOpen] = useState(false)
-    const router = useRouter();
+    const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const [count, setCount] = useState(0);
     const siderStyle = {
     margin: "auto",
@@ -73,6 +76,7 @@ export default function DashComp({ }) {
         window.location.href = '/dashboard/profile';
     }
   useEffect(() => {
+      setLoading(true);
     async function setImageUrl(){
         const {user} = await handleGetSession();
         // const {imgUrl} = user;
@@ -83,14 +87,23 @@ export default function DashComp({ }) {
     }
     
     async function setPostList(){
-      const posts = await dashFetch();
-      console.log(JSON.stringify(post,null,2));
+      const {posts} = await dashFetch();
+
       setPost(posts);
+
     }
     setImageUrl();
-    setPostList()
+    setPostList().then(()=>{
+        setLoading(false);
+    })
   }, []);
+    useEffect(() => {
+        const updated = post.filter((item)=> {
+            return (search.price[0] <= item.price <= search.price[1]) && (search.location.toLowerCase() === item.address.toLowerCase()) && (search.cap[0] <= item.cap[1]);
 
+        })
+        setPost(updated);
+    }, [current]);
   const activeStyle = {
     ...siderStyle,
     backgroundColor: "#6a9567",
@@ -197,7 +210,7 @@ export default function DashComp({ }) {
                                 {locationList.map((item) => (
                                     <Menu.Item
                                         key={item.id}
-                                        onClick={() => setLocation(item.name)}
+                                        onClick={() => setCurrent({...current, location: item.name})}
                                     >
                                         <label>{item.name}</label>
                                     </Menu.Item>
@@ -207,7 +220,7 @@ export default function DashComp({ }) {
                         placement="bottomLeft"
                     >
                         <Button type="default">
-                            <EnvironmentOutlined/> {location} <DownOutlined/>
+                            <EnvironmentOutlined/> {current.location} <DownOutlined/>
                         </Button>
                     </Dropdown>},
                     {key:"second",
@@ -217,7 +230,7 @@ export default function DashComp({ }) {
                                 overlay={
                                     <Menu selectable defaultSelectedKeys={[1]}>
                                         {priceList.map((item) => (
-                                            <Menu.Item key={item.id} onClick={() => setPrice(item.price)}>
+                                            <Menu.Item key={item.id} onClick={() => setCurrent({...current, price: item.price})}>
                                                 {item.lable}
                                             </Menu.Item>
                                         ))}
@@ -226,7 +239,7 @@ export default function DashComp({ }) {
                                 placement="bottomLeft"
                             >
                                 <Button type="default">
-                                    <DollarOutlined/> {price} <DownOutlined/>
+                                    <DollarOutlined/> {current.price} <DownOutlined/>
                                 </Button>
                             </Dropdown>)},
                     {key:"third",
@@ -236,7 +249,7 @@ export default function DashComp({ }) {
                                 overlay={
                                     <Menu selectable defaultSelectedKeys={[1]}>
                                         {capacity.map((item) => (
-                                            <Menu.Item key={item.id} onClick={() => setCap(item.able)}>
+                                            <Menu.Item key={item.id} onClick={() => setCurrent({...current, cap: item.able})}>
                                                 {item.lable}
                                             </Menu.Item>
                                         ))}
@@ -245,7 +258,7 @@ export default function DashComp({ }) {
                                 placement="bottomLeft"
                             >
                                 <Button type="default">
-                                    <TeamOutlined/> {cap} <DownOutlined/>
+                                    <TeamOutlined/> {current.cap} <DownOutlined/>
                                 </Button>
                             </Dropdown>)
                     },
@@ -258,7 +271,9 @@ export default function DashComp({ }) {
                                     {houseType.map((item) => (
                                         <Menu.Item
                                             key={item.id}
-                                            onClick={() => setHouseType(item.type)}
+                                            onClick={() => {
+                                                setCurrent({...current, house: item.type});
+                                            }}
                                         >
                                             {item.lable}
                                         </Menu.Item>
@@ -268,7 +283,7 @@ export default function DashComp({ }) {
                             placement="bottomLeft"
                         >
                             <Button type="default">
-                                <ControlOutlined/> {house} <DownOutlined/>
+                                <ControlOutlined/> {current.house} <DownOutlined/>
                             </Button>
                         </Dropdown>)
                     }]} />
@@ -358,7 +373,9 @@ export default function DashComp({ }) {
                               overflowY: "auto"
                           }}
                       >
-                          <Contents userInfo={user}/>
+                          <Spin spinning={loading} size="large">
+                              <Contents userInfo={user} posts={post}/>
+                          </Spin>
                       </Content>
                   </ConfigProvider>
 

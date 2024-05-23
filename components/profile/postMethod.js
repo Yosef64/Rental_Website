@@ -1,5 +1,3 @@
-import { message } from "antd"
-import { redirect } from "next/navigation"
 
 export default async function handlePosts(data){
     const res = await fetch("http://localhost:3000/api/posts",{

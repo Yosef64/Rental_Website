@@ -1,0 +1,18 @@
+
+.about-comp1{
+    width: 100%;
+    margin-top: 20vh;
+}
+/*.about-comp1-right{*/
+/*    !*width: 50vw;*!*/
+/*    !*height: 40vh;*!*/
+/*}*/
+.about-comp1-right img{
+    width: 40vw;
+    height: 51vh;
+    border-radius: 10px;
+}
+.about-comp1-left{
+    width: 40vw;
+}
+

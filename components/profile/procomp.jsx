@@ -5,7 +5,7 @@ import {
   CaretDownOutlined,
   CheckCircleOutlined,
   CloudUploadOutlined,
-  EnvironmentOutlined,
+  EnvironmentOutlined, ExclamationCircleFilled,
   ExclamationCircleOutlined,
   FundOutlined,
 
@@ -47,7 +47,6 @@ import "../dashbord/dash.css";
 import { listofhouse } from "@/components/center2/listofhouse";
 import { Content } from "antd/es/layout/layout";
 import Meta from "antd/es/card/Meta";
-import Search from "antd/es/input/Search";
 import Dragger from "antd/es/upload/Dragger";
 import TextArea from "antd/es/input/TextArea";
 import { v4 } from "uuid";
@@ -55,8 +54,8 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/fireconfig/fireBaseConfig";
 import { handleGetSession } from "../login/logGoogle";
 import handlePosts, {handleGetUserPosts} from "./postMethod";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
+const {confirm} = Modal;
 const listOfSider = [
   {
     key: "profile",
@@ -415,6 +414,7 @@ export function DashContents() {
   );
 }
 export function DashPost() {
+
   const [current, setCurrent] = useState(1);
   const numberPerPage = 6;
   const lastIndex = current * numberPerPage;
@@ -428,6 +428,7 @@ export function DashPost() {
   const [display, setDisplay] = useState(false);
   const [infoDisplay, setInfoDisplay] = useState({});
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (placement,desc,isWarning) => {
     api.info({
@@ -444,6 +445,26 @@ export function DashPost() {
               />:<MehOutlined style={{color:"green"}}/>
       ),
     });
+  };
+  const showPromiseConfirm = () => {
+    confirm({
+      title: 'Are you sure this house is rented?',
+      style:{fontFamily:"'Poppins',sans-serif"},
+      icon: <ExclamationCircleFilled />,
+      content: 'When clicked the OK button, this post will be deleted from your post list',
+      onOk() {
+        return new Promise(async (resolve, reject) => {
+          try {
+            await handleInfo();
+            resolve();
+          } catch (error) {
+            reject(error);
+          }
+        }).catch(() => openNotification("topRight","Something went wrong",true));
+      },
+      onCancel() {},
+    });
+
   };
     useEffect(()=>{
     //
@@ -529,7 +550,6 @@ export function DashPost() {
     onChange(info) {
       const { status } = info.file;
       if (status === "done") {
-        
         message.success(`${info.file.name} file uploaded successfully.`);
       } else if (status === "error") {
         message.error(`${info.file.name} file upload failed.`);
@@ -539,21 +559,20 @@ export function DashPost() {
   };
 
 
-    function handleInfo() {
-      setConfirmLoading(true)
-      async function deleteCur(){
-        const res = await deletePost(infoDisplay.id)
-        if (!res){
-          console.log("Something went wrong!")
+    async function handleInfo() {
+        try {
+          const res = await deletePost(infoDisplay.id);
+          setDisplay(false);
+          openNotification("topRight","Successfully deleted your Post!",false);
+
+        }catch (error){
+          throw new Error("check your internet!")
         }
-      }
-      deleteCur().then(result=>{
-        setDisplay(false);
-        setConfirmLoading(false);
-        openNotification("topRight","Successfully deleted your Post!",false);
-      })
     }
-    return (
+
+
+
+  return (
     <div>
       {contextHolder}
       <div
@@ -766,25 +785,13 @@ export function DashPost() {
         <Modal okText="Delete" visible={true} style={{backgroundColor:"black"}}
                okButtonProps={{style:{backgroundColor:"white",border:"1px red solid",color:"red"}}} onCancel={handleInfoCancel}  className="modal-two" bodyStyle={{maxHeight:"70vh",width:"100%",overflowY:"auto",overflowX:"hidden",scrollbarWidth:"none",backgroundColor:"#dde6ed",padding:"10px",borderRadius:"10px"}}
                title="Info" width={1000}  open={display}
-               footer={(_, { OkBtn, CancelBtn }) => (
-                      <>
-
-                        <CancelBtn />
-                        <Popconfirm
-                            title="Delete the post"
-                            description="Are you sure to delete this post?"
-                            onConfirm={handleInfo}
-                            okButtonProps={{
-                              loading:confirmLoading
-                            }}
-                            okText="Yes"
-                            cancelText="No"
-                        >
-                          <Button>Delete</Button>
-                        </Popconfirm>
-
-                      </>
-                  )}
+               onOk={showPromiseConfirm}
+               // footer={(_, { OkBtn, CancelBtn }) => (
+               //        <>
+               //          <CancelBtn />
+               //          <Button onClick={showPromiseConfirm}>Delete</Button>
+               //        </>
+               //    )}
         >
             <div style={{width:"100%",display:"flex",justifyContent:"space-between"}}>
                 <div>
