@@ -5,6 +5,7 @@ import Center2 from "@/components/center2/center2";
 import Explore from "@/components/explore/explore";
 import Footer from "@/components/footer/Footer"
 import Avator from '@/components/login/logGoogle';
+import ContactUs from "@/components/contactus/contact";
 export default function Page(props) {
     
     return (
@@ -13,6 +14,7 @@ export default function Page(props) {
             <Center1></Center1>
             <Explore></Explore>
             <Center2></Center2>
+            <ContactUs />
             <Footer></Footer>
         </div>
     );

@@ -2,6 +2,10 @@ import React from 'react';
 import Navbar from "@/components/napbar/Navbar";
 import "./about.css";
 import AboutComp1 from "@/components/about-us/aboutComp1/aboutcomp1";
+import AboutComp2 from "@/components/about-us/aboutComp2/aboutcomp2";
+import Creed from "@/components/about-us/creed/creed";
+import Teams from "@/components/about-us/teams/teams";
+import Footer from "@/components/footer/Footer";
 export default function AboutUs(props) {
     return (
         <div className="about-us">
@@ -18,6 +22,10 @@ export default function AboutUs(props) {
                     </div>
                 </div>
                 <AboutComp1 />
+                <AboutComp2 />
+                <Creed />
+                <Teams />
+                <Footer />
             </div>
 
 

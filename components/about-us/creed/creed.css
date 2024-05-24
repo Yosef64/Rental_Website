@@ -1,0 +1,37 @@
+.creed{
+    margin-top: 50px;
+    font-family: "Nunito",sans-serif;
+}
+.creed-card{
+    display:flex;
+    flex-direction:column;
+    background-color:white;
+    justify-content:center;
+    align-items:center;
+    width:19vw;
+    padding: 20px 0;
+    height: 45vh;
+    border-radius: 10px;
+    box-shadow: 0 0 7px #bfbcbc;
+    transition: all ease .3s;
+}
+.creed-card:hover{
+    transform: scale(1.1);
+}
+.creed-card-desc{
+    width: 80%;
+    text-align: center;
+    font-family: "Nunito",sans-serif;
+}
+.creed-name{
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 40px;
+    color: #242732;
+}
+.creed-card-title{
+    font-family: 'Nunito',sans-serif;
+    font-weight: 700;
+    margin: 15px 0;
+    font-size: 16px;
+}

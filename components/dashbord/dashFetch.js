@@ -68,7 +68,7 @@ export async function onFinish(name, senderName, senderEmail, email, phone,messa
         await dashPut(data);
         return true;
     } catch (error) {
-        console.log('FAILED...', error);
+        // console.log('FAILED...', error);
         return false;
     }
 }

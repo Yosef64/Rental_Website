@@ -13,7 +13,7 @@ import {
     Image,
     Input,
     Layout,
-    Menu, Popconfirm,
+    Menu, notification, Popconfirm,
     Spin,
     Tooltip,
 } from "antd";
@@ -36,7 +36,7 @@ import {
     DeleteOutlined,
     DollarOutlined,
     DownOutlined,
-    EnvironmentOutlined, LogoutOutlined, MenuFoldOutlined, MenuOutlined,
+    EnvironmentOutlined, LogoutOutlined, MehOutlined, MenuFoldOutlined, MenuOutlined, SmileOutlined,
     TeamOutlined,
     UserOutlined,
 } from "@ant-design/icons";
@@ -58,7 +58,24 @@ export default function DashComp({ }) {
   const [post, setPost] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [api, contextHolder] = notification.useNotification();
 
+    const openNotification = (placement,desc,isWarning) => {
+        api.info({
+            message: <p style={{color:isWarning ?"red":"green",fontWeight:"600",fontFamily:"'Poppins',sans-serif"}}>{isWarning ? "Warning!":"Success!"}</p>,
+            description:
+                <p style={{fontFamily:"'Poppins',sans-serif"}}>{desc}</p>,
+            placement,
+            icon: (
+                isWarning ?
+                    <SmileOutlined
+                        style={{
+                            color: 'red',
+                        }}
+                    />:<MehOutlined style={{color:"green"}}/>
+            ),
+        });
+    };
     const [count, setCount] = useState(0);
     const siderStyle = {
     margin: "auto",
@@ -78,12 +95,17 @@ export default function DashComp({ }) {
   useEffect(() => {
       setLoading(true);
     async function setImageUrl(){
-        const {user} = await handleGetSession();
-        // const {imgUrl} = user;
-        const {Find} = await dashGet();
-        const {notifications} = Find;
-        setCount(notifications);
-        setUser(user);
+        try {
+            const {user} = await handleGetSession();
+            // const {imgUrl} = user;
+            const {Find} = await dashGet();
+            const {notifications} = Find;
+            setCount(notifications);
+            setUser(user);
+        }catch (error){
+            openNotification("topRight","Something went wrong. Check your internet connection!",true)
+        }
+
     }
     
     async function setPostList(){
@@ -123,6 +145,7 @@ export default function DashComp({ }) {
 
     return (
     <div style={{ backgroundColor: "red" ,height:"10vh"}}>
+        {contextHolder}
       <Layout
         style={{
           position: "sticky",

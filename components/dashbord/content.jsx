@@ -58,16 +58,7 @@ export default function Contents({userInfo,posts}) {
     };
     console.log(listFavorite);
     useEffect(()=>{
-        // async function setListofHouses(){
-        //    try {
-        //        const {posts} = await dashFetch();
-        //        setList(posts);
-        //        setLoading(false);
-        //    } catch (error){
-        //         message.error("Unable to get Total Posts!");
-        //     }
-        //
-        // }
+
         async function setFavourite(){
             try {
                 const {Find} = await dashGet();
@@ -75,11 +66,9 @@ export default function Contents({userInfo,posts}) {
                 const {favourites} = Find;
                 setListFavorite(favourites);
             }catch (error){
-                message.error("unable to fetch favourites from database!")
+                openNotification("topRight","Something went wrong. Check your internet connection!",true)
             }
-
         }
-        // setListofHouses();
         setFavourite();
     },[])
     // console.log(list);
@@ -130,7 +119,7 @@ export default function Contents({userInfo,posts}) {
     async function handleFinish() {
         const formValues = formRef.current.getFieldValue();
         const {email,phone,messages} = formValues;
-        console.log(formValues)
+        // console.log(formValues)
         if (email===undefined ||phone=== undefined|| messages===undefined){
             openNotification("topRight","You need to provide the information required to ask for the information about the house!",true)
         }
@@ -139,12 +128,8 @@ export default function Contents({userInfo,posts}) {
             const {user} = await handleGetSession();
             const {name} = user;
            const isOk =  await onFinish(infoDisplay.title,name,email,infoDisplay.email,phone,messages,userInfo.imgUrl)
-            if (isOk){
-                openNotification("topRight","Yor request successfully sent!",false)
-            }
-            else {
-                openNotification("topRight","Check you internet connection and try again!",true)
-            }
+            isOk ? openNotification("topRight","Yor request successfully sent!",false) :openNotification("topRight","Check you internet connection and try again!",true);
+
             setInfo(false);
             message.destroy();
 

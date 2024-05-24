@@ -1,0 +1,32 @@
+.teams{
+    margin: 60px 0;
+    font-family: "Nunito",sans-serif;
+}
+.team-beg{
+    font-size: 25px;
+    font-weight: 800;
+    color: #171922;
+    margin-bottom: 30px;
+}
+.team-con img{
+    width:300px;
+    height: 300px;
+    border-radius:10px;
+    object-fit: cover;
+}
+.about-team-mem{
+    display: flex;
+    flex-direction: column;
+}
+.team-mem-name{
+    font-size: 16px;
+    font-weight: 700;
+    color: #272843;
+    font-family: "Nunito",sans-serif;
+}
+.team-mem-title{
+    color: #565656;
+    font-weight: 500;
+    font-size: 15px;
+    font-family: "Nunito",sans-serif;
+}
