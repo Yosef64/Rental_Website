@@ -14,7 +14,7 @@ const item = [
     },
     {
         key:"about",
-        label:<Link href="/about">About</Link>
+        label:<Link href="/about">About Us</Link>
     },
     {
         key:"discover",
@@ -22,7 +22,7 @@ const item = [
     },
     {
         key:"contact us",
-        label:<Link href="/">Contact us</Link>
+        label:<Link href="/#contact-us">Contact us</Link>
     }
 ]
 export default function Navbar(props) {

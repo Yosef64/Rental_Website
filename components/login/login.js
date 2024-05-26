@@ -1,137 +1,93 @@
 "use client"
-
-
-import "./logform.scss"
-import Link from 'next/link'
+import React from 'react';
+import "./lgf.css"
 import {Button, Checkbox, ConfigProvider, Divider, Form, Input} from "antd";
-
-import { handleSign,handleSession } from "./logGoogle";
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
-
-
-export  default function Login(props) {
-    const router = useRouter();
-    handleSession().then((result)=>{
-        if(result===true){
-            console.log(result);
-            router.push('/dashboard')
-        }
-    })
-    const inputStyle = {
-        height:"8vh"
-    }
-    const googleStyle = {
-        width:"50%",
-        display:"flex",
-        justifyContent:"center",
-        alignItems:"center",
-        fontSize:"15px",
-        height: "7vh",
-        fontFamily:'"Montserrat",sans-serif',
-        fontWeight:"600",
-    }
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {handleSign} from "@/components/login/logGoogle";
+export default function Login() {
     return (
-        <div className="form-container">
-            <img src="/bglogin.jpg" alt="img" style={{position:"absolute",right:"0",height:"100%",top:"0",left:"0",width:"100vw",bottom:'0',opacity:"0.7"}} />
-            <Form  className="for"
-                name="basic"
+        <div className="login">
+            <div className="login-container">
+                <div className="photo-part">
+                    <img src="/about/firsthouse.jpg" alt="img" />
+                </div>
+                <div className="form-part">
+                    <div className="f-p-con">
+                        <div className="f-p-f">
+                            <span className="signin-top-title">Sign In to your account</span>
+                            <span className="signin-top-label">Enter your details to proceed further</span>
+                        </div>
+                        <div className="f-p-s">
+                            <ConfigProvider
+                            theme={{
+                                components:{
+                                    Input:{
+                                        size:"large",
+                                    },
+                                    Button:{
+                                        fontSize:"17px"
+                                    }
+                                },
+                                token:{
+                                    colorSplit:"#555353",
+                                    fontFamily:"'Nunito',sans-serif",
+                                    colorPrimary:"#6b8f68"
+                                }
+                            }}
 
-                wrapperCol={{
-                    offset:2,
-                    span: 14,
-                }}
-                style={{
-                    maxWidth: 600,
-                    width:"50%",
-                    height:"60%",
-                    borderRadius:"9px",
+                            >
+                                <Form labelCol={{style:{fontWeight:800,color:"#3f4b83 !important"}}} layout="vertical">
+                                    <Form.Item label="Email">
+                                        <Input size="large" suffix={<LockOutlined style={{color:"#686767"}} />}/>
+                                    </Form.Item>
+                                    <Form.Item label="Password">
+                                        <Input.Password size="large"/>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Checkbox>Remember me</Checkbox>
+                                        <a style={{float:"right"}} href="/">Forgot Password?</a>
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button style={{width:"100%",fontWeight:800,color:"#ffffff"}} type="primary">
 
-                }}
-                initialValues={{
-                    remember: true,
-                }}
+                                            Sign In
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
+                                <Divider plain>or</Divider>
+                            </ConfigProvider>
+                            <div className="sign-in-opt">
+                                <ConfigProvider
+                                theme={{
+                                    components:{
+                                        Button:{
+                                            colorPrimaryHover:"#292c3a"
+                                        }
+                                    }
+                                }}
+                                >
+                                    <Button size="large" style={{width:"100%"}} type="default" onClick={handleSign}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                             preserveAspectRatio="xMidYMid" viewBox="0 0 256 262" id="google">
+                                            <path fill="#4285F4"
+                                                  d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"></path>
+                                            <path fill="#34A853"
+                                                  d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"></path>
+                                            <path fill="#FBBC05"
+                                                  d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"></path>
+                                            <path fill="#EB4335"
+                                                  d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"></path>
+                                        </svg>
+                                        Sign In with Google</Button>
+                                </ConfigProvider>
 
+                            </div>
 
-                autoComplete="on"
-            >
-                
+                        </div>
+                    </div>
 
-                <Form.Item
-                    className="form-item"
-                    label="Email"
-                    name="email"
-                    labelCol={{
-                        span: 3,
-                        offset:2,
-                        style:{fontFamily:'"Poppins",sans-serif',fontWeight:600,color:"white"}
-                    }}
-                    // help={error}
-                    // validateStatus={error ? "error":""}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your Email!',
-                        },
-                    ]}
-                    style={{marginTop:"30px"}}
-                >
-                    <Input style={inputStyle}/>
-                </Form.Item>
-                <Form.Item
-                    className="form-item"
-                    label="Password"
-                    name="password"
-                    labelCol={{
-                        span: 5,
-                        style:{fontFamily:'"Poppins",sans-serif',fontWeight:600}
-                    }}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please input your password!',
-                        },
-                    ]}
-                >
-                    <Input.Password style={inputStyle} />
-                </Form.Item>
-                <ConfigProvider
-                theme={{
-                    token:{
-                        colorPrimary:"#67a662"
-                    }
-                }}
-                >
-                    <Form.Item
-                        wrapperCol={{
-                            offset: 8,
-                            span: 16,
-                        }}
-                    >
-                        <Button style={googleStyle} type="primary" htmlType="submit">
-                            Log In
-                        </Button>
-                    </Form.Item>
-                </ConfigProvider>
-                <Divider style={{color:"white",fontFamily:"verdana,sans-serif",fontSize:"12px",borderColor:"#b3afaf"}}> or Signin with</Divider>
-                <Form.Item
-                wrapperCol={{
-                offset: 11,
-
-            }}
-                >
-                <Button shape="circle" onClick={handleSign}  type="default">
-                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="35" height="20" viewBox="0 0 48 48">
-                        <path fill="#fbc02d" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12	s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20	s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#e53935" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039	l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4caf50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36	c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"></path><path fill="#1565c0" d="M43.611,20.083L43.595,20L42,20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571	c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path>
-                    </svg>
-
-                </Button>
-            </Form.Item>
-            </Form>
-
-
+                </div>
+            </div>
         </div>
     );
 }

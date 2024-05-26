@@ -2,7 +2,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import "./lgf.scss"
+import "./lgf.css"
 import Link from 'next/link'
 import {  getAuth, signInWithPopup,GoogleAuthProvider,createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import {Button, Checkbox, Form, Input} from "antd";

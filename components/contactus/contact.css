@@ -1,0 +1,28 @@
+#contact-us{
+    padding-top: 30px;
+    margin-bottom: 30px;
+}
+.contact{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    margin:auto;
+    align-items:center;
+    width:80%
+}
+.contact-title{
+    color:#375277;
+    margin-bottom:40px;
+    font-size:28px;
+    font-weight:800;
+    font-family:'Nunito',sans-serif
+}
+.contact-container{
+    width:90%;
+    /*border:1px solid black;*/
+    margin:auto;
+    height:100%;
+    display:flex;
+    box-shadow: 0 0 10px #9c9898;
+    border-radius: 7px;
+}
