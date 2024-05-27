@@ -24,7 +24,7 @@ export default function Center1(props) {
 
   const boxStyle = {
     width: "80%",
-    paddingLeft:50,
+    // paddingLeft:50,
     height: 120,
     borderRadius: 6,
 

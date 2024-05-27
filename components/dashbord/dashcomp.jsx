@@ -47,15 +47,12 @@ import { handleGetSession } from "../login/logGoogle";
 import {dashFetch, dashGet, dashPut, logOut} from "./dashFetch";
 import 'antd/dist/reset.css'
 export default function DashComp({ }) {
-  // const [location, setLocation] = useState("Addis Ababa");
-  // const [price, setPrice] = useState("100-1000");
-  // const [house, setHouseType] = useState("Normal villa");
-  // const [cap, setCap] = useState("1-person");
+
     const [current, setCurrent] = useState({location:"Addis Ababa",price:"100-1000",house:"Normal villa",cap:"1-person"});
     const [search, setSearch] = useState({location:"Addis Ababa",price:[100,1000],cap:[1,1]});
     const [active, setActive] = useState(1);
-  const [user, setUser] = useState({});
-  const [post, setPost] = useState([]);
+    const [user, setUser] = useState({});
+    const [post, setPost] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [api, contextHolder] = notification.useNotification();
@@ -171,9 +168,9 @@ export default function DashComp({ }) {
                     <MenuOutlined onClick={() => setIsOpen(!isOpen)} style={{fontSize: "25px"}}/>
                 </div>
                <div className="dash-links" >
-                   <a href="/">Categories</a>
-                   <a href="/">Rent</a>
-                   <a href="/">Buy</a>
+                   <a href="/">Home</a>
+                   <a href="/dashboard">Rent</a>
+                   <a href="/#contact">Contact Us</a>
                </div>
             </Flex>
             <Flex
@@ -397,7 +394,14 @@ export default function DashComp({ }) {
                           }}
                       >
                           <Spin spinning={loading} size="large">
-                              <Contents userInfo={user} posts={post}/>
+                              {
+                                   post.length ? <Contents userInfo={user} posts={post}/> :
+                                       <div>
+                                           <img style={{width: "90%", height: "60vh"}} src="/no-data.svg" alt="img"/>
+                                           <div style={{textAlign:"center",fontFamily:"'Nunito',sans-serif",fontWeight:"700"}}>No match found!</div>
+                                       </div>
+                              }
+
                           </Spin>
                       </Content>
                   </ConfigProvider>

@@ -35,9 +35,14 @@ export default function Creed(props) {
     return (
         <div className="creed">
             <div className="creed-name">Our Creed</div>
-            <Row>
+            <Row gutter={[24,32]}>
                 {list.map((item) => (
-                        <Col key={item.id} span={6}>
+                        <Col key={item.id}
+                             sm={{ span: 12 }}    // Half width on small screens
+                             md={{ span: 8 }}     // 9/24 of the width on medium screens
+                             lg={{span:6}}     // Approximately 20% on large screens
+                             xl={{ span: 6 }}
+                        >
                             <div className="creed-card">
                                 <div className="creed-card-img">
                                     <img style={{backgroundColor: "inherit", width: "50px", height: "50px"}}

@@ -24,9 +24,18 @@
       align-items: center;
       @media (max-width: 650px) {
         flex: 1;
-        align-items: center;
-        justify-content: center;
+        //align-items: center;
+        background-color: black;
+        float: left;
 
+
+      }
+      .flex-drop{
+        padding-left: 90px;
+        @media (max-width: 650px) {
+          float: left;
+
+        }
       }
       .f-pg{
         font-weight: bold;

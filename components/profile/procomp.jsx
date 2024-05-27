@@ -2,6 +2,7 @@
 import Sider from "antd/es/layout/Sider";
 import React, { useEffect, useRef, useState } from "react";
 import {
+  ArrowUpOutlined,
   CaretDownOutlined,
   CheckCircleOutlined,
   CloudUploadOutlined,
@@ -10,7 +11,7 @@ import {
   FundOutlined,
 
   IdcardOutlined,
-  InboxOutlined,
+  InboxOutlined, LeftCircleOutlined,
   LineChartOutlined, MehOutlined,
   MessageOutlined,
   PieChartOutlined,
@@ -40,7 +41,7 @@ import {
   Pagination, Popconfirm,
   Radio,
   Rate,
-  Row, Spin,
+  Row, Spin, Statistic,
 } from "antd";
 import "./procomp.css";
 import "../dashbord/dash.css";
@@ -83,17 +84,16 @@ const listOfSider = [
     label: <Link href="/dashboard/profile/report">Report</Link>,
   },
   {
-    key: "help",
-    icon: <ExclamationCircleOutlined />,
+    key: "back",
+    icon:<LeftCircleOutlined />,
     title: "Dashboard",
-    label: <Link href="/dashboard">Help</Link>,
+    label: <Link href="/dashboard">Dashboard</Link>,
   },
 ];
 
 export function SiderOneComponent({ current }) {
-  // function handleClick(e) {
-  //   setCurrent(parseInt(e.key));
-  // }
+
+
   return (
 
         <Sider
@@ -234,20 +234,20 @@ export function SiderTwoComp() {
 const info = [
   {
     id: 1,
-    icon: <StarFilled style={{ color: "#eccc4c", fontSize: "20px" }} />,
-    label: "Rating",
+    icon: <StarFilled style={{color: "#eccc4c", fontSize: "20px"}}/>,
+    label: <span style={{fontWeight: "800", fontFamily: "'Nunito',sans-serif",color:"#444d6a"}}>Rating</span>,
     number: "9.6",
   },
   {
     id: 2,
-    icon: <LineChartOutlined style={{ fontSize: "20px" }} />,
-    label: "Posts",
+    icon: <LineChartOutlined style={{fontSize: "20px",color:"green"}}/>,
+    label: <span style={{fontWeight: "800", fontFamily: "'Nunito',sans-serif",color:"#444d6a"}}>Posts</span>,
     number: "200",
   },
   {
     id: 3,
-    icon: <FundOutlined style={{ fontSize: "20px" }} />,
-    label: "Price",
+    icon: <FundOutlined style={{fontSize: "20px",color:"red"}}/>,
+    label: <span style={{fontWeight:"800",fontFamily:"'Nunito',sans-serif",color:"#444d6a"}}>Price</span>,
     number: "2%",
   },
 ];
@@ -299,49 +299,24 @@ export function DashContents() {
       >
         {info.map((item) => (
           <Col className="content-col" key={item.id} span={6}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Button
-                style={{ height: "7vh", border: "none", padding: "10px 15px" }}
-              >
-                {item.icon}
-              </Button>
-              <span
-                style={{
-                  margin: "5px",
-                  fontWeight: 600,
-                  fontSize: "16px",
-                  fontFamily: "'Montserrat',sans-serif",
-                  color: "#393f55",
-                }}
-              >
-                {item.number}
-              </span>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  fontWeight: 600,
-                  fontFamily: "'Montserrat',sans-serif",
-                  color: "#3a4860",
-                  backgroundColor: "white",
-                  width: "7vw",
-                  height: "5vh",
-                  textAlign: "center",
-                  borderRadius: "5px",
-                  fontSize: "16px",
-                }}
-              >
-                {item.label}
-              </div>
-            </div>
+            <Card  style={{backgroundColor:"#dde6ed",width:"100%",height:"100%",border:"none"}} bordered={false}>
+              <Statistic
+                  title={item.label}
+                  value={item.number}
+
+                  valueStyle={{
+                    fontFamily:"'Nunito',sans-serif",
+                   gap:"50px",
+                    fontSize:"16px",
+                    fontWeight:800,
+                    marginTop:"20px"
+
+                  }}
+                  style={{width:"100%",height:"100%"}}
+                  prefix={item.icon}
+
+              />
+            </Card>
           </Col>
         ))}
       </Row>

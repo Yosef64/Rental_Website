@@ -26,3 +26,21 @@
     box-shadow: 0 0 10px #9c9898;
     border-radius: 7px;
 }
+.contact-img-part{
+    flex:0.4;
+    background-color:#b6cbf6;
+    border-radius:10px;
+    position:relative
+}
+.contact-con-left-part{
+    padding:10px;
+    flex:0.6
+}
+@media (max-width: 650px) {
+    .contact-img-part{
+        display: none;
+    }
+    .contact-con-left-part{
+        flex: 1;
+    }
+}

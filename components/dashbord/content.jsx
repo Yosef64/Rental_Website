@@ -14,13 +14,21 @@ import {
     Pagination,
     Rate,
     Row,
-    Spin
+    Spin, Typography
 } from "antd";
-import {EnvironmentOutlined, HeartFilled, HeartOutlined, MehOutlined, SmileOutlined} from "@ant-design/icons";
+import {
+    EnvironmentOutlined,
+    HeartFilled,
+    HeartOutlined,
+    MehOutlined,
+    SmileOutlined,
+    StarOutlined
+} from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
 import TextArea from "antd/es/input/TextArea";
 import {dashFetch, dashGet, dashPut,onFinish} from './dashFetch';
 import {handleGetSession} from "@/components/login/logGoogle";
+import {CardActions, CardContent, CardMedia} from "@mui/material";
 
 
 export default function Contents({userInfo,posts}) {
@@ -159,42 +167,54 @@ export default function Contents({userInfo,posts}) {
                                      xl={{
                                          flex: '10%',
                                      }}>
-                                    <Card
+                                   <ConfigProvider
+                                   theme={{
+                                       token:{
+                                          margin:0
+                                       }
+                                   }}
+                                   >
+                                       <Card
+                                           hoverable
+                                           key={item.userImgUrl}
+                                           style={{width:270,fontFamily:"'Nunito',sans-serif"}}
+                                           cover={
+                                               <div>
+                                                   {
+                                                       listFavorite.includes(item.id) ?(
+                                                               <HeartFilled key={item.id} onClick={()=>handleIcon(item.id)} style={{...iconStyle,color:"red"}} />
+                                                           ) :
+                                                           (
+                                                               <HeartOutlined key={item.id} onClick={()=>handleIcon(item.id)}  style={{...iconStyle,color:"white"}}/>
+                                                           )
 
-                                        hoverable
-                                        key={item.userImgUrl}
-                                        style={{width:270}}
-                                        cover={
-                                            <div>
-                                                {
-                                                    listFavorite.includes(item.id) ?(
-                                                            <HeartFilled key={item.id} onClick={()=>handleIcon(item.id)} style={{...iconStyle,color:"red"}} />
-                                                        ) :
-                                                        (
-                                                            <HeartOutlined key={item.id} onClick={()=>handleIcon(item.id)}  style={{...iconStyle,color:"white"}}/>
-                                                        )
+                                                   }
 
-                                                }
+                                                   <img onClick={()=>handleDisplay(item)} style={{width: "100%", height: "150px", objectFit: "cover"}}
+                                                        src={item.postImgUrl} alt="something"/>
+                                               </div>
 
-                                                <img onClick={()=>handleDisplay(item)} style={{width: "100%", height: "150px", objectFit: "cover"}}
-                                                     src={item.postImgUrl} alt="something"/>
-                                            </div>
+                                           }
 
-                                        }
+                                       >
+                                           <Meta
+                                               avatar={<Avatar src={item.userImgUrl}/>}
+                                               title={<label style={{fontWeight: 800,color:"#24263e"}}>{item.title}</label>}
+                                               description={<label><EnvironmentOutlined/> {item.address}</label>}
+                                           />
+                                           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"0",marginTop:"10px"}}>
+                                            <span style={{fontWeight: 900, color: "#61855e",fontSize:"18px"}}
+                                                  className="price">
+                                                ${item.price}
+                                            </span>
+                                               <div>
+                                                   <StarOutlined/>
+                                               </div>
+                                           </div>
 
-                                    >
-                                        <Meta
+                                       </Card>
+                                   </ConfigProvider>
 
-                                            avatar={<Avatar src={item.userImgUrl}/>}
-                                            title={item.title}
-                                            description={<label style={{height:"1vh"}}><EnvironmentOutlined /> {item.address}</label>}
-
-
-                                        >
-
-                                        </Meta>
-                                        <span className="price">${item.price}</span>
-                                    </Card>
                                 </Col>
                             )
                         )
@@ -208,7 +228,7 @@ export default function Contents({userInfo,posts}) {
                         {
                             token: {
                                 colorBgContainer: '#6a9567',
-                                colorPrimary:"#fff"
+                                colorPrimary: "#fff"
                             }
                         }
                     }
@@ -220,9 +240,9 @@ export default function Contents({userInfo,posts}) {
 
                 <Modal visible={true} style={{backgroundColor:"black"}} okButtonProps={{style:{backgroundColor:"#6a9567",border:"none"}}} onCancel={handleInfoCancel} onOk={handleInfo} className="modal-two" bodyStyle={{maxHeight:"70vh",width:"100%",overflowY:"auto",overflowX:"hidden",scrollbarWidth:"none",backgroundColor:"#dde6ed",padding:"10px",borderRadius:"10px"}}   title="Info" width={1000}  open={info}>
                     <div style={{width:"100%",display:"flex",justifyContent:"space-between"}}>
-                        <div>
-                            <Image src={infoDisplay.img} alt="img"
-                                   style={{width: "50vw", height: "50vh", objectFit: "cover", borderRadius: "10px"}}/>
+                        <div style={{width:'67%',height:"300px",marginBottom:"20px"}}>
+                            <Image src={infoDisplay.img} alt="img" width="100%" height="100%"
+                                   style={{ objectFit: "cover", borderRadius: "10px"}}/>
 
                             <div className="modal-address"><EnvironmentOutlined/>{" " + infoDisplay.address}</div>
 
@@ -232,6 +252,7 @@ export default function Contents({userInfo,posts}) {
                             <Card
                                 className="modal-card-one"
                                 align="center"
+
                             >
 
                                 <div>Price : {"$" + infoDisplay.price}</div>
@@ -257,7 +278,7 @@ export default function Contents({userInfo,posts}) {
                         <div className="modal-form-item">
                             <div className="modal-desc-item">
                                 <div className="modal-descTitle">Description</div>
-                                <div className="modal-desc">{infoDisplay.desc}</div>
+                                <div className="modal-desc-two">{infoDisplay.desc}</div>
                             </div>
                             <div className="modal-two-rating">
                                 <div className="modal-two-rating-title">
@@ -291,7 +312,8 @@ export default function Contents({userInfo,posts}) {
                         >
                             <Form ref={formRef} layout="vertical"
                                   onFinish={handleFinish}
-                                  style={{backgroundColor: "white", width: "25vw", padding: "15px", borderRadius: "10px"}}>
+                                  className="modal-info-req"
+                                  >
                                 <Form.Item name="phone" style={{fontWeight: "600"}} label="Phone" rules={[
                                     {
                                         required: true,
@@ -308,13 +330,14 @@ export default function Contents({userInfo,posts}) {
                                     <TextArea value="I am interested in your house. And i wanna rent it!" row={4}/>
                                 </Form.Item>
 
-                                <Form.Item wrapperCol={{offset: 8}}>
+                                <Form.Item>
                                     <Button style={{
                                         display:"flex",
                                         alignItems:"center",
                                         justifyContent:"center",
                                         height: "7vh",
-                                        width: "10vw",
+                                        width: "150px",
+                                        margin:"auto",
                                         fontWeight: "600",
                                         fontFamily: "'Poppins',sans-serif"
                                     } } htmlType="sumbit" type="primary">Request Info</Button>

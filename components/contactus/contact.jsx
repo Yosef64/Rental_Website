@@ -46,7 +46,7 @@ export default function ContactUs() {
             <div className="contact">
                 <div className='contact-title'>Contact Us</div>
                 <div className="contact-container">
-                    <div style={{padding:"10px",flex:"0.6"}}>
+                    <div className="contact-con-left-part" >
                         <div style={{display:"flex",flexDirection:"column",marginBottom:"25px"}}>
                             <span style={{fontSize:"17px",display:"block",fontWeight:"700",fontFamily:"'Poppins',sans-serif",color:"#375277"}}>Get in Touch</span>
                             <span style={{fontSize:"12px",fontFamily:"'Poppins',sans-serif"}}>Fill up the form and our team will get back to you in 24 hours!</span>
@@ -86,7 +86,7 @@ export default function ContactUs() {
                         </form>
                     </div>
 
-                    <div style={{flex:0.4,backgroundColor:"#b6cbf6",borderRadius:"10px",position:"relative"}}>
+                    <div className="contact-img-part">
                         <img style={{width:"100%",position:"absolute",height:"100%",objectFit:"contain"}} src="/footer/contact.svg" alt="img"/>
                     </div>
                 </div>

@@ -25,11 +25,35 @@
     background-color: white;
     padding: 20px;
     border-radius: 20px;
-    width: 23vw;
+    width: 60%;
 }
 .form{
     display: flex;
     justify-content: space-between;
+}
+.modal-info-req{
+    background-color: white;
+    width: 37%;
+    padding: 15px;
+    border-radius: 10px
+}
+@media (max-width: 700px) {
+    .form{
+        flex-direction: column;
+        gap: 70px;
+    }
+    .modal-two-rating-item{
+        width: 100%;
+    }
+    .modal-info-req{
+        width: 60%;
+    }
+    .modal-desc-two{
+        width: 700px;
+    }
+    .modal-form-item{
+        width: 100%;
+    }
 }
 .modal-form-item{
     width: 60%;
@@ -47,7 +71,7 @@
     font-family:'Montserrat',sans-serif;
     width:100%
 }
-.modal-desc{
+.modal-desc-two{
     font-family:Verdana, sans-serif;
     background-color:white;
     padding:20px;
@@ -65,6 +89,7 @@
 }
 .modal-desc-item{
     margin-bottom: 30px;
+
 }
 
 .modal-two-rating-title{
@@ -76,14 +101,17 @@
 
 
 .modal-card-one{
-    font-family:verdana,sans-serif;
+    font-family:'Nunito',sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 20vw;
+    width: 100%;
     font-size:15px;
     color:#526d82;
-    font-weight:500
+    font-weight:700
+}
+.modal-card-container{
+width: 30%;
 }
 .c2-container{
     padding: 2px;
@@ -137,10 +165,10 @@
     position: relative;
     margin-left: 40px;
     text-decoration: none;
-    color: #575757;
+    color: #1b2130;
     font-size: 16px;
     font-weight: 700;
-    font-family: "Cantarell", sans-serif;
+    font-family: "Nunito", sans-serif;
 }
 .dash-links a::before{
     content: "";
