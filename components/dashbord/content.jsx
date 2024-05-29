@@ -116,7 +116,7 @@ export default function Contents({userInfo,posts}) {
             return
         }
         try {
-            const result = await fetch(`http://jorent.vercel.app/api/posts/${infoDisplay.id}`)
+            const result = await fetch(`https://jorent.vercel.app/api/posts/${infoDisplay.id}`)
             const {post} = await result.json();
             console.log(infoDisplay.id);
             const res = await handleRating(infoDisplay.id,{user:userInfo.email,rating:value,ratedUser:post.ratedUser})

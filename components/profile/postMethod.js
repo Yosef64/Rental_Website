@@ -1,5 +1,5 @@
 export default async function handlePosts(data) {
-  const res = await ("http://jorent.vercel.app/api/posts",
+  const res = await ("https://jorent.vercel.app/api/posts",
   {
     method: "POST",
     headers: {
@@ -13,7 +13,7 @@ export default async function handlePosts(data) {
 export async function handleGetUserPosts(userEmail) {
   // console.log(userEmail);
   const res = await fetch(
-    `http://jorent.vercel.app/api/postEmail/${userEmail}`
+    `https://jorent.vercel.app/api/postEmail/${userEmail}`
   );
   const { userPost } = await res.json();
   // console.log(userPosts);

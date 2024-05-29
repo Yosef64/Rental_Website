@@ -54,7 +54,7 @@ export async function fetchFavourite(){
         const {user} = await handleGetSession();
         const {email} = user;
 
-        const res = await fetch(`http://jorent.vercel.app/api/users/${email}`);
+        const res = await fetch(`https://jorent.vercel.app/api/users/${email}`);
         const {Find} = await res.json();
 
         const {favourites} = Find;
@@ -63,7 +63,7 @@ export async function fetchFavourite(){
         const list = [];
         await Promise.all(favourites.map(async (item) => {
 
-            const postRes = await fetch(`http://jorent.vercel.app/api/posts/${item}`);
+            const postRes = await fetch(`https://jorent.vercel.app/api/posts/${item}`);
             const {post} = await postRes.json();
             //
             if (post.length !== 0) {
@@ -80,7 +80,7 @@ export async function fetchFavourite(){
 export async function deletePost(id){
     console.log(id);
     try {
-        const res = await fetch(`http://jorent.vercel.app/api/posts/${id}`, {
+        const res = await fetch(`https://jorent.vercel.app/api/posts/${id}`, {
             method: "DELETE"
         });
         if (res.ok) {
