@@ -17,7 +17,7 @@ export async function handleSign(){
                 const user = result.user;
                 const [name, email, imgUrl] = [user.displayName, user.email, user.photoURL]
 
-                const search = await fetch("http://localhost:3000/api/users");
+                const search = await fetch("http://jorent.vercel.app/api/users");
 
                 const {users} = await search.json();
 

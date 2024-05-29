@@ -4,7 +4,7 @@ import {deleteSession} from "@/lib";
 import emailjs from '@emailjs/browser';
 
 export async function dashFetch() {
- const res = await fetch("http://localhost:3000/api/posts");
+ const res = await fetch("http://jorent.vercel.app/api/posts");
 const {posts} = await res.json()
 
  return {posts};
@@ -14,7 +14,7 @@ export async function dashPut(data){
  const {user} = await handleGetSession();
  const {email} = user;
 
- const res = await fetch(`http://localhost:3000/api/users/${email}`,{
+ const res = await fetch(`http://jorent.vercel.app/api/users/${email}`,{
   method:"PUT",
   headers:{
    "Content-Type": "application/json" //
@@ -33,7 +33,7 @@ export async function dashGet(){
         const {email} = user;
 
 
-        const res = await fetch(`http://localhost:3000/api/users/${email}`);
+        const res = await fetch(`http://jorent.vercel.app/api/users/${email}`);
 
         const {Find} = await res.json();
         return {Find};
@@ -61,7 +61,7 @@ export async function onFinish(name, senderName, senderEmail, email, phone,messa
         const result = await emailjs.sendForm('service_64mr0sp', 'template_84o1fpp', form, '7ZOQ2Kl2-vcU0_4Dz');
 
 
-        const res = await fetch(`http://localhost:3000/api/users/${email}`);
+        const res = await fetch(`http://jorent.vercel.app/api/users/${email}`);
 
         const {Find} = await res.json();
         // console.log(Find)
@@ -77,7 +77,7 @@ export async function onFinish(name, senderName, senderEmail, email, phone,messa
 }
 export async function handleRating(id,data){
 
-    const res = await fetch(`http://localhost:3000/api/posts/${id}`,{
+    const res = await fetch(`http://jorent.vercel.app/api/posts/${id}`,{
         method:"PUT",
         headers:{
             "Content-Type": "application/json" //
