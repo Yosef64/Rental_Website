@@ -16,7 +16,7 @@ export default function AboutUs(props) {
                     <div className="about-con-cen1-p">
                         <span style={{fontSize:"30px",fontFamily:"'Montserrat',sans-serif",fontWeight:700,color:"#d7dce3"}}>About Us</span>
                         <p style={{fontSize:"12px"}}>
-                            Whether you're a first-time homebuyer or a seasoned investor, we're here to help you navigate
+                            Whether you&apos;re a first-time homebuyer or a seasoned investor, we&apos;re here to help you navigate
                             the complex world of real estate. Explore our website to browse our current listings.
                         </p>
                     </div>
