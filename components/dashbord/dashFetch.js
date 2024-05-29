@@ -10,7 +10,7 @@ const {posts} = await res.json()
  return {posts};
 }
 export async function dashPut(data){
- // console.log("dash put",data);
+
  const {user} = await handleGetSession();
  const {email} = user;
 

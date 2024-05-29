@@ -1,5 +1,5 @@
 export default async function handlePosts(data) {
-  const res = await ("https://jorent.vercel.app/api/posts",
+  const res = await fetch("https://jorent.vercel.app/api/posts",
   {
     method: "POST",
     headers: {
