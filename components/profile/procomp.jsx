@@ -884,8 +884,8 @@ export function DashPost() {
             <div className="form">
                 <div className="modal-form-item">
                     <div style={{marginLeft:"3px"}} className="modal-desc-item">
-                        <div style={{backgroundColor:"white",borderRadius:"8px"}} className="modal-descTitle">Description</div>
-                        <div className="modal-desc">{infoDisplay.desc}</div>
+                        <div  className="modal-descTitle">Description</div>
+                        <div style={{backgroundColor:"white",borderRadius:"8px"}} className="modal-desc">{infoDisplay.desc}</div>
                     </div>
 
                 </div>
