@@ -6,29 +6,29 @@ const list = [
         id:1,
         img:"/about/shield.png",
         title:"Trust",
-        desc:"Whether you're a first-time homebuyer or a seasoned investor, we're here to help you navigate\n" +
+        desc:"Whether you&apos;re a first-time homebuyer or a seasoned investor, we&apos;re here to help you navigate\n" +
             "                            the complex world of real estate. Explore our website to browse our current listings."
     },
     {
         id:2,
         img:"/about/passion.png",
         title:"Passion",
-        desc:"Whether you're a first-time homebuyer or a seasoned investor, we're here to help you navigate\n" +
+        desc:"Whether you&apos;re a first-time homebuyer or a seasoned investor, we&apos;re here to help you navigate\n" +
             "                            the complex world of real estate. Explore our website to browse our current listings."
     },
     {
         id:3,
         img:"/about/exellent.png",
         title:"Excellence",
-        desc:"Whether you're a first-time homebuyer or a seasoned investor, we're here to help you navigate\n" +
+        desc:"Whether you&apos;re a first-time homebuyer or a seasoned investor, we&apos;re here to help you navigate\n" +
             "                            the complex world of real estate. Explore our website to browse our current listings."
     },
     {
         id:4,
         img:"/about/idea.png",
         title:"Creating Solutions",
-        desc:"Whether you're a first-time homebuyer or a seasoned investor, we're here to help you navigate\n" +
-            "                            the complex world of real estate. Explore our website to browse our current listings."
+        desc:"Whether you &apos;re a first-time homebuyer or a seasoned investor, we &apos;re here to help you navigate\n"+
+        "the complex world of real estate. Explore our website to browse our current listings."
     },
 ]
 export default function Creed(props) {
