@@ -4,7 +4,7 @@ import {NextResponse} from "next/server";
 
 export async function GET(req,{params}){
     const {id} = params;
-    console.log(id);
+
     try {
         const getQuery = query(collection(db,"users"),where("email","==",id));
         const getRef = await getDocs(getQuery);

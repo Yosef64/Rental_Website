@@ -15,10 +15,10 @@ export async function GET(request){
 }
 
 export async function POST(request) {
-    const { address, title, description, rooms, bath, userImgUrl, postImgUrl, price, area,email } = await request.json();
+    const { address, title, description, rooms, bath, userImgUrl, postImgUrl, price, area,email,ratedUser,totalRating } = await request.json();
     
     // console.log(address,title);
-    const post = { "address":address, "title":title, "description":description, "rooms":rooms, "bath":bath, "userImgUrl":userImgUrl, "postImgUrl":postImgUrl, "price":price, "area":area,"email":email };
+    const post = { "address":address, "title":title, "description":description, "rooms":rooms, "bath":bath, "userImgUrl":userImgUrl, "postImgUrl":postImgUrl, "price":price, "area":area,"email":email,ratedUser,totalRating};
     // console.log(post);
     const docRef = await addDoc(collection(db, 'posts'), { ...post });
 

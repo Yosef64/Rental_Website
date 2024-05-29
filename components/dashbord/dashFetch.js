@@ -21,21 +21,24 @@ export async function dashPut(data){
   },
   body:JSON.stringify({data})
  })
- // console.log("from dashPut",data);
- const {message}  =  res;
- // console.log("the put method says",message,newData);
+
+
+
 return res.ok;
 }
 export async function dashGet(){
- const {user} = await handleGetSession();
 
- const {email} = user;
+        const {user} = await handleGetSession();
+
+        const {email} = user;
 
 
- const res = await fetch(`http://localhost:3000/api/users/${email}`);
+        const res = await fetch(`http://localhost:3000/api/users/${email}`);
 
- const {Find} = await res.json();
- return {Find};
+        const {Find} = await res.json();
+        return {Find};
+
+
 }
 export async function logOut(){
  await deleteSession();
@@ -72,6 +75,19 @@ export async function onFinish(name, senderName, senderEmail, email, phone,messa
         return false;
     }
 }
+export async function handleRating(id,data){
+
+    const res = await fetch(`http://localhost:3000/api/posts/${id}`,{
+        method:"PUT",
+        headers:{
+            "Content-Type": "application/json" //
+        },
+        body:JSON.stringify({data})
+    })
+    console.log(res.status);
+    return res.ok;
+}
+
 
 
 

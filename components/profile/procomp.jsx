@@ -293,13 +293,28 @@ export function DashContents() {
     <Spin spinning={loading}>
       <Row
         style={{ width: "100%" }}
-        gutter={16}
-        align="center"
-        justify="space-around"
+        gutter={[ {xs: 0, sm: 16, md: 32, lg: 64},8]}
+
+        justify="start"
       >
         {info.map((item) => (
-          <Col className="content-col" key={item.id} span={6}>
-            <Card  style={{backgroundColor:"#dde6ed",width:"100%",height:"100%",border:"none"}} bordered={false}>
+          <Col className="content-col" key={item.id} xs={{
+            span: 24,
+          }}
+               sm={{
+                 span: 12,
+               }}
+               md={{
+                 span: 8,
+               }}
+               lg={{
+                 span: 8,
+               }}
+               xl={{
+                 span: 8,
+               }}
+          >
+            <Card  style={{backgroundColor:"#dde6ed",width:"100%",height:"20vh",border:"none"}} bordered={false}>
               <Statistic
                   title={item.label}
                   value={item.number}
@@ -355,9 +370,23 @@ export function DashContents() {
             },
           }}
         >
-          <Row gutter={[64, 24]}>
+          <Row gutter={[32, 24]}>
             {favourite.map((item) => (
-              <Col span={8} key={item.id}>
+              <Col
+                  style={{width:"270px"}}
+                  sm={{
+                span:10
+              }}
+                   md={{
+                     span:8
+                   }}
+                   lg={{
+                     span:8
+                   }}
+                   // xl={{
+                   //   span:8
+                   // }}
+                   key={item.id}>
                 <Card
                   hoverable
                   cover={
@@ -498,7 +527,9 @@ export function DashPost() {
                 bath:bath,
                 price:price,
                 area:area,
-                email:email
+                email:email,
+                ratedUser:[],
+                totalRating:0
               }
                 async function postValues(){
 
@@ -541,7 +572,7 @@ export function DashPost() {
           openNotification("topRight","Successfully deleted your Post!",false);
 
         }catch (error){
-          throw new Error("check your internet!")
+          openNotification("topRight","Something went wrong. Please check your internet connection!",true)
         }
     }
 
@@ -619,23 +650,20 @@ export function DashPost() {
               </div>
           ) : (
               <>
-                <Row gutter={[64, 24]}>
+                <Row gutter={[24, 24]}>
                   {data.map((item) => (
-                      <Col span={8} key={item.id}
+                      <Col key={item.id}
                            xs={{
-                             flex: '100%',
+                             span:24
                            }}
-                           sm={{
-                             flex: '80%',
-                           }}
+                            sm={{
+                              span:12
+                            }}
                            md={{
-                             flex: '60%',
+                             span:8
                            }}
                            lg={{
-                             flex: '40%',
-                           }}
-                           xl={{
-                             flex: '30%',
+                             span:8
                            }}
                       >
                         <Card
@@ -711,32 +739,83 @@ export function DashPost() {
       >
         <div className="modal-one">
           <Form
-          ref={formRef}
+            ref={formRef}
             layout="vertical"
             labelCol={{ style: { fontWeight: "600", fontSize: "15px" } }}
           >
-            <Form.Item name="address" label="Address : ">
+            <Form.Item name="address" label="Address : "
+            rules={[
+              {
+                required:true,
+                message:"Please insert the address!"
+              }
+            ]}
+            >
               <Input size="large" />
             </Form.Item>
-            <Form.Item name="description" label="Description :">
+            <Form.Item name="description" label="Description :"
+                       rules={[
+                         {
+                           required:true,
+                           message:"Please insert the description!"
+                         }
+                       ]}
+            >
               <TextArea row={4} />
             </Form.Item>
-            <Flex justify="space-around">
-              <Form.Item name="price" label="Price ">
-                <InputNumber min={0} defaultValue={0}/>
+            <Flex justify="space-around"
+
+            >
+              <Form.Item name="price" label="Price "
+                         rules={[
+                           {
+                             required:true,
+                             message:"Please insert the price of the house!"
+                           }
+                         ]}
+              >
+                <InputNumber min={0} />
               </Form.Item>
-              <Form.Item name="rooms" label="Rooms ">
-                <InputNumber min={0} defaultValue={0} />
+              <Form.Item name="rooms" label="Rooms "
+                         rules={[
+                           {
+                             required:true,
+                             message:"Please insert how many rooms you have!"
+                           }
+                         ]}
+              >
+                <InputNumber min={0} />
               </Form.Item>
-              <Form.Item name="area" label="Area ">
+              <Form.Item name="area" label="Area "
+                         rules={[
+                           {
+                             required:true,
+                             message:"Please insert the area of your house!"
+                           }
+                         ]}
+              >
                 <InputNumber />
               </Form.Item>
-              <Form.Item name="bath" label="Bath ">
-                <InputNumber min={0} defaultValue={0} />
+              <Form.Item name="bath" label="Bath "
+                         rules={[
+                           {
+                             required:true,
+                             message:"Please insert No. of bath!"
+                           }
+                         ]}
+              >
+                <InputNumber min={0}  />
               </Form.Item>
             </Flex>
             
-            <Form.Item name="photo" label="Photo :">
+            <Form.Item name="photo" label="Photo :"
+                       rules={[
+                         {
+                           required:true,
+                           message:"Please insert the photo of your house!"
+                         }
+                       ]}
+            >
               <Dragger style={{ width: "70%" }} {...props}>
                 <div style={{ height: "20vh" }}>
                   <p className="ant-upload-icon">
@@ -768,7 +847,7 @@ export function DashPost() {
                //        </>
                //    )}
         >
-            <div style={{width:"100%",display:"flex",justifyContent:"space-between"}}>
+            <div className="modal-one-imgAbout"  >
                 <div>
                     <Image src={infoDisplay.img} alt="img"
                            style={{width: "50vw", height: "50vh", objectFit: "cover", borderRadius: "10px"}}/>

@@ -1,17 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import {useRouter} from "next/navigation";
+
 
 import {
-    Anchor,
     Avatar, Badge,
     Button,
     ConfigProvider,
     Divider, Drawer,
     Dropdown,
     Flex,
-    Image,
-    Input,
     Layout,
     Menu, notification, Popconfirm,
     Spin,
@@ -19,10 +16,7 @@ import {
 } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import "./dash.css";
-import Link from "next/link";
 import Search from "antd/es/input/Search";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-solid-svg-icons";
 import {
   locationList,
   capacity,
@@ -31,12 +25,12 @@ import {
   siderList,
 } from "@/components/dashbord/dashcon";
 import {
+    AimOutlined,
     BellOutlined,
     ControlOutlined,
-    DeleteOutlined,
     DollarOutlined,
     DownOutlined,
-    EnvironmentOutlined, LogoutOutlined, MehOutlined, MenuFoldOutlined, MenuOutlined, SmileOutlined,
+    EnvironmentOutlined, LogoutOutlined, MehOutlined, MenuOutlined, SmileOutlined,
     TeamOutlined,
     UserOutlined,
 } from "@ant-design/icons";
@@ -49,14 +43,14 @@ import 'antd/dist/reset.css'
 export default function DashComp({ }) {
 
     const [current, setCurrent] = useState({location:"Addis Ababa",price:"100-1000",house:"Normal villa",cap:"1-person"});
-    const [search, setSearch] = useState({location:"Addis Ababa",price:[100,1000],cap:[1,1]});
+    const search = {location:"Addis Ababa",price:[100,1000],cap:[1,1]}
     const [active, setActive] = useState(1);
     const [user, setUser] = useState({});
     const [post, setPost] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [api, contextHolder] = notification.useNotification();
-
+    const [listOfMessages, setListofMessages] = useState([]);
     const openNotification = (placement,desc,isWarning) => {
         api.info({
             message: <p style={{color:isWarning ?"red":"green",fontWeight:"600",fontFamily:"'Poppins',sans-serif"}}>{isWarning ? "Warning!":"Success!"}</p>,
@@ -96,8 +90,9 @@ export default function DashComp({ }) {
             const {user} = await handleGetSession();
             // const {imgUrl} = user;
             const {Find} = await dashGet();
-            const {notifications} = Find;
+            const {notifications,messages} = Find;
             setCount(notifications);
+            setListofMessages(messages)
             setUser(user);
         }catch (error){
             openNotification("topRight","Something went wrong. Check your internet connection!",true)
@@ -132,10 +127,16 @@ export default function DashComp({ }) {
 
   function handleNotify() {
         async function changeNot(){
-            const data = {notifications: 0}
-            const res = await dashPut(data);
+            try {
+                const data = {notifications: 0}
+                const res = await dashPut(data);
+                console.log(res);
+            }catch (e) {
+                openNotification("topRight","Something went wrong. Please check your internet connection!",true)
+            }
+
         }
-        changeNot().then(result=>{
+        changeNot().then(()=>{
             setCount(0);
         })
     }
@@ -194,15 +195,29 @@ export default function DashComp({ }) {
             </ConfigProvider>
 
             <Tooltip title="Notification">
-                <Badge  style={{cursor:"pointer"}} size="small" count={count}>
-                    <BellOutlined onClick={handleNotify} style={{fontSize:"20px"}} />
-                </Badge>
-                {/*<Button*/}
-                {/*    style={{ border: "none", backgroundColor: "#e0e7ec" }}*/}
-                {/*    type="default"*/}
-                {/*    shape="circle"*/}
-                {/*    icon={}*/}
-                {/*/>*/}
+                <Dropdown
+                    trigger={['click']}
+                    arrow
+                    placement="bottom"
+                    overlay={
+                    <Menu style={{width:"200px"}} >
+                        {listOfMessages.map((item) => (
+                            <Menu.Item
+                                style={{fontFamily:"'Poppins',sans-serif",fontSize:"13px",fontWeight: 600,color:"#5c5e61"}}
+                                key={item.id}
+                                // onClick={() => setCurrent({...current, location: item.name})}
+                            >
+                                <label><AimOutlined /> You have a new message from <span style={{color:"#2d405a"}}>{item.name}</span></label>
+                            </Menu.Item>
+                        ))}
+                    </Menu>
+                    }
+                >
+                    <Badge  style={{cursor:"pointer"}} size="small" count={count}>
+                        <BellOutlined onClick={handleNotify} style={{fontSize:"20px"}} />
+                    </Badge>
+                </Dropdown>
+
             </Tooltip>
             <Tooltip title="profile">
               <Button
@@ -305,7 +320,8 @@ export default function DashComp({ }) {
                             <Button type="default">
                                 <ControlOutlined/> {current.house} <DownOutlined/>
                             </Button>
-                        </Dropdown>)
+                        </Dropdown>
+                        )
                     }]} />
 
           <ConfigProvider

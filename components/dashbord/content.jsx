@@ -26,7 +26,7 @@ import {
 } from "@ant-design/icons";
 import Meta from "antd/es/card/Meta";
 import TextArea from "antd/es/input/TextArea";
-import {dashFetch, dashGet, dashPut,onFinish} from './dashFetch';
+import {dashFetch, dashGet, dashPut, handleRating, onFinish} from './dashFetch';
 import {handleGetSession} from "@/components/login/logGoogle";
 import {CardActions, CardContent, CardMedia} from "@mui/material";
 
@@ -107,17 +107,29 @@ export default function Contents({userInfo,posts}) {
     function handleDisplay(item) {
 
         setInfo(true);
-        const info = {img:item.postImgUrl,desc: item.description,title: item.title,price: item.price,address: item.address,bath:item.bath,rooms:item.rooms,area:item.area,email:item.email}
-        setInfoDisplay(info);
+        console.log(item);
+        setInfoDisplay(item);
     }
-    function handleInfo() {
-        if(value === null){
-            message.error("Please rate the house of cancel the Modal!")
-        }else {
-            setInfo(!info);
-            setValue(null);
-            message.success("You have successfully rated the house");
+    async function handleInfo() {
+        if (value==null){
+            message.error("Please rate the house or cancel the Modal!")
+            return
         }
+        try {
+            const result = await fetch(`http://localhost:3000/api/posts/${infoDisplay.id}`)
+            const {post} = await result.json();
+            console.log(infoDisplay.id);
+            const res = await handleRating(infoDisplay.id,{user:userInfo.email,rating:value,ratedUser:post.ratedUser})
+            if (res){
+                message.success("You have successfully rated the house");
+                setInfo(false)
+            }
+            else message.error("Something is wrong!");
+        }
+        catch (e){
+            openNotification("topRight","something Went wrong",true)
+        }
+
     }
     function handleInfoCancel(){
         setInfo(false);
@@ -128,7 +140,7 @@ export default function Contents({userInfo,posts}) {
         const formValues = formRef.current.getFieldValue();
         const {email,phone,messages} = formValues;
         // console.log(formValues)
-        if (email===undefined ||phone=== undefined|| messages===undefined){
+        if ( messages===undefined){
             openNotification("topRight","You need to provide the information required to ask for the information about the house!",true)
         }
         else {
@@ -203,13 +215,13 @@ export default function Contents({userInfo,posts}) {
                                                description={<label><EnvironmentOutlined/> {item.address}</label>}
                                            />
                                            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"0",marginTop:"10px"}}>
-                                            <span style={{fontWeight: 900, color: "#61855e",fontSize:"18px"}}
-                                                  className="price">
-                                                ${item.price}
-                                            </span>
-                                               <div>
-                                                   <StarOutlined/>
-                                               </div>
+                                                <span style={{fontWeight: 900, color: "#61855e",fontSize:"18px"}}
+                                                      className="price">
+                                                    ${item.price}
+                                                </span>
+                                                <div style={{fontSize:"16px",fontWeight:"800",fontFamily:"'Nunito',sans-serif",color:"#323e51",display:"flex",alignItems:"center",gap:"10px"}}>
+                                                   <StarOutlined/> {item.ratedUser.length > 0 ? `${(item.totalRating/item.ratedUser.length).toFixed(1)}` : "0.0"}
+                                                </div>
                                            </div>
 
                                        </Card>
@@ -239,9 +251,9 @@ export default function Contents({userInfo,posts}) {
             </div>
 
                 <Modal visible={true} style={{backgroundColor:"black"}} okButtonProps={{style:{backgroundColor:"#6a9567",border:"none"}}} onCancel={handleInfoCancel} onOk={handleInfo} className="modal-two" bodyStyle={{maxHeight:"70vh",width:"100%",overflowY:"auto",overflowX:"hidden",scrollbarWidth:"none",backgroundColor:"#dde6ed",padding:"10px",borderRadius:"10px"}}   title="Info" width={1000}  open={info}>
-                    <div style={{width:"100%",display:"flex",justifyContent:"space-between"}}>
-                        <div style={{width:'67%',height:"300px",marginBottom:"20px"}}>
-                            <Image src={infoDisplay.img} alt="img" width="100%" height="100%"
+                    <div className="modal-two-imgAbout">
+                        <div className="modal-two-imgAbout-img">
+                            <Image src={infoDisplay.postImgUrl} alt="img" width="100%" height="100%"
                                    style={{ objectFit: "cover", borderRadius: "10px"}}/>
 
                             <div className="modal-address"><EnvironmentOutlined/>{" " + infoDisplay.address}</div>
@@ -252,7 +264,6 @@ export default function Contents({userInfo,posts}) {
                             <Card
                                 className="modal-card-one"
                                 align="center"
-
                             >
 
                                 <div>Price : {"$" + infoDisplay.price}</div>
@@ -275,10 +286,10 @@ export default function Contents({userInfo,posts}) {
 
                     </div>
                     <div className="form">
-                        <div className="modal-form-item">
+                        <div className="modal-two-form-item">
                             <div className="modal-desc-item">
                                 <div className="modal-descTitle">Description</div>
-                                <div className="modal-desc-two">{infoDisplay.desc}</div>
+                                <div className="modal-desc-two">{infoDisplay.description}</div>
                             </div>
                             <div className="modal-two-rating">
                                 <div className="modal-two-rating-title">
@@ -310,9 +321,11 @@ export default function Contents({userInfo,posts}) {
                                 }
                             }}
                         >
-                            <Form ref={formRef} layout="vertical"
+                            <Form
+                                ref={formRef} layout="vertical"
                                   onFinish={handleFinish}
                                   className="modal-info-req"
+                                  style={{width:"35%"}}
                                   >
                                 <Form.Item name="phone" style={{fontWeight: "600"}} label="Phone" rules={[
                                     {
@@ -322,8 +335,19 @@ export default function Contents({userInfo,posts}) {
                                 ]}>
                                     <Input style={{height: "7vh"}} placeholder="Phone number"/>
                                 </Form.Item>
-                                <Form.Item name="email" style={{fontWeight: "600"}} label="Email">
-                                    <Input style={{height: "7vh"}} type="email" value="Yoseph@gmail.com"/>
+                                <Form.Item name="email" style={{fontWeight: "600"}} label="Email"
+                                rules={[
+                                    {
+                                        required:true,
+                                        message:"Please provide email!",
+
+                                    },
+                                    {
+                                        type:"email",
+                                    }
+                                ]}
+                                >
+                                    <Input style={{height: "7vh"}} type="email"/>
 
                                 </Form.Item>
                                 <Form.Item name="messages" style={{fontWeight: "600"}} label="Message">

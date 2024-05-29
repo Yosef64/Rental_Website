@@ -54,12 +54,17 @@ export async function handleSession(){
     return false;
 }
 export async function handleGetSession(){
-    const session =  await getSession();
-    const sessionString = JSON.stringify(session,null,2);
-    const sessionObject = JSON.parse(sessionString,null,2);
-    const {user} = sessionObject;
+    try {
+        const session =  await getSession();
+        const sessionString = JSON.stringify(session,null,2);
+        const sessionObject = JSON.parse(sessionString,null,2);
+        const {user} = sessionObject;
 
 
-    return {user};
+        return {user}
+    }catch (e) {
+        return {user:undefined}
+    }
+
     
 }

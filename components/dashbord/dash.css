@@ -27,36 +27,83 @@
     border-radius: 20px;
     width: 60%;
 }
+.modal-two-imgAbout{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+}
+.modal-two-imgAbout-img{
+    width:67%;
+    height:300px;
+    margin-bottom:20px;
+}
+.modal-card-container{
+     width: 30%;
+ }
+@media (max-width: 700px) {
+
+    .modal-two-imgAbout{
+        flex-direction: column;
+        /*background-color: black;*/
+    }
+    .modal-two-imgAbout-img{
+        width: 100%;
+    }
+    .modal-card-container{
+        width: 100%;
+        margin-top: 20px;
+
+    }
+
+}
 .form{
     display: flex;
     justify-content: space-between;
+    width: 100%;
 }
 .modal-info-req{
     background-color: white;
-    width: 37%;
     padding: 15px;
-    border-radius: 10px
+    border-radius: 10px;
+    height:400px;
 }
+.modal-descTitle{
+    width: 50%;
+     margin: 30px 0 10px 10px;
+     font-weight: 700;
+     color: #526d82;
+     font-size: 16px;
+
+ }
 @media (max-width: 700px) {
     .form{
+        width: 100%;
         flex-direction: column;
-        gap: 70px;
     }
     .modal-two-rating-item{
         width: 100%;
+        background-color: white;
     }
     .modal-info-req{
-        width: 60%;
-    }
-    .modal-desc-two{
-        width: 700px;
-    }
-    .modal-form-item{
         width: 100%;
     }
+    .modal-desc-item{
+        width: 100%;
+        /*background-color: white;*/
+    }
+    .modal-desc-item .modal-desc-two{
+        width: 100%
+    }
+    .form .modal-two-form-item{
+        width: 100%;
+
+    }
+
 }
-.modal-form-item{
+.modal-two-form-item{
     width: 60%;
+
+    margin-right: 10px;
 }
 .modal-card-one-item{
     display: flex;
@@ -80,16 +127,9 @@
     width:80%
 }
 
-.modal-descTitle{
-    margin: 30px 0 10px 10px;
-    font-weight: 700;
-    color: #526d82;
-    font-size: 16px;
 
-}
 .modal-desc-item{
     margin-bottom: 30px;
-
 }
 
 .modal-two-rating-title{
@@ -110,9 +150,7 @@
     color:#526d82;
     font-weight:700
 }
-.modal-card-container{
-width: 30%;
-}
+
 .c2-container{
     padding: 2px;
     width: 100%;

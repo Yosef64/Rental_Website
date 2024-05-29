@@ -1,59 +1,88 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Avatar, Button, Card, Col, ConfigProvider, Form, Input, List, Row, Statistic} from "antd";
+import {Avatar, Button, Card, Col, ConfigProvider, Form, Input, List, notification, Row, Statistic} from "antd";
 
 import TextArea from "antd/es/input/TextArea";
 import {dashGet} from "@/components/dashbord/dashFetch";
+import {MehOutlined, SmileOutlined} from "@ant-design/icons";
 
 
 export default function MessageComp(props) {
     const [messages, setMessages] = useState([]);
-
+    const [api, contextHolder] = notification.useNotification();
+    const openNotification = (placement,desc,isWarning) => {
+        api.info({
+            message: <p style={{color:isWarning ?"red":"green",fontWeight:"600",fontFamily:"'Poppins',sans-serif"}}>{isWarning ? "Warning!":"Success!"}</p>,
+            description:
+                <p style={{fontFamily:"'Poppins',sans-serif"}}>{desc}</p>,
+            placement,
+            icon: (
+                isWarning ?
+                    <SmileOutlined
+                        style={{
+                            color: 'red',
+                        }}
+                    />:<MehOutlined style={{color:"green"}}/>
+            ),
+        });
+    };
     useEffect(() => {
         async function getMessage() {
+            try{
+                const {Find} = await dashGet();
+                const {messages} = Find;
+                setMessages(messages);
+            }catch (e){
+                openNotification("topRight","Something Went Wrong. Please check your internet connection!",true)
+            }
 
-            const {Find} = await dashGet();
-            const {messages} = Find;
-            setMessages(messages);
 
         }
 
         getMessage();
     }, [])
 
-    return messages.length ?
+    return (
+        <div>
+            {contextHolder}
+            {
+                messages.length ?
 
-        (<List dataSource={messages} layout="horizontal"
+                    (<List dataSource={messages} layout="horizontal"
 
-               renderItem={(item, index) => (
-                   <List.Item>
-                       <List.Item.Meta
-                           avatar={<Avatar src={item.imgUrl}/>}
-                           title={<a href="https://ant.design">{item.name}</a>}
-                           description={item.message}
-                       />
+                           renderItem={(item, index) => (
+                               <List.Item>
 
-                   </List.Item>
-               )}
-        >
+                                   <List.Item.Meta
+                                       avatar={<Avatar src={item.imgUrl}/>}
+                                       title={<a href="https://ant.design">{item.name}</a>}
+                                       description={item.message}
+                                   />
 
-        </List>)
-        : <div
-            style={{
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
-            <img
-                style={{width: "100%", height: "35vh"}}
-                src="/empty.svg"
-                alt="something"
-            />
-            <span>No Message!</span>
+                               </List.Item>
+                           )}
+                    >
+
+                    </List>)
+                    : <div
+                        style={{
+                            width: "100%",
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <img
+                            style={{width: "100%", height: "35vh"}}
+                            src="/empty.svg"
+                            alt="something"
+                        />
+                        <span>No Message!</span>
+                    </div>
+            }
         </div>
+    )
 }
 
 
