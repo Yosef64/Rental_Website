@@ -50,10 +50,10 @@ export default function Signup() {
 
                                     <Form.Item>
                                         <Button style={{width:"100%",fontWeight:800,color:"#ffffff"}} type="primary">
-
                                             Sign Up
                                         </Button>
                                     </Form.Item>
+
                                 </Form>
                                 <Divider plain>or</Divider>
                             </ConfigProvider>

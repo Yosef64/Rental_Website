@@ -18,6 +18,10 @@ export default function Footer(props) {
         gap:"2px",
         fontWeight:"600",
         fontSize:"12px",
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center",
+        textDecoration:"none",
         backgroundColor:"#6b8f68",
         fontFamily:'"Montserrat",sans-serif'}
     const styleCopy= {
@@ -34,7 +38,7 @@ export default function Footer(props) {
                 </div>
                 <div className="fot-con-s">
                     <p>Get Involved finding a best house</p>
-                    <Button style={styleButton} type="primary">Find <ArrowRightOutlined style={{fontSize:"12px"}} /></Button>
+                    <Button style={styleButton} type="primary" href="/dashboard">Find <ArrowRightOutlined style={{fontSize:"12px"}} /></Button>
                 </div>
                 <Flex className="list-of-links" style={{width:"50%"}} align="start" justify="space-around">
                     {

@@ -1,10 +1,23 @@
 "use client"
-import React from 'react';
+import React, {useRef} from 'react';
 import "./lgf.css"
-import {Button, Checkbox, ConfigProvider, Divider, Form, Input} from "antd";
+import {Button, Checkbox, ConfigProvider, Divider, Form, Input, Modal} from "antd";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
 import {handleSign} from "@/components/login/logGoogle";
 export default function Login() {
+
+    const [modal, contextHolder] = Modal.useModal();
+    function handleIn (){
+        const instance = modal.success({
+            title: 'Warning',
+            content: `Please sign in with Google.`,
+        });
+
+        setTimeout(() => {
+
+            instance.destroy();
+        },  3000);
+    }
     return (
         <div className="login">
             <div className="login-container">
@@ -48,10 +61,15 @@ export default function Login() {
                                         <a style={{float:"right"}} href="/">Forgot Password?</a>
                                     </Form.Item>
                                     <Form.Item>
-                                        <Button style={{width:"100%",fontWeight:800,color:"#ffffff"}} type="primary">
+                                        <Button onClick={handleIn} style={{width:"100%",fontWeight:800,color:"#ffffff"}} type="primary">
 
                                             Sign In
                                         </Button>
+                                    </Form.Item>
+                                    <Form.Item style={{textAlign:"center",marginBottom:"0 !important"}}>
+                                        <a  href="/login/signin">
+                                            Create an account
+                                        </a>
                                     </Form.Item>
                                 </Form>
                                 <Divider plain>or</Divider>

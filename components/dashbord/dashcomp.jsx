@@ -201,7 +201,17 @@ export default function DashComp({ }) {
                     placement="bottom"
                     overlay={
                     <Menu style={{width:"200px"}} >
-                        {listOfMessages.map((item) => (
+                        {listOfMessages.slice(0,count).map((item)=>(
+                            <Menu.Item
+                                style={{fontFamily:"'Poppins',sans-serif",fontSize:"13px",fontWeight: 600,color:"#5c5e61"}}
+                                key={item.id}
+                                // onClick={() => setCurrent({...current, location: item.name})}
+                            >
+                                <label><AimOutlined /> You have a new message from <span style={{color:"#2d405a"}}>{item.name}</span></label>
+                            </Menu.Item>
+                        ))}
+                        <Divider style={{color:"#706e6e",fontFamily:"'Poppins',sans-serif",fontWeight:"600",fontSize:"14px"}} orientation="left" >New</Divider>
+                        {listOfMessages.slice(count+1,listOfMessages.length).map((item) => (
                             <Menu.Item
                                 style={{fontFamily:"'Poppins',sans-serif",fontSize:"13px",fontWeight: 600,color:"#5c5e61"}}
                                 key={item.id}

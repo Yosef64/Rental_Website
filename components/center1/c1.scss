@@ -12,26 +12,30 @@
     display: flex;
 
     .c1-left{
-
       flex: 0.5;
-      padding-top: 50px;
+      padding-left: 6%;
 
       font-size: 45px;
       display: flex;
       flex-direction: column;
       justify-content: center;
 
-      align-items: center;
+
+      align-items: start;
       @media (max-width: 650px) {
         flex: 1;
         //align-items: center;
-        background-color: black;
+        //background-color: black;
         float: left;
 
 
       }
       .flex-drop{
-        padding-left: 90px;
+        //padding-left: 90px;
+        float: left !important;
+        width: 300px!important;
+
+
         @media (max-width: 650px) {
           float: left;
 
