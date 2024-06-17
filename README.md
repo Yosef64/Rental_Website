@@ -1,15 +1,7 @@
 <h3>JoRent - Rental Web App</h3>
 
-<h2>Table of Contents</h2>
-Introduction
-Features
-Technologies Used
-Installation
-Usage
-Contributing
-License
-Contact
-Introduction
+
+<h3>Introduction</h3>
 JoRent is a comprehensive rental web application designed to simplify the rental process for various items. The app is live and can be accessed at jorent.vercel.app.
 
 Features
