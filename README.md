@@ -34,7 +34,7 @@ npm or yarn
 
 <h2>Clone the Repository</h2>
 
-git clone https://github.com/your-username/jorent.git
+git clone https://github.com/Yosef64/Rental_Website.git
 cd jorent
 Install Dependencies
 bash
@@ -59,12 +59,6 @@ Manage Rentals: View and manage your rentals from your profile.
 Contributing
 Contributions are welcome! Please fork the repository and create a pull request.
 
-Steps to Contribute
-Fork the repository
-Create a new branch (git checkout -b feature/YourFeature)
-Commit your changes (git commit -m 'Add some feature')
-Push to the branch (git push origin feature/YourFeature)
-Open a pull request
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
