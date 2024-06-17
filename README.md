@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h3>JoRent - Rental Web App</h3>
 
-## Getting Started
+<h2>Table of Contents</h2>
+Introduction
+Features
+Technologies Used
+Installation
+Usage
+Contributing
+License
+Contact
+Introduction
+JoRent is a comprehensive rental web application designed to simplify the rental process for various items. The app is live and can be accessed at jorent.vercel.app.
 
-First, run the development server:
+Features
+User authentication and authorization
+Listing items for rent
+Searching and filtering available rentals
+Renting and returning items
+User profiles and rental history
+Admin dashboard for managing listings and users
+Technologies Used
+Frontend: React, Next.js
+Backend: Node.js, Express.js
+Database: MongoDB
+Authentication: JWT, OAuth
+Deployment: Vercel
+Installation
+To get a local copy up and running, follow these simple steps:
 
-```bash
+Prerequisites
+Node.js
+npm or yarn
+
+<h2>Clone the Repository</h2>
+
+git clone https://github.com/your-username/jorent.git
+cd jorent
+Install Dependencies
+bash
+Copy code
+npm install
+# or
+yarn install
+
+<h3>Run the Application</h3>
+
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Visit http://localhost:3000 to see the app in action.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Usage
+Sign Up / Log In: Create an account or log in to access the app.
+List an Item: Go to the "List Item" page and fill out the form to add a new rental listing.
+Search Rentals: Use the search bar and filters to find items available for rent.
+Rent an Item: Click on a listing and follow the prompts to rent an item.
+Manage Rentals: View and manage your rentals from your profile.
+Contributing
+Contributions are welcome! Please fork the repository and create a pull request.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Steps to Contribute
+Fork the repository
+Create a new branch (git checkout -b feature/YourFeature)
+Commit your changes (git commit -m 'Add some feature')
+Push to the branch (git push origin feature/YourFeature)
+Open a pull request
+License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Contact
+Name: Yoseph Alemu
+Email:yosefale65@gmail.com
