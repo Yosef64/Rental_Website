@@ -51,9 +51,6 @@ Manage Rentals: View and manage your rentals from your profile.
 Contributing
 Contributions are welcome! Please fork the repository and create a pull request.
 
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 Contact
 Name: Yoseph Alemu
 Email:yosefale65@gmail.com
