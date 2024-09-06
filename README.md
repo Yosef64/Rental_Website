@@ -3,6 +3,11 @@
 
 <h3>Introduction</h3>
 JoRent is a comprehensive rental web application designed to simplify the rental process for various items. The app is live and can be accessed at htttps://jorent.vercel.app.
+<div>
+  <img src="https://firebasestorage.googleapis.com/v0/b/rent-ffb49.appspot.com/o/photos%2FScreenshot%202024-08-23%20094009.png?alt=media&token=c109f587-4740-444e-b70d-f385298c567f" alt="img" />
+  <img src="https://firebasestorage.googleapis.com/v0/b/rent-ffb49.appspot.com/o/photos%2FScreenshot%202024-08-23%20094431.png?alt=media&token=f4799c7a-bc6d-493e-ab6f-fe6cd6e42517" alt="img" />
+  <img src="https://firebasestorage.googleapis.com/v0/b/rent-ffb49.appspot.com/o/photos%2FScreenshot%202024-08-23%20094507.png?alt=media&token=09fd04b6-54ce-4f79-85bc-cd19d38913b5" alt="img" />
+</div>
 
 Features
 User authentication and authorization
